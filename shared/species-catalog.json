@@ -1,0 +1,3738 @@
+[
+ {
+  "id": "micropterus-salmoides",
+  "scientificName": "Micropterus salmoides",
+  "commonName": "Largemouth bass",
+  "archetype": "fusiform",
+  "lengthCm": [
+   30,
+   60
+  ],
+  "colors": {
+   "back": "#4d6a36",
+   "side": "#8aa457",
+   "belly": "#e5e2c2",
+   "fin": "#6a8247",
+   "pattern": "stripe"
+  },
+  "depthBand": "littoral",
+  "schooling": false,
+  "group": "fish",
+  "family": "Centrarchidae",
+  "tempPrefC": [
+   18,
+   30
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "micropterus-dolomieu",
+  "scientificName": "Micropterus dolomieu",
+  "commonName": "Smallmouth bass",
+  "archetype": "fusiform",
+  "lengthCm": [
+   28,
+   50
+  ],
+  "colors": {
+   "back": "#5e4a26",
+   "side": "#9a8040",
+   "belly": "#ddd2a4",
+   "fin": "#7d5f30",
+   "pattern": "bars"
+  },
+  "depthBand": "littoral",
+  "schooling": false,
+  "group": "fish",
+  "family": "Centrarchidae",
+  "tempPrefC": [
+   15,
+   26
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "micropterus-punctulatus",
+  "scientificName": "Micropterus punctulatus",
+  "commonName": "Spotted bass",
+  "archetype": "fusiform",
+  "lengthCm": [
+   25,
+   45
+  ],
+  "colors": {
+   "back": "#4d6a36",
+   "side": "#8aa457",
+   "belly": "#e5e2c2",
+   "fin": "#6a8247",
+   "pattern": "spots"
+  },
+  "depthBand": "littoral",
+  "schooling": false,
+  "group": "fish",
+  "family": "Centrarchidae",
+  "tempPrefC": [
+   18,
+   28
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "lepomis-macrochirus",
+  "scientificName": "Lepomis macrochirus",
+  "commonName": "Bluegill",
+  "archetype": "compressed",
+  "lengthCm": [
+   12,
+   25
+  ],
+  "colors": {
+   "back": "#3f5f66",
+   "side": "#6f9a78",
+   "belly": "#ee9a3a",
+   "fin": "#5a7e86",
+   "pattern": "bars"
+  },
+  "depthBand": "littoral",
+  "schooling": true,
+  "group": "fish",
+  "family": "Centrarchidae",
+  "tempPrefC": [
+   18,
+   30
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "lepomis-gibbosus",
+  "scientificName": "Lepomis gibbosus",
+  "commonName": "Pumpkinseed",
+  "archetype": "compressed",
+  "lengthCm": [
+   10,
+   20
+  ],
+  "colors": {
+   "back": "#6b6a2f",
+   "side": "#d49a3a",
+   "belly": "#e4662e",
+   "fin": "#a8742c",
+   "pattern": "spots"
+  },
+  "depthBand": "littoral",
+  "schooling": true,
+  "group": "fish",
+  "family": "Centrarchidae",
+  "tempPrefC": [
+   16,
+   28
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "lepomis-cyanellus",
+  "scientificName": "Lepomis cyanellus",
+  "commonName": "Green sunfish",
+  "archetype": "compressed",
+  "lengthCm": [
+   10,
+   20
+  ],
+  "colors": {
+   "back": "#4d6a36",
+   "side": "#8aa457",
+   "belly": "#e5e2c2",
+   "fin": "#6a8247",
+   "pattern": "bars"
+  },
+  "depthBand": "littoral",
+  "schooling": true,
+  "group": "fish",
+  "family": "Centrarchidae",
+  "tempPrefC": [
+   18,
+   30
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "lepomis-megalotis",
+  "scientificName": "Lepomis megalotis",
+  "commonName": "Longear sunfish",
+  "archetype": "compressed",
+  "lengthCm": [
+   10,
+   18
+  ],
+  "colors": {
+   "back": "#6b6a2f",
+   "side": "#d49a3a",
+   "belly": "#e4662e",
+   "fin": "#a8742c",
+   "pattern": "mottled"
+  },
+  "depthBand": "littoral",
+  "schooling": true,
+  "group": "fish",
+  "family": "Centrarchidae",
+  "tempPrefC": [
+   18,
+   28
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "lepomis-microlophus",
+  "scientificName": "Lepomis microlophus",
+  "commonName": "Redear sunfish",
+  "archetype": "compressed",
+  "lengthCm": [
+   15,
+   28
+  ],
+  "colors": {
+   "back": "#8a6a1e",
+   "side": "#d6b04a",
+   "belly": "#f2e4b0",
+   "fin": "#c08a2c",
+   "pattern": "none"
+  },
+  "depthBand": "littoral",
+  "schooling": true,
+  "group": "fish",
+  "family": "Centrarchidae",
+  "tempPrefC": [
+   20,
+   30
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "lepomis-auritus",
+  "scientificName": "Lepomis auritus",
+  "commonName": "Redbreast sunfish",
+  "archetype": "compressed",
+  "lengthCm": [
+   12,
+   22
+  ],
+  "colors": {
+   "back": "#6b6a2f",
+   "side": "#d49a3a",
+   "belly": "#e4662e",
+   "fin": "#a8742c",
+   "pattern": "none"
+  },
+  "depthBand": "littoral",
+  "schooling": true,
+  "group": "fish",
+  "family": "Centrarchidae",
+  "tempPrefC": [
+   18,
+   28
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "lepomis-gulosus",
+  "scientificName": "Lepomis gulosus",
+  "commonName": "Warmouth",
+  "archetype": "compressed",
+  "lengthCm": [
+   12,
+   22
+  ],
+  "colors": {
+   "back": "#514a33",
+   "side": "#7d7252",
+   "belly": "#c9bf9c",
+   "fin": "#6a5e3e",
+   "pattern": "mottled"
+  },
+  "depthBand": "littoral",
+  "schooling": false,
+  "group": "fish",
+  "family": "Centrarchidae",
+  "tempPrefC": [
+   20,
+   30
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "ambloplites-rupestris",
+  "scientificName": "Ambloplites rupestris",
+  "commonName": "Rock bass",
+  "archetype": "compressed",
+  "lengthCm": [
+   15,
+   25
+  ],
+  "colors": {
+   "back": "#5e4a26",
+   "side": "#9a8040",
+   "belly": "#ddd2a4",
+   "fin": "#7d5f30",
+   "pattern": "spots"
+  },
+  "depthBand": "littoral",
+  "schooling": false,
+  "group": "fish",
+  "family": "Centrarchidae",
+  "tempPrefC": [
+   16,
+   26
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "pomoxis-nigromaculatus",
+  "scientificName": "Pomoxis nigromaculatus",
+  "commonName": "Black crappie",
+  "archetype": "compressed",
+  "lengthCm": [
+   18,
+   30
+  ],
+  "colors": {
+   "back": "#5d7890",
+   "side": "#b8c7d0",
+   "belly": "#f1f3f2",
+   "fin": "#9fb0ba",
+   "pattern": "mottled"
+  },
+  "depthBand": "midwater",
+  "schooling": true,
+  "group": "fish",
+  "family": "Centrarchidae",
+  "tempPrefC": [
+   15,
+   26
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "pomoxis-annularis",
+  "scientificName": "Pomoxis annularis",
+  "commonName": "White crappie",
+  "archetype": "compressed",
+  "lengthCm": [
+   18,
+   30
+  ],
+  "colors": {
+   "back": "#5d7890",
+   "side": "#b8c7d0",
+   "belly": "#f1f3f2",
+   "fin": "#9fb0ba",
+   "pattern": "bars"
+  },
+  "depthBand": "midwater",
+  "schooling": true,
+  "group": "fish",
+  "family": "Centrarchidae",
+  "tempPrefC": [
+   15,
+   26
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "perca-flavescens",
+  "scientificName": "Perca flavescens",
+  "commonName": "Yellow perch",
+  "archetype": "fusiform",
+  "lengthCm": [
+   15,
+   30
+  ],
+  "colors": {
+   "back": "#8a6a1e",
+   "side": "#d6b04a",
+   "belly": "#f2e4b0",
+   "fin": "#c08a2c",
+   "pattern": "bars"
+  },
+  "depthBand": "midwater",
+  "schooling": true,
+  "group": "fish",
+  "family": "Percidae",
+  "tempPrefC": [
+   12,
+   24
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "sander-vitreus",
+  "scientificName": "Sander vitreus",
+  "commonName": "Walleye",
+  "archetype": "fusiform",
+  "lengthCm": [
+   40,
+   70
+  ],
+  "colors": {
+   "back": "#5e4a26",
+   "side": "#9a8040",
+   "belly": "#ddd2a4",
+   "fin": "#7d5f30",
+   "pattern": "mottled"
+  },
+  "depthBand": "midwater",
+  "schooling": false,
+  "group": "fish",
+  "family": "Percidae",
+  "tempPrefC": [
+   12,
+   22
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "sander-canadensis",
+  "scientificName": "Sander canadensis",
+  "commonName": "Sauger",
+  "archetype": "fusiform",
+  "lengthCm": [
+   30,
+   45
+  ],
+  "colors": {
+   "back": "#514a33",
+   "side": "#7d7252",
+   "belly": "#c9bf9c",
+   "fin": "#6a5e3e",
+   "pattern": "spots"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "fish",
+  "family": "Percidae",
+  "tempPrefC": [
+   12,
+   22
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "percina-caprodes",
+  "scientificName": "Percina caprodes",
+  "commonName": "Logperch",
+  "archetype": "small",
+  "lengthCm": [
+   8,
+   14
+  ],
+  "colors": {
+   "back": "#6a5a2c",
+   "side": "#b09a52",
+   "belly": "#e6d9a8",
+   "fin": "#c2562d",
+   "pattern": "bars"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "fish",
+  "family": "Percidae",
+  "tempPrefC": [
+   10,
+   22
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "etheostoma-nigrum",
+  "scientificName": "Etheostoma nigrum",
+  "commonName": "Johnny darter",
+  "archetype": "small",
+  "lengthCm": [
+   4,
+   7
+  ],
+  "colors": {
+   "back": "#6a5a2c",
+   "side": "#b09a52",
+   "belly": "#e6d9a8",
+   "fin": "#c2562d",
+   "pattern": "spots"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "fish",
+  "family": "Percidae",
+  "tempPrefC": [
+   10,
+   22
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "etheostoma-flabellare",
+  "scientificName": "Etheostoma flabellare",
+  "commonName": "Fantail darter",
+  "archetype": "small",
+  "lengthCm": [
+   4,
+   8
+  ],
+  "colors": {
+   "back": "#6a5a2c",
+   "side": "#b09a52",
+   "belly": "#e6d9a8",
+   "fin": "#c2562d",
+   "pattern": "bars"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "fish",
+  "family": "Percidae",
+  "tempPrefC": [
+   8,
+   20
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "esox-lucius",
+  "scientificName": "Esox lucius",
+  "commonName": "Northern pike",
+  "archetype": "elongate",
+  "lengthCm": [
+   50,
+   90
+  ],
+  "colors": {
+   "back": "#3f5a34",
+   "side": "#7a8f4a",
+   "belly": "#dcd8b4",
+   "fin": "#7d6a3a",
+   "pattern": "spots"
+  },
+  "depthBand": "littoral",
+  "schooling": false,
+  "group": "fish",
+  "family": "Esocidae",
+  "tempPrefC": [
+   10,
+   22
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "esox-masquinongy",
+  "scientificName": "Esox masquinongy",
+  "commonName": "Muskellunge",
+  "archetype": "elongate",
+  "lengthCm": [
+   80,
+   130
+  ],
+  "colors": {
+   "back": "#3f5a34",
+   "side": "#7a8f4a",
+   "belly": "#dcd8b4",
+   "fin": "#7d6a3a",
+   "pattern": "bars"
+  },
+  "depthBand": "littoral",
+  "schooling": false,
+  "group": "fish",
+  "family": "Esocidae",
+  "tempPrefC": [
+   12,
+   24
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "esox-niger",
+  "scientificName": "Esox niger",
+  "commonName": "Chain pickerel",
+  "archetype": "elongate",
+  "lengthCm": [
+   35,
+   60
+  ],
+  "colors": {
+   "back": "#3f5a34",
+   "side": "#7a8f4a",
+   "belly": "#dcd8b4",
+   "fin": "#7d6a3a",
+   "pattern": "mottled"
+  },
+  "depthBand": "littoral",
+  "schooling": false,
+  "group": "fish",
+  "family": "Esocidae",
+  "tempPrefC": [
+   12,
+   26
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "esox-americanus",
+  "scientificName": "Esox americanus",
+  "commonName": "Grass pickerel",
+  "archetype": "elongate",
+  "lengthCm": [
+   20,
+   35
+  ],
+  "colors": {
+   "back": "#3f5a34",
+   "side": "#7a8f4a",
+   "belly": "#dcd8b4",
+   "fin": "#7d6a3a",
+   "pattern": "bars"
+  },
+  "depthBand": "littoral",
+  "schooling": false,
+  "group": "fish",
+  "family": "Esocidae",
+  "tempPrefC": [
+   12,
+   26
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "oncorhynchus-mykiss",
+  "scientificName": "Oncorhynchus mykiss",
+  "commonName": "Rainbow trout",
+  "archetype": "fusiform",
+  "lengthCm": [
+   30,
+   60
+  ],
+  "colors": {
+   "back": "#5b7260",
+   "side": "#c9b7bd",
+   "belly": "#eef0ea",
+   "fin": "#8e9c8d",
+   "pattern": "spots"
+  },
+  "depthBand": "midwater",
+  "schooling": false,
+  "group": "fish",
+  "family": "Salmonidae",
+  "tempPrefC": [
+   8,
+   18
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "salmo-trutta",
+  "scientificName": "Salmo trutta",
+  "commonName": "Brown trout",
+  "archetype": "fusiform",
+  "lengthCm": [
+   30,
+   60
+  ],
+  "colors": {
+   "back": "#574a2a",
+   "side": "#8f7a48",
+   "belly": "#e5d9b2",
+   "fin": "#7a5f34",
+   "pattern": "spots"
+  },
+  "depthBand": "midwater",
+  "schooling": false,
+  "group": "fish",
+  "family": "Salmonidae",
+  "tempPrefC": [
+   8,
+   18
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "salvelinus-namaycush",
+  "scientificName": "Salvelinus namaycush",
+  "commonName": "Lake trout",
+  "archetype": "fusiform",
+  "lengthCm": [
+   45,
+   80
+  ],
+  "colors": {
+   "back": "#4a5f66",
+   "side": "#9aa9ac",
+   "belly": "#eef1ee",
+   "fin": "#77868a",
+   "pattern": "spots"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "fish",
+  "family": "Salmonidae",
+  "tempPrefC": [
+   4,
+   12
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "salvelinus-fontinalis",
+  "scientificName": "Salvelinus fontinalis",
+  "commonName": "Brook trout",
+  "archetype": "fusiform",
+  "lengthCm": [
+   20,
+   40
+  ],
+  "colors": {
+   "back": "#3d4b40",
+   "side": "#6d8170",
+   "belly": "#f0a24b",
+   "fin": "#d4603a",
+   "pattern": "mottled"
+  },
+  "depthBand": "midwater",
+  "schooling": false,
+  "group": "fish",
+  "family": "Salmonidae",
+  "tempPrefC": [
+   6,
+   16
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "oncorhynchus-tshawytscha",
+  "scientificName": "Oncorhynchus tshawytscha",
+  "commonName": "Chinook salmon",
+  "archetype": "fusiform",
+  "lengthCm": [
+   60,
+   100
+  ],
+  "colors": {
+   "back": "#3f5468",
+   "side": "#8ea3b2",
+   "belly": "#e8ecec",
+   "fin": "#6f8596",
+   "pattern": "spots"
+  },
+  "depthBand": "midwater",
+  "schooling": false,
+  "group": "fish",
+  "family": "Salmonidae",
+  "tempPrefC": [
+   6,
+   16
+  ],
+  "iucn": "NT"
+ },
+ {
+  "id": "oncorhynchus-nerka",
+  "scientificName": "Oncorhynchus nerka",
+  "commonName": "Kokanee salmon",
+  "archetype": "fusiform",
+  "lengthCm": [
+   25,
+   40
+  ],
+  "colors": {
+   "back": "#4c5b6a",
+   "side": "#b9757a",
+   "belly": "#e7d8d2",
+   "fin": "#8e5257",
+   "pattern": "none"
+  },
+  "depthBand": "midwater",
+  "schooling": true,
+  "group": "fish",
+  "family": "Salmonidae",
+  "tempPrefC": [
+   6,
+   14
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "oncorhynchus-kisutch",
+  "scientificName": "Oncorhynchus kisutch",
+  "commonName": "Coho salmon",
+  "archetype": "fusiform",
+  "lengthCm": [
+   50,
+   80
+  ],
+  "colors": {
+   "back": "#3f5468",
+   "side": "#8ea3b2",
+   "belly": "#e8ecec",
+   "fin": "#6f8596",
+   "pattern": "spots"
+  },
+  "depthBand": "midwater",
+  "schooling": false,
+  "group": "fish",
+  "family": "Salmonidae",
+  "tempPrefC": [
+   6,
+   16
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "salmo-salar",
+  "scientificName": "Salmo salar",
+  "commonName": "Atlantic salmon",
+  "archetype": "fusiform",
+  "lengthCm": [
+   55,
+   90
+  ],
+  "colors": {
+   "back": "#3f5468",
+   "side": "#8ea3b2",
+   "belly": "#e8ecec",
+   "fin": "#6f8596",
+   "pattern": "spots"
+  },
+  "depthBand": "midwater",
+  "schooling": false,
+  "group": "fish",
+  "family": "Salmonidae",
+  "tempPrefC": [
+   6,
+   16
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "oncorhynchus-clarkii",
+  "scientificName": "Oncorhynchus clarkii",
+  "commonName": "Cutthroat trout",
+  "archetype": "fusiform",
+  "lengthCm": [
+   30,
+   55
+  ],
+  "colors": {
+   "back": "#5e4a26",
+   "side": "#9a8040",
+   "belly": "#ddd2a4",
+   "fin": "#7d5f30",
+   "pattern": "spots"
+  },
+  "depthBand": "midwater",
+  "schooling": false,
+  "group": "fish",
+  "family": "Salmonidae",
+  "tempPrefC": [
+   6,
+   16
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "coregonus-clupeaformis",
+  "scientificName": "Coregonus clupeaformis",
+  "commonName": "Lake whitefish",
+  "archetype": "fusiform",
+  "lengthCm": [
+   35,
+   60
+  ],
+  "colors": {
+   "back": "#5d7890",
+   "side": "#b8c7d0",
+   "belly": "#f1f3f2",
+   "fin": "#9fb0ba",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": true,
+  "group": "fish",
+  "family": "Salmonidae",
+  "tempPrefC": [
+   6,
+   14
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "coregonus-artedi",
+  "scientificName": "Coregonus artedi",
+  "commonName": "Cisco",
+  "archetype": "fusiform",
+  "lengthCm": [
+   25,
+   40
+  ],
+  "colors": {
+   "back": "#3a5a7a",
+   "side": "#b5c4cf",
+   "belly": "#f3f4f2",
+   "fin": "#90a6b7",
+   "pattern": "none"
+  },
+  "depthBand": "midwater",
+  "schooling": true,
+  "group": "fish",
+  "family": "Salmonidae",
+  "tempPrefC": [
+   4,
+   12
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "prosopium-williamsoni",
+  "scientificName": "Prosopium williamsoni",
+  "commonName": "Mountain whitefish",
+  "archetype": "fusiform",
+  "lengthCm": [
+   25,
+   45
+  ],
+  "colors": {
+   "back": "#5d7890",
+   "side": "#b8c7d0",
+   "belly": "#f1f3f2",
+   "fin": "#9fb0ba",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": true,
+  "group": "fish",
+  "family": "Salmonidae",
+  "tempPrefC": [
+   4,
+   14
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "osmerus-mordax",
+  "scientificName": "Osmerus mordax",
+  "commonName": "Rainbow smelt",
+  "archetype": "fusiform",
+  "lengthCm": [
+   12,
+   22
+  ],
+  "colors": {
+   "back": "#3a5a7a",
+   "side": "#b5c4cf",
+   "belly": "#f3f4f2",
+   "fin": "#90a6b7",
+   "pattern": "none"
+  },
+  "depthBand": "midwater",
+  "schooling": true,
+  "group": "fish",
+  "family": "Osmeridae",
+  "tempPrefC": [
+   4,
+   14
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "ictalurus-punctatus",
+  "scientificName": "Ictalurus punctatus",
+  "commonName": "Channel catfish",
+  "archetype": "benthic",
+  "lengthCm": [
+   40,
+   80
+  ],
+  "colors": {
+   "back": "#3c3f43",
+   "side": "#6b6f70",
+   "belly": "#d8d6c7",
+   "fin": "#4b4f52",
+   "pattern": "spots"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "fish",
+  "family": "Ictaluridae",
+  "tempPrefC": [
+   18,
+   30
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "ictalurus-furcatus",
+  "scientificName": "Ictalurus furcatus",
+  "commonName": "Blue catfish",
+  "archetype": "benthic",
+  "lengthCm": [
+   50,
+   110
+  ],
+  "colors": {
+   "back": "#3f5468",
+   "side": "#8ea3b2",
+   "belly": "#e8ecec",
+   "fin": "#6f8596",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "fish",
+  "family": "Ictaluridae",
+  "tempPrefC": [
+   18,
+   30
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "pylodictis-olivaris",
+  "scientificName": "Pylodictis olivaris",
+  "commonName": "Flathead catfish",
+  "archetype": "benthic",
+  "lengthCm": [
+   50,
+   100
+  ],
+  "colors": {
+   "back": "#514a33",
+   "side": "#7d7252",
+   "belly": "#c9bf9c",
+   "fin": "#6a5e3e",
+   "pattern": "mottled"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "fish",
+  "family": "Ictaluridae",
+  "tempPrefC": [
+   18,
+   30
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "ameiurus-nebulosus",
+  "scientificName": "Ameiurus nebulosus",
+  "commonName": "Brown bullhead",
+  "archetype": "benthic",
+  "lengthCm": [
+   20,
+   35
+  ],
+  "colors": {
+   "back": "#514a33",
+   "side": "#7d7252",
+   "belly": "#c9bf9c",
+   "fin": "#6a5e3e",
+   "pattern": "mottled"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "fish",
+  "family": "Ictaluridae",
+  "tempPrefC": [
+   16,
+   28
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "ameiurus-melas",
+  "scientificName": "Ameiurus melas",
+  "commonName": "Black bullhead",
+  "archetype": "benthic",
+  "lengthCm": [
+   20,
+   35
+  ],
+  "colors": {
+   "back": "#3a4148",
+   "side": "#5f6b73",
+   "belly": "#a9b1b3",
+   "fin": "#4b555c",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "fish",
+  "family": "Ictaluridae",
+  "tempPrefC": [
+   16,
+   28
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "noturus-gyrinus",
+  "scientificName": "Noturus gyrinus",
+  "commonName": "Tadpole madtom",
+  "archetype": "small",
+  "lengthCm": [
+   5,
+   10
+  ],
+  "colors": {
+   "back": "#514a33",
+   "side": "#7d7252",
+   "belly": "#c9bf9c",
+   "fin": "#6a5e3e",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "fish",
+  "family": "Ictaluridae",
+  "tempPrefC": [
+   14,
+   26
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "cyprinus-carpio",
+  "scientificName": "Cyprinus carpio",
+  "commonName": "Common carp",
+  "archetype": "benthic",
+  "lengthCm": [
+   40,
+   80
+  ],
+  "colors": {
+   "back": "#6a5a2a",
+   "side": "#c09a48",
+   "belly": "#e8d9a0",
+   "fin": "#a9793a",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "fish",
+  "family": "Cyprinidae",
+  "tempPrefC": [
+   16,
+   30
+  ],
+  "iucn": "VU"
+ },
+ {
+  "id": "carassius-auratus",
+  "scientificName": "Carassius auratus",
+  "commonName": "Goldfish",
+  "archetype": "benthic",
+  "lengthCm": [
+   12,
+   25
+  ],
+  "colors": {
+   "back": "#8a6a1e",
+   "side": "#d6b04a",
+   "belly": "#f2e4b0",
+   "fin": "#c08a2c",
+   "pattern": "none"
+  },
+  "depthBand": "littoral",
+  "schooling": false,
+  "group": "fish",
+  "family": "Cyprinidae",
+  "tempPrefC": [
+   14,
+   28
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "ctenopharyngodon-idella",
+  "scientificName": "Ctenopharyngodon idella",
+  "commonName": "Grass carp",
+  "archetype": "fusiform",
+  "lengthCm": [
+   60,
+   100
+  ],
+  "colors": {
+   "back": "#4d6a36",
+   "side": "#8aa457",
+   "belly": "#e5e2c2",
+   "fin": "#6a8247",
+   "pattern": "none"
+  },
+  "depthBand": "littoral",
+  "schooling": false,
+  "group": "fish",
+  "family": "Cyprinidae",
+  "tempPrefC": [
+   16,
+   28
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "hypophthalmichthys-nobilis",
+  "scientificName": "Hypophthalmichthys nobilis",
+  "commonName": "Bighead carp",
+  "archetype": "benthic",
+  "lengthCm": [
+   60,
+   100
+  ],
+  "colors": {
+   "back": "#3a4148",
+   "side": "#5f6b73",
+   "belly": "#a9b1b3",
+   "fin": "#4b555c",
+   "pattern": "mottled"
+  },
+  "depthBand": "surface",
+  "schooling": false,
+  "group": "fish",
+  "family": "Cyprinidae",
+  "tempPrefC": [
+   16,
+   28
+  ],
+  "iucn": "DD"
+ },
+ {
+  "id": "hypophthalmichthys-molitrix",
+  "scientificName": "Hypophthalmichthys molitrix",
+  "commonName": "Silver carp",
+  "archetype": "compressed",
+  "lengthCm": [
+   50,
+   90
+  ],
+  "colors": {
+   "back": "#5d7890",
+   "side": "#b8c7d0",
+   "belly": "#f1f3f2",
+   "fin": "#9fb0ba",
+   "pattern": "none"
+  },
+  "depthBand": "surface",
+  "schooling": true,
+  "group": "fish",
+  "family": "Cyprinidae",
+  "tempPrefC": [
+   16,
+   28
+  ],
+  "iucn": "NT"
+ },
+ {
+  "id": "notemigonus-crysoleucas",
+  "scientificName": "Notemigonus crysoleucas",
+  "commonName": "Golden shiner",
+  "archetype": "compressed",
+  "lengthCm": [
+   8,
+   15
+  ],
+  "colors": {
+   "back": "#8a6a1e",
+   "side": "#d6b04a",
+   "belly": "#f2e4b0",
+   "fin": "#c08a2c",
+   "pattern": "none"
+  },
+  "depthBand": "littoral",
+  "schooling": true,
+  "group": "fish",
+  "family": "Leuciscidae",
+  "tempPrefC": [
+   14,
+   28
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "pimephales-promelas",
+  "scientificName": "Pimephales promelas",
+  "commonName": "Fathead minnow",
+  "archetype": "small",
+  "lengthCm": [
+   5,
+   9
+  ],
+  "colors": {
+   "back": "#6b5a34",
+   "side": "#c8b37a",
+   "belly": "#ece3c4",
+   "fin": "#b56a3a",
+   "pattern": "none"
+  },
+  "depthBand": "littoral",
+  "schooling": true,
+  "group": "fish",
+  "family": "Leuciscidae",
+  "tempPrefC": [
+   14,
+   28
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "pimephales-notatus",
+  "scientificName": "Pimephales notatus",
+  "commonName": "Bluntnose minnow",
+  "archetype": "small",
+  "lengthCm": [
+   5,
+   9
+  ],
+  "colors": {
+   "back": "#6b5a34",
+   "side": "#c8b37a",
+   "belly": "#ece3c4",
+   "fin": "#b56a3a",
+   "pattern": "stripe"
+  },
+  "depthBand": "littoral",
+  "schooling": true,
+  "group": "fish",
+  "family": "Leuciscidae",
+  "tempPrefC": [
+   14,
+   28
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "notropis-atherinoides",
+  "scientificName": "Notropis atherinoides",
+  "commonName": "Emerald shiner",
+  "archetype": "small",
+  "lengthCm": [
+   6,
+   10
+  ],
+  "colors": {
+   "back": "#3a5a7a",
+   "side": "#b5c4cf",
+   "belly": "#f3f4f2",
+   "fin": "#90a6b7",
+   "pattern": "none"
+  },
+  "depthBand": "midwater",
+  "schooling": true,
+  "group": "fish",
+  "family": "Leuciscidae",
+  "tempPrefC": [
+   12,
+   26
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "notropis-hudsonius",
+  "scientificName": "Notropis hudsonius",
+  "commonName": "Spottail shiner",
+  "archetype": "small",
+  "lengthCm": [
+   6,
+   11
+  ],
+  "colors": {
+   "back": "#3a5a7a",
+   "side": "#b5c4cf",
+   "belly": "#f3f4f2",
+   "fin": "#90a6b7",
+   "pattern": "spots"
+  },
+  "depthBand": "littoral",
+  "schooling": true,
+  "group": "fish",
+  "family": "Leuciscidae",
+  "tempPrefC": [
+   12,
+   24
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "luxilus-cornutus",
+  "scientificName": "Luxilus cornutus",
+  "commonName": "Common shiner",
+  "archetype": "small",
+  "lengthCm": [
+   7,
+   12
+  ],
+  "colors": {
+   "back": "#6b5a34",
+   "side": "#c8b37a",
+   "belly": "#ece3c4",
+   "fin": "#b56a3a",
+   "pattern": "none"
+  },
+  "depthBand": "littoral",
+  "schooling": true,
+  "group": "fish",
+  "family": "Leuciscidae",
+  "tempPrefC": [
+   12,
+   24
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "cyprinella-spiloptera",
+  "scientificName": "Cyprinella spiloptera",
+  "commonName": "Spotfin shiner",
+  "archetype": "small",
+  "lengthCm": [
+   6,
+   10
+  ],
+  "colors": {
+   "back": "#3a5a7a",
+   "side": "#b5c4cf",
+   "belly": "#f3f4f2",
+   "fin": "#90a6b7",
+   "pattern": "spots"
+  },
+  "depthBand": "littoral",
+  "schooling": true,
+  "group": "fish",
+  "family": "Leuciscidae",
+  "tempPrefC": [
+   14,
+   28
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "semotilus-atromaculatus",
+  "scientificName": "Semotilus atromaculatus",
+  "commonName": "Creek chub",
+  "archetype": "small",
+  "lengthCm": [
+   10,
+   18
+  ],
+  "colors": {
+   "back": "#6b5a34",
+   "side": "#c8b37a",
+   "belly": "#ece3c4",
+   "fin": "#b56a3a",
+   "pattern": "spots"
+  },
+  "depthBand": "littoral",
+  "schooling": false,
+  "group": "fish",
+  "family": "Leuciscidae",
+  "tempPrefC": [
+   10,
+   24
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "rhinichthys-atratulus",
+  "scientificName": "Rhinichthys atratulus",
+  "commonName": "Blacknose dace",
+  "archetype": "small",
+  "lengthCm": [
+   5,
+   9
+  ],
+  "colors": {
+   "back": "#6b5a34",
+   "side": "#c8b37a",
+   "belly": "#ece3c4",
+   "fin": "#b56a3a",
+   "pattern": "stripe"
+  },
+  "depthBand": "benthic",
+  "schooling": true,
+  "group": "fish",
+  "family": "Leuciscidae",
+  "tempPrefC": [
+   8,
+   20
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "couesius-plumbeus",
+  "scientificName": "Couesius plumbeus",
+  "commonName": "Lake chub",
+  "archetype": "small",
+  "lengthCm": [
+   8,
+   14
+  ],
+  "colors": {
+   "back": "#5d7890",
+   "side": "#b8c7d0",
+   "belly": "#f1f3f2",
+   "fin": "#9fb0ba",
+   "pattern": "none"
+  },
+  "depthBand": "littoral",
+  "schooling": true,
+  "group": "fish",
+  "family": "Leuciscidae",
+  "tempPrefC": [
+   6,
+   18
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "richardsonius-egregius",
+  "scientificName": "Richardsonius egregius",
+  "commonName": "Lahontan redside",
+  "archetype": "small",
+  "lengthCm": [
+   8,
+   14
+  ],
+  "colors": {
+   "back": "#6b5a34",
+   "side": "#c8b37a",
+   "belly": "#ece3c4",
+   "fin": "#b56a3a",
+   "pattern": "stripe"
+  },
+  "depthBand": "littoral",
+  "schooling": true,
+  "group": "fish",
+  "family": "Leuciscidae",
+  "tempPrefC": [
+   10,
+   22
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "siphateles-bicolor",
+  "scientificName": "Siphateles bicolor",
+  "commonName": "Tui chub",
+  "archetype": "compressed",
+  "lengthCm": [
+   15,
+   30
+  ],
+  "colors": {
+   "back": "#514a33",
+   "side": "#7d7252",
+   "belly": "#c9bf9c",
+   "fin": "#6a5e3e",
+   "pattern": "none"
+  },
+  "depthBand": "littoral",
+  "schooling": true,
+  "group": "fish",
+  "family": "Leuciscidae",
+  "tempPrefC": [
+   10,
+   22
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "chrosomus-eos",
+  "scientificName": "Chrosomus eos",
+  "commonName": "Northern redbelly dace",
+  "archetype": "small",
+  "lengthCm": [
+   4,
+   8
+  ],
+  "colors": {
+   "back": "#6b5a34",
+   "side": "#c8b37a",
+   "belly": "#ece3c4",
+   "fin": "#b56a3a",
+   "pattern": "stripe"
+  },
+  "depthBand": "littoral",
+  "schooling": true,
+  "group": "fish",
+  "family": "Leuciscidae",
+  "tempPrefC": [
+   8,
+   20
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "catostomus-commersonii",
+  "scientificName": "Catostomus commersonii",
+  "commonName": "White sucker",
+  "archetype": "benthic",
+  "lengthCm": [
+   25,
+   45
+  ],
+  "colors": {
+   "back": "#514a33",
+   "side": "#7d7252",
+   "belly": "#c9bf9c",
+   "fin": "#6a5e3e",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "fish",
+  "family": "Catostomidae",
+  "tempPrefC": [
+   8,
+   22
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "catostomus-catostomus",
+  "scientificName": "Catostomus catostomus",
+  "commonName": "Longnose sucker",
+  "archetype": "benthic",
+  "lengthCm": [
+   25,
+   45
+  ],
+  "colors": {
+   "back": "#3a4148",
+   "side": "#5f6b73",
+   "belly": "#a9b1b3",
+   "fin": "#4b555c",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "fish",
+  "family": "Catostomidae",
+  "tempPrefC": [
+   4,
+   16
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "catostomus-tahoensis",
+  "scientificName": "Catostomus tahoensis",
+  "commonName": "Tahoe sucker",
+  "archetype": "benthic",
+  "lengthCm": [
+   25,
+   45
+  ],
+  "colors": {
+   "back": "#514a33",
+   "side": "#7d7252",
+   "belly": "#c9bf9c",
+   "fin": "#6a5e3e",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "fish",
+  "family": "Catostomidae",
+  "tempPrefC": [
+   8,
+   20
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "moxostoma-macrolepidotum",
+  "scientificName": "Moxostoma macrolepidotum",
+  "commonName": "Shorthead redhorse",
+  "archetype": "benthic",
+  "lengthCm": [
+   30,
+   55
+  ],
+  "colors": {
+   "back": "#5e4a26",
+   "side": "#9a8040",
+   "belly": "#ddd2a4",
+   "fin": "#7d5f30",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "fish",
+  "family": "Catostomidae",
+  "tempPrefC": [
+   12,
+   24
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "ictiobus-cyprinellus",
+  "scientificName": "Ictiobus cyprinellus",
+  "commonName": "Bigmouth buffalo",
+  "archetype": "benthic",
+  "lengthCm": [
+   40,
+   80
+  ],
+  "colors": {
+   "back": "#514a33",
+   "side": "#7d7252",
+   "belly": "#c9bf9c",
+   "fin": "#6a5e3e",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "fish",
+  "family": "Catostomidae",
+  "tempPrefC": [
+   16,
+   28
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "lepisosteus-osseus",
+  "scientificName": "Lepisosteus osseus",
+  "commonName": "Longnose gar",
+  "archetype": "elongate",
+  "lengthCm": [
+   70,
+   130
+  ],
+  "colors": {
+   "back": "#4a5a3a",
+   "side": "#8c9660",
+   "belly": "#e3dfc1",
+   "fin": "#6c7750",
+   "pattern": "spots"
+  },
+  "depthBand": "surface",
+  "schooling": false,
+  "group": "fish",
+  "family": "Lepisosteidae",
+  "tempPrefC": [
+   16,
+   30
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "lepisosteus-oculatus",
+  "scientificName": "Lepisosteus oculatus",
+  "commonName": "Spotted gar",
+  "archetype": "elongate",
+  "lengthCm": [
+   50,
+   80
+  ],
+  "colors": {
+   "back": "#4a5a3a",
+   "side": "#8c9660",
+   "belly": "#e3dfc1",
+   "fin": "#6c7750",
+   "pattern": "spots"
+  },
+  "depthBand": "surface",
+  "schooling": false,
+  "group": "fish",
+  "family": "Lepisosteidae",
+  "tempPrefC": [
+   16,
+   30
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "amia-calva",
+  "scientificName": "Amia calva",
+  "commonName": "Bowfin",
+  "archetype": "elongate",
+  "lengthCm": [
+   45,
+   70
+  ],
+  "colors": {
+   "back": "#4d6a36",
+   "side": "#8aa457",
+   "belly": "#e5e2c2",
+   "fin": "#6a8247",
+   "pattern": "mottled"
+  },
+  "depthBand": "littoral",
+  "schooling": false,
+  "group": "fish",
+  "family": "Amiidae",
+  "tempPrefC": [
+   16,
+   30
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "acipenser-fulvescens",
+  "scientificName": "Acipenser fulvescens",
+  "commonName": "Lake sturgeon",
+  "archetype": "benthic",
+  "lengthCm": [
+   100,
+   180
+  ],
+  "colors": {
+   "back": "#3a3b38",
+   "side": "#6d6a5a",
+   "belly": "#d9d4c0",
+   "fin": "#55534a",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "fish",
+  "family": "Acipenseridae",
+  "tempPrefC": [
+   8,
+   20
+  ],
+  "iucn": "EN"
+ },
+ {
+  "id": "acipenser-oxyrinchus",
+  "scientificName": "Acipenser oxyrinchus",
+  "commonName": "Atlantic sturgeon",
+  "archetype": "benthic",
+  "lengthCm": [
+   120,
+   250
+  ],
+  "colors": {
+   "back": "#3a3b38",
+   "side": "#6d6a5a",
+   "belly": "#d9d4c0",
+   "fin": "#55534a",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "fish",
+  "family": "Acipenseridae",
+  "tempPrefC": [
+   8,
+   24
+  ],
+  "iucn": "NT"
+ },
+ {
+  "id": "scaphirhynchus-platorynchus",
+  "scientificName": "Scaphirhynchus platorynchus",
+  "commonName": "Shovelnose sturgeon",
+  "archetype": "benthic",
+  "lengthCm": [
+   60,
+   100
+  ],
+  "colors": {
+   "back": "#3a3b38",
+   "side": "#6d6a5a",
+   "belly": "#d9d4c0",
+   "fin": "#55534a",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "fish",
+  "family": "Acipenseridae",
+  "tempPrefC": [
+   8,
+   24
+  ],
+  "iucn": "NT"
+ },
+ {
+  "id": "alosa-sapidissima",
+  "scientificName": "Alosa sapidissima",
+  "commonName": "American shad",
+  "archetype": "compressed",
+  "lengthCm": [
+   35,
+   60
+  ],
+  "colors": {
+   "back": "#3a5a7a",
+   "side": "#b5c4cf",
+   "belly": "#f3f4f2",
+   "fin": "#90a6b7",
+   "pattern": "spots"
+  },
+  "depthBand": "midwater",
+  "schooling": true,
+  "group": "fish",
+  "family": "Clupeidae",
+  "tempPrefC": [
+   8,
+   20
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "alosa-pseudoharengus",
+  "scientificName": "Alosa pseudoharengus",
+  "commonName": "Alewife",
+  "archetype": "compressed",
+  "lengthCm": [
+   15,
+   28
+  ],
+  "colors": {
+   "back": "#3a5a7a",
+   "side": "#b5c4cf",
+   "belly": "#f3f4f2",
+   "fin": "#90a6b7",
+   "pattern": "spots"
+  },
+  "depthBand": "midwater",
+  "schooling": true,
+  "group": "fish",
+  "family": "Clupeidae",
+  "tempPrefC": [
+   8,
+   22
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "alosa-aestivalis",
+  "scientificName": "Alosa aestivalis",
+  "commonName": "Blueback herring",
+  "archetype": "compressed",
+  "lengthCm": [
+   20,
+   30
+  ],
+  "colors": {
+   "back": "#3a5a7a",
+   "side": "#b5c4cf",
+   "belly": "#f3f4f2",
+   "fin": "#90a6b7",
+   "pattern": "none"
+  },
+  "depthBand": "midwater",
+  "schooling": true,
+  "group": "fish",
+  "family": "Clupeidae",
+  "tempPrefC": [
+   8,
+   22
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "dorosoma-cepedianum",
+  "scientificName": "Dorosoma cepedianum",
+  "commonName": "Gizzard shad",
+  "archetype": "compressed",
+  "lengthCm": [
+   20,
+   38
+  ],
+  "colors": {
+   "back": "#3a5a7a",
+   "side": "#b5c4cf",
+   "belly": "#f3f4f2",
+   "fin": "#90a6b7",
+   "pattern": "spots"
+  },
+  "depthBand": "midwater",
+  "schooling": true,
+  "group": "fish",
+  "family": "Clupeidae",
+  "tempPrefC": [
+   12,
+   28
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "anguilla-rostrata",
+  "scientificName": "Anguilla rostrata",
+  "commonName": "American eel",
+  "archetype": "anguilliform",
+  "lengthCm": [
+   50,
+   100
+  ],
+  "colors": {
+   "back": "#2f3a2f",
+   "side": "#56604c",
+   "belly": "#b8b98f",
+   "fin": "#414a3b",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "fish",
+  "family": "Anguillidae",
+  "tempPrefC": [
+   8,
+   26
+  ],
+  "iucn": "EN"
+ },
+ {
+  "id": "petromyzon-marinus",
+  "scientificName": "Petromyzon marinus",
+  "commonName": "Sea lamprey",
+  "archetype": "anguilliform",
+  "lengthCm": [
+   40,
+   80
+  ],
+  "colors": {
+   "back": "#4a4a3c",
+   "side": "#8a8670",
+   "belly": "#d8d3b8",
+   "fin": "#615e4a",
+   "pattern": "mottled"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "lamprey",
+  "family": "Petromyzontidae",
+  "tempPrefC": [
+   6,
+   20
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "ichthyomyzon-unicuspis",
+  "scientificName": "Ichthyomyzon unicuspis",
+  "commonName": "Silver lamprey",
+  "archetype": "anguilliform",
+  "lengthCm": [
+   20,
+   38
+  ],
+  "colors": {
+   "back": "#4a4a3c",
+   "side": "#8a8670",
+   "belly": "#d8d3b8",
+   "fin": "#615e4a",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "lamprey",
+  "family": "Petromyzontidae",
+  "tempPrefC": [
+   6,
+   20
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "lethenteron-appendix",
+  "scientificName": "Lethenteron appendix",
+  "commonName": "American brook lamprey",
+  "archetype": "anguilliform",
+  "lengthCm": [
+   10,
+   20
+  ],
+  "colors": {
+   "back": "#4a4a3c",
+   "side": "#8a8670",
+   "belly": "#d8d3b8",
+   "fin": "#615e4a",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "lamprey",
+  "family": "Petromyzontidae",
+  "tempPrefC": [
+   6,
+   20
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "morone-saxatilis",
+  "scientificName": "Morone saxatilis",
+  "commonName": "Striped bass",
+  "archetype": "fusiform",
+  "lengthCm": [
+   50,
+   110
+  ],
+  "colors": {
+   "back": "#3c5268",
+   "side": "#9db3c0",
+   "belly": "#eef2f1",
+   "fin": "#7c93a3",
+   "pattern": "stripe"
+  },
+  "depthBand": "midwater",
+  "schooling": false,
+  "group": "fish",
+  "family": "Moronidae",
+  "tempPrefC": [
+   10,
+   24
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "morone-americana",
+  "scientificName": "Morone americana",
+  "commonName": "White perch",
+  "archetype": "compressed",
+  "lengthCm": [
+   15,
+   28
+  ],
+  "colors": {
+   "back": "#5d7890",
+   "side": "#b8c7d0",
+   "belly": "#f1f3f2",
+   "fin": "#9fb0ba",
+   "pattern": "none"
+  },
+  "depthBand": "midwater",
+  "schooling": true,
+  "group": "fish",
+  "family": "Moronidae",
+  "tempPrefC": [
+   10,
+   26
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "morone-chrysops",
+  "scientificName": "Morone chrysops",
+  "commonName": "White bass",
+  "archetype": "compressed",
+  "lengthCm": [
+   25,
+   40
+  ],
+  "colors": {
+   "back": "#5d7890",
+   "side": "#b8c7d0",
+   "belly": "#f1f3f2",
+   "fin": "#9fb0ba",
+   "pattern": "stripe"
+  },
+  "depthBand": "midwater",
+  "schooling": true,
+  "group": "fish",
+  "family": "Moronidae",
+  "tempPrefC": [
+   14,
+   26
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "aplodinotus-grunniens",
+  "scientificName": "Aplodinotus grunniens",
+  "commonName": "Freshwater drum",
+  "archetype": "benthic",
+  "lengthCm": [
+   30,
+   60
+  ],
+  "colors": {
+   "back": "#5b5f66",
+   "side": "#a4a9a9",
+   "belly": "#e9eae6",
+   "fin": "#7a8084",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "fish",
+  "family": "Sciaenidae",
+  "tempPrefC": [
+   14,
+   28
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "percopsis-omiscomaycus",
+  "scientificName": "Percopsis omiscomaycus",
+  "commonName": "Trout-perch",
+  "archetype": "small",
+  "lengthCm": [
+   8,
+   14
+  ],
+  "colors": {
+   "back": "#5d7890",
+   "side": "#b8c7d0",
+   "belly": "#f1f3f2",
+   "fin": "#9fb0ba",
+   "pattern": "spots"
+  },
+  "depthBand": "benthic",
+  "schooling": true,
+  "group": "fish",
+  "family": "Percopsidae",
+  "tempPrefC": [
+   6,
+   18
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "lota-lota",
+  "scientificName": "Lota lota",
+  "commonName": "Burbot",
+  "archetype": "elongate",
+  "lengthCm": [
+   35,
+   70
+  ],
+  "colors": {
+   "back": "#514a33",
+   "side": "#7d7252",
+   "belly": "#c9bf9c",
+   "fin": "#6a5e3e",
+   "pattern": "mottled"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "fish",
+  "family": "Lotidae",
+  "tempPrefC": [
+   2,
+   12
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "gasterosteus-aculeatus",
+  "scientificName": "Gasterosteus aculeatus",
+  "commonName": "Threespine stickleback",
+  "archetype": "small",
+  "lengthCm": [
+   4,
+   8
+  ],
+  "colors": {
+   "back": "#5a6a48",
+   "side": "#a7b07c",
+   "belly": "#e9e6c4",
+   "fin": "#8f9a64",
+   "pattern": "none"
+  },
+  "depthBand": "littoral",
+  "schooling": true,
+  "group": "fish",
+  "family": "Gasterosteidae",
+  "tempPrefC": [
+   6,
+   20
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "culaea-inconstans",
+  "scientificName": "Culaea inconstans",
+  "commonName": "Brook stickleback",
+  "archetype": "small",
+  "lengthCm": [
+   4,
+   7
+  ],
+  "colors": {
+   "back": "#5a6a48",
+   "side": "#a7b07c",
+   "belly": "#e9e6c4",
+   "fin": "#8f9a64",
+   "pattern": "mottled"
+  },
+  "depthBand": "littoral",
+  "schooling": true,
+  "group": "fish",
+  "family": "Gasterosteidae",
+  "tempPrefC": [
+   6,
+   20
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "fundulus-diaphanus",
+  "scientificName": "Fundulus diaphanus",
+  "commonName": "Banded killifish",
+  "archetype": "small",
+  "lengthCm": [
+   5,
+   9
+  ],
+  "colors": {
+   "back": "#687a4c",
+   "side": "#b9c08a",
+   "belly": "#f0eccd",
+   "fin": "#9aa66a",
+   "pattern": "bars"
+  },
+  "depthBand": "surface",
+  "schooling": true,
+  "group": "fish",
+  "family": "Fundulidae",
+  "tempPrefC": [
+   12,
+   26
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "fundulus-heteroclitus",
+  "scientificName": "Fundulus heteroclitus",
+  "commonName": "Mummichog",
+  "archetype": "small",
+  "lengthCm": [
+   6,
+   10
+  ],
+  "colors": {
+   "back": "#687a4c",
+   "side": "#b9c08a",
+   "belly": "#f0eccd",
+   "fin": "#9aa66a",
+   "pattern": "spots"
+  },
+  "depthBand": "surface",
+  "schooling": true,
+  "group": "fish",
+  "family": "Fundulidae",
+  "tempPrefC": [
+   10,
+   28
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "menidia-menidia",
+  "scientificName": "Menidia menidia",
+  "commonName": "Atlantic silverside",
+  "archetype": "small",
+  "lengthCm": [
+   6,
+   12
+  ],
+  "colors": {
+   "back": "#3a5a7a",
+   "side": "#b5c4cf",
+   "belly": "#f3f4f2",
+   "fin": "#90a6b7",
+   "pattern": "stripe"
+  },
+  "depthBand": "surface",
+  "schooling": true,
+  "group": "fish",
+  "family": "Atherinopsidae",
+  "tempPrefC": [
+   8,
+   26
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "labidesthes-sicculus",
+  "scientificName": "Labidesthes sicculus",
+  "commonName": "Brook silverside",
+  "archetype": "small",
+  "lengthCm": [
+   6,
+   9
+  ],
+  "colors": {
+   "back": "#3a5a7a",
+   "side": "#b5c4cf",
+   "belly": "#f3f4f2",
+   "fin": "#90a6b7",
+   "pattern": "stripe"
+  },
+  "depthBand": "surface",
+  "schooling": true,
+  "group": "fish",
+  "family": "Atherinopsidae",
+  "tempPrefC": [
+   14,
+   28
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "gambusia-affinis",
+  "scientificName": "Gambusia affinis",
+  "commonName": "Western mosquitofish",
+  "archetype": "small",
+  "lengthCm": [
+   3,
+   6
+  ],
+  "colors": {
+   "back": "#687a4c",
+   "side": "#b9c08a",
+   "belly": "#f0eccd",
+   "fin": "#9aa66a",
+   "pattern": "none"
+  },
+  "depthBand": "surface",
+  "schooling": true,
+  "group": "fish",
+  "family": "Poeciliidae",
+  "tempPrefC": [
+   16,
+   32
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "neogobius-melanostomus",
+  "scientificName": "Neogobius melanostomus",
+  "commonName": "Round goby",
+  "archetype": "small",
+  "lengthCm": [
+   8,
+   18
+  ],
+  "colors": {
+   "back": "#4c4233",
+   "side": "#7a6a4c",
+   "belly": "#bbb092",
+   "fin": "#5d5038",
+   "pattern": "mottled"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "fish",
+  "family": "Gobiidae",
+  "tempPrefC": [
+   8,
+   24
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "cottus-bairdii",
+  "scientificName": "Cottus bairdii",
+  "commonName": "Mottled sculpin",
+  "archetype": "small",
+  "lengthCm": [
+   6,
+   11
+  ],
+  "colors": {
+   "back": "#4c4233",
+   "side": "#7a6a4c",
+   "belly": "#bbb092",
+   "fin": "#5d5038",
+   "pattern": "mottled"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "fish",
+  "family": "Cottidae",
+  "tempPrefC": [
+   6,
+   18
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "cottus-cognatus",
+  "scientificName": "Cottus cognatus",
+  "commonName": "Slimy sculpin",
+  "archetype": "small",
+  "lengthCm": [
+   5,
+   10
+  ],
+  "colors": {
+   "back": "#4c4233",
+   "side": "#7a6a4c",
+   "belly": "#bbb092",
+   "fin": "#5d5038",
+   "pattern": "mottled"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "fish",
+  "family": "Cottidae",
+  "tempPrefC": [
+   4,
+   14
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "umbra-limi",
+  "scientificName": "Umbra limi",
+  "commonName": "Central mudminnow",
+  "archetype": "small",
+  "lengthCm": [
+   5,
+   10
+  ],
+  "colors": {
+   "back": "#514a33",
+   "side": "#7d7252",
+   "belly": "#c9bf9c",
+   "fin": "#6a5e3e",
+   "pattern": "stripe"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "fish",
+  "family": "Umbridae",
+  "tempPrefC": [
+   8,
+   24
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "mugil-cephalus",
+  "scientificName": "Mugil cephalus",
+  "commonName": "Striped mullet",
+  "archetype": "fusiform",
+  "lengthCm": [
+   25,
+   50
+  ],
+  "colors": {
+   "back": "#5d7890",
+   "side": "#b8c7d0",
+   "belly": "#f1f3f2",
+   "fin": "#9fb0ba",
+   "pattern": "stripe"
+  },
+  "depthBand": "surface",
+  "schooling": true,
+  "group": "fish",
+  "family": "Mugilidae",
+  "tempPrefC": [
+   14,
+   30
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "channa-argus",
+  "scientificName": "Channa argus",
+  "commonName": "Northern snakehead",
+  "archetype": "elongate",
+  "lengthCm": [
+   40,
+   80
+  ],
+  "colors": {
+   "back": "#514a33",
+   "side": "#7d7252",
+   "belly": "#c9bf9c",
+   "fin": "#6a5e3e",
+   "pattern": "mottled"
+  },
+  "depthBand": "littoral",
+  "schooling": false,
+  "group": "fish",
+  "family": "Channidae",
+  "tempPrefC": [
+   12,
+   28
+  ],
+  "iucn": "LC"
+ },
+ {
+  "id": "chelydra-serpentina",
+  "scientificName": "Chelydra serpentina",
+  "commonName": "Snapping turtle",
+  "archetype": "turtle",
+  "lengthCm": [
+   20,
+   40
+  ],
+  "colors": {
+   "back": "#4a4336",
+   "side": "#6d6450",
+   "belly": "#c7bc96",
+   "fin": "#57503f",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "turtle",
+  "family": "Chelydridae",
+  "iucn": "LC"
+ },
+ {
+  "id": "chrysemys-picta",
+  "scientificName": "Chrysemys picta",
+  "commonName": "Painted turtle",
+  "archetype": "turtle",
+  "lengthCm": [
+   12,
+   20
+  ],
+  "colors": {
+   "back": "#2f3a2a",
+   "side": "#4a5a38",
+   "belly": "#d7c36a",
+   "fin": "#c2452f",
+   "pattern": "stripe"
+  },
+  "depthBand": "surface",
+  "schooling": false,
+  "group": "turtle",
+  "family": "Emydidae",
+  "iucn": "LC"
+ },
+ {
+  "id": "trachemys-scripta",
+  "scientificName": "Trachemys scripta",
+  "commonName": "Red-eared slider",
+  "archetype": "turtle",
+  "lengthCm": [
+   15,
+   28
+  ],
+  "colors": {
+   "back": "#3f4b2a",
+   "side": "#58683a",
+   "belly": "#c9c38b",
+   "fin": "#6c7a48",
+   "pattern": "stripe"
+  },
+  "depthBand": "surface",
+  "schooling": false,
+  "group": "turtle",
+  "family": "Emydidae",
+  "iucn": "LC"
+ },
+ {
+  "id": "graptemys-geographica",
+  "scientificName": "Graptemys geographica",
+  "commonName": "Northern map turtle",
+  "archetype": "turtle",
+  "lengthCm": [
+   15,
+   27
+  ],
+  "colors": {
+   "back": "#3f4b2a",
+   "side": "#58683a",
+   "belly": "#c9c38b",
+   "fin": "#6c7a48",
+   "pattern": "mottled"
+  },
+  "depthBand": "surface",
+  "schooling": false,
+  "group": "turtle",
+  "family": "Emydidae",
+  "iucn": "LC"
+ },
+ {
+  "id": "sternotherus-odoratus",
+  "scientificName": "Sternotherus odoratus",
+  "commonName": "Eastern musk turtle",
+  "archetype": "turtle",
+  "lengthCm": [
+   8,
+   13
+  ],
+  "colors": {
+   "back": "#4a4336",
+   "side": "#6d6450",
+   "belly": "#c7bc96",
+   "fin": "#57503f",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "turtle",
+  "family": "Kinosternidae",
+  "iucn": "LC"
+ },
+ {
+  "id": "apalone-spinifera",
+  "scientificName": "Apalone spinifera",
+  "commonName": "Spiny softshell",
+  "archetype": "turtle",
+  "lengthCm": [
+   18,
+   45
+  ],
+  "colors": {
+   "back": "#4a4336",
+   "side": "#6d6450",
+   "belly": "#c7bc96",
+   "fin": "#57503f",
+   "pattern": "spots"
+  },
+  "depthBand": "littoral",
+  "schooling": false,
+  "group": "turtle",
+  "family": "Trionychidae",
+  "iucn": "LC"
+ },
+ {
+  "id": "emydoidea-blandingii",
+  "scientificName": "Emydoidea blandingii",
+  "commonName": "Blanding's turtle",
+  "archetype": "turtle",
+  "lengthCm": [
+   15,
+   27
+  ],
+  "colors": {
+   "back": "#2f3a2a",
+   "side": "#4a5a38",
+   "belly": "#d7c36a",
+   "fin": "#c2452f",
+   "pattern": "spots"
+  },
+  "depthBand": "surface",
+  "schooling": false,
+  "group": "turtle",
+  "family": "Emydidae",
+  "iucn": "EN"
+ },
+ {
+  "id": "malaclemys-terrapin",
+  "scientificName": "Malaclemys terrapin",
+  "commonName": "Diamondback terrapin",
+  "archetype": "turtle",
+  "lengthCm": [
+   13,
+   23
+  ],
+  "colors": {
+   "back": "#3f4b2a",
+   "side": "#58683a",
+   "belly": "#c9c38b",
+   "fin": "#6c7a48",
+   "pattern": "mottled"
+  },
+  "depthBand": "surface",
+  "schooling": false,
+  "group": "turtle",
+  "family": "Emydidae",
+  "iucn": "VU"
+ },
+ {
+  "id": "lithobates-catesbeianus",
+  "scientificName": "Lithobates catesbeianus",
+  "commonName": "American bullfrog",
+  "archetype": "frog",
+  "lengthCm": [
+   9,
+   15
+  ],
+  "colors": {
+   "back": "#55692e",
+   "side": "#88974a",
+   "belly": "#d6d8ae",
+   "fin": "#6b7a3c",
+   "pattern": "mottled"
+  },
+  "depthBand": "surface",
+  "schooling": false,
+  "group": "amphibian",
+  "family": "Ranidae",
+  "iucn": "LC"
+ },
+ {
+  "id": "lithobates-clamitans",
+  "scientificName": "Lithobates clamitans",
+  "commonName": "Green frog",
+  "archetype": "frog",
+  "lengthCm": [
+   6,
+   10
+  ],
+  "colors": {
+   "back": "#4d6b2f",
+   "side": "#7fa043",
+   "belly": "#d9dcae",
+   "fin": "#66803a",
+   "pattern": "none"
+  },
+  "depthBand": "surface",
+  "schooling": false,
+  "group": "amphibian",
+  "family": "Ranidae",
+  "iucn": "LC"
+ },
+ {
+  "id": "lithobates-pipiens",
+  "scientificName": "Lithobates pipiens",
+  "commonName": "Northern leopard frog",
+  "archetype": "frog",
+  "lengthCm": [
+   5,
+   9
+  ],
+  "colors": {
+   "back": "#6a7a3a",
+   "side": "#a7a15a",
+   "belly": "#e8e4c0",
+   "fin": "#8a8a4a",
+   "pattern": "spots"
+  },
+  "depthBand": "surface",
+  "schooling": false,
+  "group": "amphibian",
+  "family": "Ranidae",
+  "iucn": "LC"
+ },
+ {
+  "id": "notophthalmus-viridescens",
+  "scientificName": "Notophthalmus viridescens",
+  "commonName": "Eastern newt",
+  "archetype": "frog",
+  "lengthCm": [
+   6,
+   10
+  ],
+  "colors": {
+   "back": "#5d4a2a",
+   "side": "#8b6a34",
+   "belly": "#e38a2c",
+   "fin": "#6d5530",
+   "pattern": "spots"
+  },
+  "depthBand": "littoral",
+  "schooling": false,
+  "group": "amphibian",
+  "family": "Salamandridae",
+  "iucn": "LC"
+ },
+ {
+  "id": "taricha-granulosa",
+  "scientificName": "Taricha granulosa",
+  "commonName": "Rough-skinned newt",
+  "archetype": "frog",
+  "lengthCm": [
+   12,
+   20
+  ],
+  "colors": {
+   "back": "#5d4a2a",
+   "side": "#8b6a34",
+   "belly": "#e38a2c",
+   "fin": "#6d5530",
+   "pattern": "none"
+  },
+  "depthBand": "littoral",
+  "schooling": false,
+  "group": "amphibian",
+  "family": "Salamandridae",
+  "iucn": "LC"
+ },
+ {
+  "id": "necturus-maculosus",
+  "scientificName": "Necturus maculosus",
+  "commonName": "Mudpuppy",
+  "archetype": "frog",
+  "lengthCm": [
+   20,
+   35
+  ],
+  "colors": {
+   "back": "#514a33",
+   "side": "#7d7252",
+   "belly": "#c9bf9c",
+   "fin": "#6a5e3e",
+   "pattern": "spots"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "amphibian",
+  "family": "Proteidae",
+  "iucn": "LC"
+ },
+ {
+  "id": "faxonius-rusticus",
+  "scientificName": "Faxonius rusticus",
+  "commonName": "Rusty crayfish",
+  "archetype": "crayfish",
+  "lengthCm": [
+   7,
+   12
+  ],
+  "colors": {
+   "back": "#8a2a1e",
+   "side": "#b9412c",
+   "belly": "#dd8d6c",
+   "fin": "#9a3422",
+   "pattern": "spots"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "crustacean",
+  "family": "Cambaridae",
+  "iucn": "LC"
+ },
+ {
+  "id": "faxonius-limosus",
+  "scientificName": "Faxonius limosus",
+  "commonName": "Spinycheek crayfish",
+  "archetype": "crayfish",
+  "lengthCm": [
+   6,
+   10
+  ],
+  "colors": {
+   "back": "#4a4a2a",
+   "side": "#7a7a42",
+   "belly": "#b7b27a",
+   "fin": "#5d5d34",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "crustacean",
+  "family": "Cambaridae",
+  "iucn": "LC"
+ },
+ {
+  "id": "faxonius-virilis",
+  "scientificName": "Faxonius virilis",
+  "commonName": "Virile crayfish",
+  "archetype": "crayfish",
+  "lengthCm": [
+   7,
+   12
+  ],
+  "colors": {
+   "back": "#7a3a2a",
+   "side": "#a8523a",
+   "belly": "#d98e6a",
+   "fin": "#8a3f2c",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "crustacean",
+  "family": "Cambaridae",
+  "iucn": "LC"
+ },
+ {
+  "id": "procambarus-clarkii",
+  "scientificName": "Procambarus clarkii",
+  "commonName": "Red swamp crayfish",
+  "archetype": "crayfish",
+  "lengthCm": [
+   8,
+   12
+  ],
+  "colors": {
+   "back": "#8a2a1e",
+   "side": "#b9412c",
+   "belly": "#dd8d6c",
+   "fin": "#9a3422",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "crustacean",
+  "family": "Cambaridae",
+  "iucn": "LC"
+ },
+ {
+  "id": "pacifastacus-leniusculus",
+  "scientificName": "Pacifastacus leniusculus",
+  "commonName": "Signal crayfish",
+  "archetype": "crayfish",
+  "lengthCm": [
+   8,
+   15
+  ],
+  "colors": {
+   "back": "#7a3a2a",
+   "side": "#a8523a",
+   "belly": "#d98e6a",
+   "fin": "#8a3f2c",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "crustacean",
+  "family": "Astacidae",
+  "iucn": "LC"
+ },
+ {
+  "id": "callinectes-sapidus",
+  "scientificName": "Callinectes sapidus",
+  "commonName": "Blue crab",
+  "archetype": "crab",
+  "lengthCm": [
+   12,
+   23
+  ],
+  "colors": {
+   "back": "#3a5d82",
+   "side": "#5a84a8",
+   "belly": "#e6e0d0",
+   "fin": "#d9532e",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "crustacean",
+  "family": "Portunidae",
+  "iucn": "LC"
+ },
+ {
+  "id": "carcinus-maenas",
+  "scientificName": "Carcinus maenas",
+  "commonName": "European green crab",
+  "archetype": "crab",
+  "lengthCm": [
+   5,
+   9
+  ],
+  "colors": {
+   "back": "#3f5a36",
+   "side": "#6a8452",
+   "belly": "#cfc7a2",
+   "fin": "#5a7446",
+   "pattern": "mottled"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "crustacean",
+  "family": "Carcinidae",
+  "iucn": "LC"
+ },
+ {
+  "id": "hemigrapsus-sanguineus",
+  "scientificName": "Hemigrapsus sanguineus",
+  "commonName": "Asian shore crab",
+  "archetype": "crab",
+  "lengthCm": [
+   3,
+   5
+  ],
+  "colors": {
+   "back": "#3f5a36",
+   "side": "#6a8452",
+   "belly": "#cfc7a2",
+   "fin": "#5a7446",
+   "pattern": "bars"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "crustacean",
+  "family": "Varunidae",
+  "iucn": "LC"
+ },
+ {
+  "id": "eriocheir-sinensis",
+  "scientificName": "Eriocheir sinensis",
+  "commonName": "Chinese mitten crab",
+  "archetype": "crab",
+  "lengthCm": [
+   5,
+   8
+  ],
+  "colors": {
+   "back": "#3f5a36",
+   "side": "#6a8452",
+   "belly": "#cfc7a2",
+   "fin": "#5a7446",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "crustacean",
+  "family": "Varunidae",
+  "iucn": "LC"
+ },
+ {
+  "id": "dreissena-polymorpha",
+  "scientificName": "Dreissena polymorpha",
+  "commonName": "Zebra mussel",
+  "archetype": "mussel",
+  "lengthCm": [
+   1.5,
+   3
+  ],
+  "colors": {
+   "back": "#6b5a3a",
+   "side": "#b9a66a",
+   "belly": "#e8ddb8",
+   "fin": "#8a7444",
+   "pattern": "bars"
+  },
+  "depthBand": "benthic",
+  "schooling": true,
+  "group": "mollusc",
+  "family": "Dreissenidae",
+  "iucn": "LC"
+ },
+ {
+  "id": "dreissena-bugensis",
+  "scientificName": "Dreissena bugensis",
+  "commonName": "Quagga mussel",
+  "archetype": "mussel",
+  "lengthCm": [
+   1.5,
+   3.5
+  ],
+  "colors": {
+   "back": "#6b5a3a",
+   "side": "#b9a66a",
+   "belly": "#e8ddb8",
+   "fin": "#8a7444",
+   "pattern": "bars"
+  },
+  "depthBand": "benthic",
+  "schooling": true,
+  "group": "mollusc",
+  "family": "Dreissenidae",
+  "iucn": "LC"
+ },
+ {
+  "id": "corbicula-fluminea",
+  "scientificName": "Corbicula fluminea",
+  "commonName": "Asian clam",
+  "archetype": "mussel",
+  "lengthCm": [
+   1.5,
+   4
+  ],
+  "colors": {
+   "back": "#8a7a4a",
+   "side": "#c9b97a",
+   "belly": "#ece4c2",
+   "fin": "#a9965a",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": true,
+  "group": "mollusc",
+  "family": "Cyrenidae",
+  "iucn": "LC"
+ },
+ {
+  "id": "elliptio-complanata",
+  "scientificName": "Elliptio complanata",
+  "commonName": "Eastern elliptio",
+  "archetype": "mussel",
+  "lengthCm": [
+   7,
+   12
+  ],
+  "colors": {
+   "back": "#2f2d2a",
+   "side": "#4d4a43",
+   "belly": "#8a8474",
+   "fin": "#3a3833",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "mollusc",
+  "family": "Unionidae",
+  "iucn": "LC"
+ },
+ {
+  "id": "lampsilis-siliquoidea",
+  "scientificName": "Lampsilis siliquoidea",
+  "commonName": "Fatmucket",
+  "archetype": "mussel",
+  "lengthCm": [
+   8,
+   12
+  ],
+  "colors": {
+   "back": "#8a7a4a",
+   "side": "#c9b97a",
+   "belly": "#ece4c2",
+   "fin": "#a9965a",
+   "pattern": "stripe"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "mollusc",
+  "family": "Unionidae",
+  "iucn": "LC"
+ },
+ {
+  "id": "pyganodon-grandis",
+  "scientificName": "Pyganodon grandis",
+  "commonName": "Giant floater",
+  "archetype": "mussel",
+  "lengthCm": [
+   10,
+   18
+  ],
+  "colors": {
+   "back": "#8a7a4a",
+   "side": "#c9b97a",
+   "belly": "#ece4c2",
+   "fin": "#a9965a",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "mollusc",
+  "family": "Unionidae",
+  "iucn": "LC"
+ },
+ {
+  "id": "amblema-plicata",
+  "scientificName": "Amblema plicata",
+  "commonName": "Threeridge",
+  "archetype": "mussel",
+  "lengthCm": [
+   8,
+   14
+  ],
+  "colors": {
+   "back": "#2f2d2a",
+   "side": "#4d4a43",
+   "belly": "#8a8474",
+   "fin": "#3a3833",
+   "pattern": "bars"
+  },
+  "depthBand": "benthic",
+  "schooling": false,
+  "group": "mollusc",
+  "family": "Unionidae",
+  "iucn": "LC"
+ },
+ {
+  "id": "crassostrea-virginica",
+  "scientificName": "Crassostrea virginica",
+  "commonName": "Eastern oyster",
+  "archetype": "mussel",
+  "lengthCm": [
+   7,
+   12
+  ],
+  "colors": {
+   "back": "#6d6a60",
+   "side": "#9f9c8e",
+   "belly": "#dcd8c6",
+   "fin": "#85826f",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": true,
+  "group": "mollusc",
+  "family": "Ostreidae",
+  "iucn": "LC"
+ },
+ {
+  "id": "potamopyrgus-antipodarum",
+  "scientificName": "Potamopyrgus antipodarum",
+  "commonName": "New Zealand mudsnail",
+  "archetype": "mussel",
+  "lengthCm": [
+   0.4,
+   0.6
+  ],
+  "colors": {
+   "back": "#6a563a",
+   "side": "#8f7650",
+   "belly": "#cdbb94",
+   "fin": "#7d6643",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": true,
+  "group": "mollusc",
+  "family": "Tateidae",
+  "iucn": "LC"
+ },
+ {
+  "id": "bithynia-tentaculata",
+  "scientificName": "Bithynia tentaculata",
+  "commonName": "Faucet snail",
+  "archetype": "mussel",
+  "lengthCm": [
+   0.8,
+   1.5
+  ],
+  "colors": {
+   "back": "#6a563a",
+   "side": "#8f7650",
+   "belly": "#cdbb94",
+   "fin": "#7d6643",
+   "pattern": "none"
+  },
+  "depthBand": "benthic",
+  "schooling": true,
+  "group": "mollusc",
+  "family": "Bithyniidae",
+  "iucn": "LC"
+ },
+ {
+  "id": "castor-canadensis",
+  "scientificName": "Castor canadensis",
+  "commonName": "North American beaver",
+  "archetype": "mammal",
+  "lengthCm": [
+   80,
+   110
+  ],
+  "colors": {
+   "back": "#4a3826",
+   "side": "#6e5236",
+   "belly": "#a8896a",
+   "fin": "#58422c",
+   "pattern": "none"
+  },
+  "depthBand": "surface",
+  "schooling": false,
+  "group": "mammal",
+  "family": "Castoridae",
+  "iucn": "LC"
+ },
+ {
+  "id": "ondatra-zibethicus",
+  "scientificName": "Ondatra zibethicus",
+  "commonName": "Muskrat",
+  "archetype": "mammal",
+  "lengthCm": [
+   40,
+   60
+  ],
+  "colors": {
+   "back": "#3f3126",
+   "side": "#5e4632",
+   "belly": "#a48968",
+   "fin": "#4a3a2c",
+   "pattern": "none"
+  },
+  "depthBand": "surface",
+  "schooling": false,
+  "group": "mammal",
+  "family": "Cricetidae",
+  "iucn": "LC"
+ },
+ {
+  "id": "lontra-canadensis",
+  "scientificName": "Lontra canadensis",
+  "commonName": "North American river otter",
+  "archetype": "mammal",
+  "lengthCm": [
+   90,
+   130
+  ],
+  "colors": {
+   "back": "#3f3126",
+   "side": "#5e4632",
+   "belly": "#a48968",
+   "fin": "#4a3a2c",
+   "pattern": "none"
+  },
+  "depthBand": "surface",
+  "schooling": false,
+  "group": "mammal",
+  "family": "Mustelidae",
+  "iucn": "LC"
+ },
+ {
+  "id": "trichechus-manatus",
+  "scientificName": "Trichechus manatus",
+  "commonName": "West Indian manatee",
+  "archetype": "mammal",
+  "lengthCm": [
+   250,
+   350
+  ],
+  "colors": {
+   "back": "#5e6164",
+   "side": "#8b8f92",
+   "belly": "#b8bbbc",
+   "fin": "#707477",
+   "pattern": "none"
+  },
+  "depthBand": "midwater",
+  "schooling": false,
+  "group": "mammal",
+  "family": "Trichechidae",
+  "iucn": "VU"
+ },
+ {
+  "id": "phoca-vitulina",
+  "scientificName": "Phoca vitulina",
+  "commonName": "Harbor seal",
+  "archetype": "mammal",
+  "lengthCm": [
+   140,
+   190
+  ],
+  "colors": {
+   "back": "#5e6164",
+   "side": "#8b8f92",
+   "belly": "#b8bbbc",
+   "fin": "#707477",
+   "pattern": "spots"
+  },
+  "depthBand": "surface",
+  "schooling": false,
+  "group": "mammal",
+  "family": "Phocidae",
+  "iucn": "LC"
+ },
+ {
+  "id": "tursiops-truncatus",
+  "scientificName": "Tursiops truncatus",
+  "commonName": "Common bottlenose dolphin",
+  "archetype": "mammal",
+  "lengthCm": [
+   250,
+   380
+  ],
+  "colors": {
+   "back": "#5e6164",
+   "side": "#8b8f92",
+   "belly": "#b8bbbc",
+   "fin": "#707477",
+   "pattern": "none"
+  },
+  "depthBand": "midwater",
+  "schooling": false,
+  "group": "mammal",
+  "family": "Delphinidae",
+  "iucn": "LC"
+ },
+ {
+  "id": "nymphaea-odorata",
+  "scientificName": "Nymphaea odorata",
+  "commonName": "American white water lily",
+  "archetype": "plant",
+  "lengthCm": [
+   30,
+   60
+  ],
+  "colors": {
+   "back": "#2e6a3c",
+   "side": "#4a9a5a",
+   "belly": "#e8c2d8",
+   "fin": "#3a8048",
+   "pattern": "none"
+  },
+  "depthBand": "littoral",
+  "schooling": false,
+  "group": "plant",
+  "family": "Nymphaeaceae",
+  "iucn": "LC"
+ },
+ {
+  "id": "nuphar-lutea",
+  "scientificName": "Nuphar lutea",
+  "commonName": "Yellow pond-lily",
+  "archetype": "plant",
+  "lengthCm": [
+   30,
+   70
+  ],
+  "colors": {
+   "back": "#4a6a2a",
+   "side": "#7aa443",
+   "belly": "#d8c83a",
+   "fin": "#5d8a34",
+   "pattern": "none"
+  },
+  "depthBand": "littoral",
+  "schooling": false,
+  "group": "plant",
+  "family": "Nymphaeaceae",
+  "iucn": "LC"
+ },
+ {
+  "id": "potamogeton-crispus",
+  "scientificName": "Potamogeton crispus",
+  "commonName": "Curly-leaf pondweed",
+  "archetype": "plant",
+  "lengthCm": [
+   40,
+   120
+  ],
+  "colors": {
+   "back": "#37602f",
+   "side": "#5d8f45",
+   "belly": "#a4c77c",
+   "fin": "#46733a",
+   "pattern": "none"
+  },
+  "depthBand": "littoral",
+  "schooling": false,
+  "group": "plant",
+  "family": "Potamogetonaceae",
+  "iucn": "LC"
+ },
+ {
+  "id": "stuckenia-pectinata",
+  "scientificName": "Stuckenia pectinata",
+  "commonName": "Sago pondweed",
+  "archetype": "plant",
+  "lengthCm": [
+   40,
+   150
+  ],
+  "colors": {
+   "back": "#37602f",
+   "side": "#5d8f45",
+   "belly": "#a4c77c",
+   "fin": "#46733a",
+   "pattern": "none"
+  },
+  "depthBand": "littoral",
+  "schooling": false,
+  "group": "plant",
+  "family": "Potamogetonaceae",
+  "iucn": "LC"
+ },
+ {
+  "id": "myriophyllum-spicatum",
+  "scientificName": "Myriophyllum spicatum",
+  "commonName": "Eurasian watermilfoil",
+  "archetype": "plant",
+  "lengthCm": [
+   60,
+   250
+  ],
+  "colors": {
+   "back": "#2f6a34",
+   "side": "#4f9a4a",
+   "belly": "#9cc77a",
+   "fin": "#3d8040",
+   "pattern": "none"
+  },
+  "depthBand": "littoral",
+  "schooling": false,
+  "group": "plant",
+  "family": "Haloragaceae",
+  "iucn": "LC"
+ },
+ {
+  "id": "vallisneria-americana",
+  "scientificName": "Vallisneria americana",
+  "commonName": "American wild celery",
+  "archetype": "plant",
+  "lengthCm": [
+   40,
+   120
+  ],
+  "colors": {
+   "back": "#2f6a34",
+   "side": "#4f9a4a",
+   "belly": "#9cc77a",
+   "fin": "#3d8040",
+   "pattern": "none"
+  },
+  "depthBand": "littoral",
+  "schooling": false,
+  "group": "plant",
+  "family": "Hydrocharitaceae",
+  "iucn": "LC"
+ },
+ {
+  "id": "elodea-canadensis",
+  "scientificName": "Elodea canadensis",
+  "commonName": "Canadian waterweed",
+  "archetype": "plant",
+  "lengthCm": [
+   30,
+   100
+  ],
+  "colors": {
+   "back": "#2f6a34",
+   "side": "#4f9a4a",
+   "belly": "#9cc77a",
+   "fin": "#3d8040",
+   "pattern": "none"
+  },
+  "depthBand": "littoral",
+  "schooling": false,
+  "group": "plant",
+  "family": "Hydrocharitaceae",
+  "iucn": "LC"
+ },
+ {
+  "id": "hydrilla-verticillata",
+  "scientificName": "Hydrilla verticillata",
+  "commonName": "Hydrilla",
+  "archetype": "plant",
+  "lengthCm": [
+   60,
+   300
+  ],
+  "colors": {
+   "back": "#2f6a34",
+   "side": "#4f9a4a",
+   "belly": "#9cc77a",
+   "fin": "#3d8040",
+   "pattern": "none"
+  },
+  "depthBand": "littoral",
+  "schooling": false,
+  "group": "plant",
+  "family": "Hydrocharitaceae",
+  "iucn": "LC"
+ },
+ {
+  "id": "ceratophyllum-demersum",
+  "scientificName": "Ceratophyllum demersum",
+  "commonName": "Coontail",
+  "archetype": "plant",
+  "lengthCm": [
+   50,
+   200
+  ],
+  "colors": {
+   "back": "#37602f",
+   "side": "#5d8f45",
+   "belly": "#a4c77c",
+   "fin": "#46733a",
+   "pattern": "none"
+  },
+  "depthBand": "littoral",
+  "schooling": false,
+  "group": "plant",
+  "family": "Ceratophyllaceae",
+  "iucn": "LC"
+ },
+ {
+  "id": "typha-latifolia",
+  "scientificName": "Typha latifolia",
+  "commonName": "Broadleaf cattail",
+  "archetype": "plant",
+  "lengthCm": [
+   150,
+   250
+  ],
+  "colors": {
+   "back": "#4a6a2a",
+   "side": "#7aa443",
+   "belly": "#d8c83a",
+   "fin": "#5d8a34",
+   "pattern": "none"
+  },
+  "depthBand": "littoral",
+  "schooling": false,
+  "group": "plant",
+  "family": "Typhaceae",
+  "iucn": "LC"
+ },
+ {
+  "id": "typha-angustifolia",
+  "scientificName": "Typha angustifolia",
+  "commonName": "Narrowleaf cattail",
+  "archetype": "plant",
+  "lengthCm": [
+   150,
+   250
+  ],
+  "colors": {
+   "back": "#4a6a2a",
+   "side": "#7aa443",
+   "belly": "#d8c83a",
+   "fin": "#5d8a34",
+   "pattern": "none"
+  },
+  "depthBand": "littoral",
+  "schooling": false,
+  "group": "plant",
+  "family": "Typhaceae",
+  "iucn": "LC"
+ },
+ {
+  "id": "trapa-natans",
+  "scientificName": "Trapa natans",
+  "commonName": "European water chestnut",
+  "archetype": "plant",
+  "lengthCm": [
+   50,
+   150
+  ],
+  "colors": {
+   "back": "#2f6a34",
+   "side": "#4f9a4a",
+   "belly": "#9cc77a",
+   "fin": "#3d8040",
+   "pattern": "none"
+  },
+  "depthBand": "surface",
+  "schooling": false,
+  "group": "plant",
+  "family": "Lythraceae",
+  "iucn": "LC"
+ },
+ {
+  "id": "najas-flexilis",
+  "scientificName": "Najas flexilis",
+  "commonName": "Slender naiad",
+  "archetype": "plant",
+  "lengthCm": [
+   20,
+   80
+  ],
+  "colors": {
+   "back": "#37602f",
+   "side": "#5d8f45",
+   "belly": "#a4c77c",
+   "fin": "#46733a",
+   "pattern": "none"
+  },
+  "depthBand": "littoral",
+  "schooling": false,
+  "group": "plant",
+  "family": "Hydrocharitaceae",
+  "iucn": "LC"
+ },
+ {
+  "id": "microcystis-aeruginosa",
+  "scientificName": "Microcystis aeruginosa",
+  "commonName": "Microcystis (blue-green alga)",
+  "archetype": "plant",
+  "lengthCm": [
+   0.0005,
+   0.001
+  ],
+  "colors": {
+   "back": "#2f6a4a",
+   "side": "#3fae74",
+   "belly": "#9fd9a4",
+   "fin": "#2f8a5a",
+   "pattern": "none"
+  },
+  "depthBand": "surface",
+  "schooling": true,
+  "group": "cyanobacteria",
+  "family": "Microcystaceae",
+  "iucn": "LC"
+ },
+ {
+  "id": "dolichospermum-flosaquae",
+  "scientificName": "Dolichospermum flosaquae",
+  "commonName": "Dolichospermum (blue-green alga)",
+  "archetype": "plant",
+  "lengthCm": [
+   0.0005,
+   0.002
+  ],
+  "colors": {
+   "back": "#2f6a4a",
+   "side": "#3fae74",
+   "belly": "#9fd9a4",
+   "fin": "#2f8a5a",
+   "pattern": "none"
+  },
+  "depthBand": "surface",
+  "schooling": true,
+  "group": "cyanobacteria",
+  "family": "Nostocaceae",
+  "iucn": "LC"
+ }
+]

@@ -1,0 +1,1 @@
+{"_demo":true,"type":"FeatureCollection","features":[{"type":"Feature","id":1,"geometry":{"type":"LineString","coordinates":[[-90,40],[-89.995,40.002],[-89.99,40],[-89.985,40.003]]},"properties":{"permanent_identifier":"demo-creek","gnis_name":"Demo Creek","ftype":460,"fcode":46006,"lengthkm":1.2,"huc8":"07130001"}}]}

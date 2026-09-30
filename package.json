@@ -18,7 +18,7 @@
     "start:demo": "npm run build:demo -w app && DEMO_MODE=1 npm run start -w server",
     "lint": "eslint . && prettier --check .",
     "format": "prettier --write .",
-    "typecheck": "npm run typecheck --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present && tsc -p tsconfig.json",
     "test": "npm run test --workspaces --if-present",
     "test:e2e": "playwright test -c e2e/playwright.config.ts",
     "fixtures": "tsx scripts/generate-fixtures.ts"
