@@ -50,7 +50,9 @@ describe('display helpers', () => {
   it('formats depth and area per system', () => {
     expect(formatDepth(122, 'metric')).toBe('122 m');
     expect(formatDepth(10, 'imperial')).toBe('32.8 ft');
-    expect(formatArea(1130, 'metric')).toBe('1130.0 km²');
+    expect(formatArea(1130, 'metric')).toBe('1,130 km²');
+    expect(formatArea(509.26, 'metric')).toBe('509.3 km²');
+    expect(formatArea(5.4, 'metric')).toBe('5.40 km²');
     expect(formatArea(2.59, 'imperial')).toMatch(/mi²/);
   });
 });

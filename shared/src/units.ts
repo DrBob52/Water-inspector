@@ -148,9 +148,15 @@ export function formatDepth(m: number, sys: UnitSystem): string {
   return `${m.toFixed(m < 30 ? 1 : 0)} m`;
 }
 
+const num = (v: number, digits: number) =>
+  v.toLocaleString('en-US', { minimumFractionDigits: digits, maximumFractionDigits: digits });
+
 export function formatArea(km2: number, sys: UnitSystem): string {
-  if (sys === 'imperial') return `${(km2 / KM2_PER_MI2).toFixed(km2 < 10 ? 2 : 1)} mi²`;
-  return `${km2.toFixed(km2 < 10 ? 2 : 1)} km²`;
+  if (sys === 'imperial') {
+    const mi2 = km2 / KM2_PER_MI2;
+    return `${num(mi2, mi2 < 10 ? 2 : mi2 < 1000 ? 1 : 0)} mi²`;
+  }
+  return `${num(km2, km2 < 10 ? 2 : km2 < 1000 ? 1 : 0)} km²`;
 }
 
 export function formatDistanceKm(km: number, sys: UnitSystem): string {

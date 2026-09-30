@@ -50,6 +50,11 @@ export function createApp(deps: AppDeps = {}) {
     return c.json({ demo: true, waterbodies: store.demoWaterbodies() });
   });
 
+  app.get('/api/demo/waterbodies.geojson', (c) => {
+    if (!config.demo) return fail(404, 'not_demo', 'Demo mode is off');
+    return c.json({ _demo: true, ...store.demoGeoJson() });
+  });
+
   app.get('/api/search', async (c) => {
     const q = (c.req.query('q') ?? '').trim();
     if (q.length < 2) return fail(400, 'bad_request', 'Query "q" must be at least 2 characters');

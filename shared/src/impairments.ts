@@ -71,3 +71,18 @@ export function normalizeUse(name: string): string {
   if (/drinking|water supply|public water/.test(n)) return 'drinking_water';
   return 'other';
 }
+
+/** Short lower-case label for a cause, for headlines such as "Listed as impaired for: mercury, phosphorus". */
+export function shortCauseName(name: string): string {
+  const n = name.toLowerCase();
+  if (/phosph/.test(n)) return 'phosphorus';
+  if (/mercury/.test(n)) return 'mercury';
+  if (/pcb|polychlor/.test(n)) return 'PCBs';
+  if (/e\. ?coli|escherichia/.test(n)) return 'E. coli';
+  if (/nitrogen/.test(n)) return 'nitrogen';
+  if (/microcyst/.test(n)) return 'microcystins';
+  if (/chloride/.test(n)) return 'chloride';
+  if (/suspended/.test(n)) return 'suspended solids';
+  if (/algal|algae/.test(n)) return 'algal blooms';
+  return name.replace(/\s*\(.*\)\s*$/, '').toLowerCase();
+}

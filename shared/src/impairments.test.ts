@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { causeToParameter, groupCause, normalizeUse } from './impairments';
+import { causeToParameter, groupCause, normalizeUse, shortCauseName } from './impairments';
 
 describe('impairment helpers', () => {
   it('groups causes', () => {
@@ -21,5 +21,11 @@ describe('impairment helpers', () => {
     expect(normalizeUse('Aquatic Life Use')).toBe('aquatic_life');
     expect(normalizeUse('Public Water Supply')).toBe('drinking_water');
     expect(normalizeUse('Agriculture')).toBe('other');
+  });
+  it('shortens cause names for headlines', () => {
+    expect(shortCauseName('Phosphorus, Total')).toBe('phosphorus');
+    expect(shortCauseName('Mercury in Fish Tissue')).toBe('mercury');
+    expect(shortCauseName('Polychlorinated Biphenyls (PCBs)')).toBe('PCBs');
+    expect(shortCauseName('Non-native Aquatic Plants')).toBe('non-native aquatic plants');
   });
 });

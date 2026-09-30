@@ -56,6 +56,28 @@ export class FixtureStore {
     return this.slugs().map((slug) => ({ slug, data: this.read(file, slug) }));
   }
 
+  /** Outlines of the demo waterbodies (Polygon features) for the map, with id and name. */
+  demoGeoJson(): { type: 'FeatureCollection'; features: unknown[] } {
+    const list = this.demoWaterbodies();
+    const features = list.flatMap((w) => {
+      for (const file of ['nhd-waterbody', 'nhd-area']) {
+        const fc = this.read(file, w.slug) as { features?: Array<{ geometry: unknown }> };
+        const g = fc.features?.[0]?.geometry;
+        if (g)
+          return [
+            {
+              type: 'Feature',
+              id: w.id,
+              geometry: g,
+              properties: { id: w.id, name: w.name, slug: w.slug },
+            },
+          ];
+      }
+      return [];
+    });
+    return { type: 'FeatureCollection', features };
+  }
+
   demoWaterbodies(): DemoWaterbodyInfo[] {
     const j = this.readRoot('_demo-waterbodies.json') as { waterbodies: DemoWaterbodyInfo[] };
     return j.waterbodies;

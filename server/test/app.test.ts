@@ -26,6 +26,13 @@ describe('API in demo mode', () => {
     expect(j.waterbodies).toHaveLength(6);
     expect(j.waterbodies.map((w) => w.name)).toContain('Onondaga Lake');
   });
+  it('serves the demo outlines as GeoJSON for the map', async () => {
+    const j = (await (await demoApp().request('/api/demo/waterbodies.geojson')).json()) as {
+      features: Array<{ properties: { name: string }; geometry: { type: string } }>;
+    };
+    expect(j.features).toHaveLength(6);
+    expect(j.features.every((f) => f.geometry.type === 'Polygon')).toBe(true);
+  });
   it('resolves a click on a demo lake', async () => {
     const res = await demoApp().request('/api/waterbody/at?lat=44.4&lon=-73.35');
     expect(res.status).toBe(200);
