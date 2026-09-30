@@ -15,6 +15,8 @@ export interface SourceResult<T> {
   data: T | null;
   provenance: Provenance;
   error?: string;
+  /** Additive: provenance of secondary sources merged into this section (e.g. USGS, NAS). */
+  extras?: SourceRecord[];
 }
 
 export type WaterbodyType =
@@ -300,3 +302,10 @@ export interface ApiErrorBody {
 }
 
 export type GeoFeature = Feature<WaterGeometry>;
+
+/** Response of the identity endpoints. */
+export interface IdentityResponse {
+  identity: WaterbodyIdentity;
+  provenance: Provenance;
+  demo: boolean;
+}

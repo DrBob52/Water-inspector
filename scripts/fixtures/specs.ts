@@ -26,6 +26,8 @@ export interface ParamSpec {
   summerOnly?: boolean;
   /** Force a few elevated samples (e.g. blooms): [count, multiplier]. */
   spikes?: [number, number];
+  /** Force the most recent sample at the first station to this value (canonical units). */
+  latest?: number;
 }
 
 export interface ProfileSpec {
@@ -437,7 +439,7 @@ export const WATERBODIES: WbSpec[] = [
       { key: 'nitrate', base: 0.85, amp: 0.6, peak: 130, sd: 0.4, log: true, min: 0.05, max: 3.6, n: 26 },
       { key: 'chlorophyll_a', base: 22, amp: 18, ...SUMMER, sd: 0.55, log: true, min: 2, max: 140, n: 34 },
       { key: 'chloride', base: 27, sd: 3.5, min: 16, max: 42, n: 22 },
-      { key: 'microcystins', base: 1.4, amp: 1, peak: 225, sd: 1.0, log: true, min: 0.1, max: 28, n: 28, summerOnly: true, spikes: [3, 6] },
+      { key: 'microcystins', base: 1.4, amp: 1, peak: 225, sd: 1.0, log: true, min: 0.1, max: 28, n: 28, summerOnly: true, spikes: [3, 6], latest: 11.2 },
       { key: 'e_coli', base: 40, sd: 1.2, log: true, min: 1, max: 1400, n: 20, summerOnly: true, stations: [0, 1] },
       { key: 'atrazine', base: 0.18, amp: 0.25, peak: 160, sd: 0.7, log: true, min: 0.02, max: 1.6, n: 14, stations: [0, 1], nonDetect: 0.1 },
     ],
@@ -652,7 +654,8 @@ export const WATERBODIES: WbSpec[] = [
       { sci: 'Acipenser oxyrinchus', count: 40, last: 2025 },
       { sci: 'Menidia menidia', count: 110, last: 2025 },
       { sci: 'Fundulus heteroclitus', count: 90, last: 2025 },
-      { sci: 'Channa argus', count: 240, last: 2026, intro: true, extra: { common: 'Northern snakehead', group: 'fish', family: 'Channidae', order: 'Anabantiformes', cls: 'Actinopterygii' } },
+      { sci: 'Channa argus', count: 240, last: 2026, intro: true },
+      { sci: 'Carpiodes cyprinus', count: 130, last: 2025, extra: { common: 'Quillback', group: 'fish', family: 'Catostomidae', order: 'Cypriniformes', cls: 'Actinopterygii' } },
       { sci: 'Petromyzon marinus', count: 20, last: 2022 },
       { sci: 'Callinectes sapidus', count: 300, last: 2026 },
       { sci: 'Eriocheir sinensis', count: 12, last: 2021, intro: true },

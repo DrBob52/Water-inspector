@@ -308,6 +308,8 @@ function buildResultsCsv(wb: WbSpec, stationIds: string[], rng: Rng): string {
         for (let k = 0; k < p.spikes[0]; k++) spikeIdx.add(Math.floor(rng() * dates.length));
       dates.forEach((d, di) => {
         let canon = generateValue(rng, p, d);
+        if (p.latest !== undefined && si === stationIdx(p)[0] && di === dates.length - 1)
+          canon = p.latest;
         if (spikeIdx.has(di)) canon = Math.min(p.max ?? canon * p.spikes![1], canon * p.spikes![1]);
         const nonDetect = p.nonDetect !== undefined && rng() < p.nonDetect;
         const raw = canon * (variant.mul ?? 1) + (variant.add ?? 0);
@@ -916,6 +918,13 @@ write('_shared/nhd-layers.json', {
     { id: 4, name: 'Flowline - Large Scale', parentLayerId: -1, subLayerIds: null },
     { id: 9, name: 'Area', parentLayerId: -1, subLayerIds: null },
     { id: 10, name: 'Waterbody', parentLayerId: -1, subLayerIds: null },
+  ],
+});
+write('_shared/attains-layers.json', {
+  layers: [
+    { id: 0, name: 'Assessment Points' },
+    { id: 1, name: 'Assessment Lines' },
+    { id: 2, name: 'Assessment Areas' },
   ],
 });
 const groupNames: Record<string, string[]> = {
