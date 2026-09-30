@@ -14,6 +14,7 @@ const SceneHost = lazy(() => import('./scenes/SceneHost'));
 function Shell() {
   const selectedId = useUi((s) => s.selectedId);
   const view = useUi((s) => s.view);
+  const panelOpen = useUi((s) => s.panelOpen);
   const toast = useUi((s) => s.toast);
   const health = useHealth();
   const demo = DEMO || health.data?.demo === true;
@@ -43,7 +44,11 @@ function Shell() {
         </div>
       )}
       {selectedId && view !== 'map' && webgl && (
-        <div className="scene-layer" data-testid="scene-layer" data-view={view}>
+        <div
+          className={`scene-layer ${panelOpen ? 'panel-open' : ''}`}
+          data-testid="scene-layer"
+          data-view={view}
+        >
           <Suspense
             fallback={
               <div role="status" className="grid h-full place-items-center text-white">
@@ -55,8 +60,8 @@ function Shell() {
           </Suspense>
         </div>
       )}
-      <SearchBox />
-      {demo && (
+      {view === 'map' && <SearchBox />}
+      {demo && !selectedId && (
         <div className="banner" data-testid="demo-banner" role="note">
           Demo mode: {DEMO_LABEL}. Click one of the six marked waterbodies.
         </div>

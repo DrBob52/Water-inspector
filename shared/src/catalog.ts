@@ -9,16 +9,36 @@ import type {
 
 export const SPECIES_CATALOG = catalogJson as CatalogSpecies[];
 
-const byScientific = new Map(SPECIES_CATALOG.map((c) => [c.scientificName.toLowerCase(), c]));
-const byId = new Map(SPECIES_CATALOG.map((c) => [c.id, c]));
+interface CatalogIndex {
+  byScientific: Map<string, CatalogSpecies>;
+  byId: Map<string, CatalogSpecies>;
+}
 
-export const getCatalogById = (id: string) => byId.get(id);
+const indexCache = new WeakMap<CatalogSpecies[], CatalogIndex>();
+
+function indexOf(catalog: CatalogSpecies[]): CatalogIndex {
+  let idx = indexCache.get(catalog);
+  if (!idx) {
+    idx = {
+      byScientific: new Map(catalog.map((c) => [c.scientificName.toLowerCase(), c])),
+      byId: new Map(catalog.map((c) => [c.id, c])),
+    };
+    indexCache.set(catalog, idx);
+  }
+  return idx;
+}
+
+export const getCatalogById = (id: string, catalog: CatalogSpecies[] = SPECIES_CATALOG) =>
+  indexOf(catalog).byId.get(id);
 
 /** Match a GBIF scientific name (may carry authorship) to the catalog by genus + species. */
-export function findCatalogEntry(scientificName: string): CatalogSpecies | undefined {
+export function findCatalogEntry(
+  scientificName: string,
+  catalog: CatalogSpecies[] = SPECIES_CATALOG,
+): CatalogSpecies | undefined {
   const words = scientificName.trim().split(/\s+/);
   const binomial = words.slice(0, 2).join(' ').toLowerCase();
-  return byScientific.get(binomial);
+  return indexOf(catalog).byScientific.get(binomial);
 }
 
 interface Generic {
@@ -167,9 +187,11 @@ export function resolveTraits(
     SpeciesRecord,
     'scientificName' | 'group' | 'family' | 'order' | 'taxClass' | 'catalogId'
   >,
+  catalog: CatalogSpecies[] = SPECIES_CATALOG,
 ): ResolvedTraits {
   const cat =
-    (rec.catalogId ? byId.get(rec.catalogId) : undefined) ?? findCatalogEntry(rec.scientificName);
+    (rec.catalogId ? getCatalogById(rec.catalogId, catalog) : undefined) ??
+    findCatalogEntry(rec.scientificName, catalog);
   if (cat) {
     return {
       catalogId: cat.id,

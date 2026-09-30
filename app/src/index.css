@@ -113,6 +113,23 @@ h2[tabindex='-1']:focus {
 .scene-layer {
   z-index: 5;
   background: #05121a;
+  animation: scene-in 0.35s ease-out;
+}
+@media (min-width: 721px) {
+  /* The docked panel stays visible beside the scene instead of covering it. */
+  .scene-layer.panel-open {
+    right: 464px;
+  }
+}
+@keyframes scene-in {
+  from {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scene-layer {
+    animation: none;
+  }
 }
 
 .panel {
@@ -452,7 +469,7 @@ h2[tabindex='-1']:focus {
   background: var(--scene-overlay);
   color: var(--text);
   border: 1px solid var(--border);
-  max-width: calc(100vw - 500px);
+  max-width: calc(100% - 24px);
 }
 @media (max-width: 720px) {
   .scene-controls {
@@ -477,7 +494,7 @@ h2[tabindex='-1']:focus {
   position: absolute;
   z-index: 8;
   left: 12px;
-  top: 52px;
+  top: 48px;
   max-width: 340px;
   max-height: calc(100% - 120px);
   overflow: auto;
@@ -515,4 +532,21 @@ h2[tabindex='-1']:focus {
 .maplibregl-ctrl-bottom-right,
 .maplibregl-ctrl-top-right {
   transition: right 0.2s;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.6;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [style*='pulse'] {
+    animation: none !important;
+  }
 }

@@ -179,3 +179,10 @@ export function formatVolume(mcm: number, sys: UnitSystem): string {
 export function formatTemp(c: number, sys: UnitSystem): string {
   return sys === 'imperial' ? `${cToF(c).toFixed(0)} °F` : `${c.toFixed(1)} °C`;
 }
+
+/** Surface elevation above sea level: "1,883 m" or "6,178 ft". */
+export function formatElevation(m: number, sys: UnitSystem): string {
+  return sys === 'imperial'
+    ? `${Math.round(mToFt(m)).toLocaleString('en-US')} ft`
+    : `${Math.round(m).toLocaleString('en-US')} m`;
+}

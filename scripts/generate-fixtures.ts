@@ -311,17 +311,20 @@ function buildResultsCsv(wb: WbSpec, stationIds: string[], rng: Rng): string {
         if (p.latest !== undefined && si === stationIdx(p)[0] && di === dates.length - 1)
           canon = p.latest;
         if (spikeIdx.has(di)) canon = Math.min(p.max ?? canon * p.spikes![1], canon * p.spikes![1]);
+        const forcedLatest =
+          p.latest !== undefined && si === stationIdx(p)[0] && di === dates.length - 1;
+        const sampleDate = forcedLatest ? new Date(Date.UTC(2026, 8, 19, 11)) : d;
         const nonDetect = p.nonDetect !== undefined && rng() < p.nonDetect;
         const raw = canon * (variant.mul ?? 1) + (variant.add ?? 0);
         const depth = rng() < 0.85 ? '0.5' : '';
-        const aid = `${ORG_ID}-${wb.slug}-${stationIds[si].split('-').pop()}-${isoDate(d).replace(/-/g, '')}`;
+        const aid = `${ORG_ID}-${wb.slug}-${stationIds[si].split('-').pop()}-${isoDate(sampleDate).replace(/-/g, '')}`;
         push({
           OrganizationIdentifier: ORG_ID,
           OrganizationFormalName: ORG_NAME,
           ActivityIdentifier: aid,
           ActivityTypeCode: 'Sample-Routine',
           ActivityMediaName: 'Water',
-          ActivityStartDate: isoDate(d),
+          ActivityStartDate: isoDate(sampleDate),
           'ActivityDepthHeightMeasure/MeasureValue': depth,
           'ActivityDepthHeightMeasure/MeasureUnitCode': depth ? 'm' : '',
           MonitoringLocationIdentifier: stationIds[si],

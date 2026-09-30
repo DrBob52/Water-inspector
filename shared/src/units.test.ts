@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { convertToCanonical, formatArea, formatDepth, mToFt, cToF } from './units';
+import { convertToCanonical, formatArea, formatDepth, formatElevation, mToFt, cToF } from './units';
 
 describe('convertToCanonical', () => {
   it('converts temperature from °F and K', () => {
@@ -46,6 +46,10 @@ describe('display helpers', () => {
   it('feet and Fahrenheit', () => {
     expect(mToFt(304.8)).toBeCloseTo(1000, 6);
     expect(cToF(100)).toBe(212);
+  });
+  it('formats elevations above sea level', () => {
+    expect(formatElevation(1883, 'metric')).toBe('1,883 m');
+    expect(formatElevation(1883, 'imperial')).toBe('6,178 ft');
   });
   it('formats depth and area per system', () => {
     expect(formatDepth(122, 'metric')).toBe('122 m');

@@ -7,3 +7,6 @@ export * from './wkt';
 export * from './dem';
 export * from './impairments';
 export * from './catalog';
+export * from './bathymetry';
+export * from './sceneModel';
+export * from './describe';

@@ -239,6 +239,9 @@ export function summarize(parsed: ParsedRows): ParameterSummary[] {
       status: evaluateStatus(latest.v, threshold),
     };
     if (threshold) summary.threshold = threshold;
+    const byStation: Record<string, { value: number; date: string }> = {};
+    for (const smp of sorted) byStation[smp.stationId] = { value: smp.v, date: smp.t };
+    summary.latestByStation = byStation;
     const note = trophicNote(key, latest.v);
     if (note) summary.note = note;
     if (key === 'dissolved_oxygen' || key === 'water_temp') {

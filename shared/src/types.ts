@@ -110,6 +110,8 @@ export interface ParameterSummary {
   /** Depth-resolved readings from the most recent profile day (temperature, dissolved oxygen). */
   depthProfile?: Array<{ depthM: number; value: number }>;
   depthProfileDate?: string;
+  /** Most recent surface reading at each station (used by the station pins). */
+  latestByStation?: Record<string, { value: number; date: string }>;
 }
 
 export interface ImpairmentProfile {
@@ -264,6 +266,8 @@ export interface SceneModel {
   chlorophyllUgL?: number;
   plantCount: number;
   name: string;
+  /** lon/lat the local metre outline is centred on. */
+  origin: [number, number];
   demo: boolean;
 }
 

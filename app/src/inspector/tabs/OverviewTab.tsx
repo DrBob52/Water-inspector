@@ -2,7 +2,7 @@ import {
   formatArea,
   formatDepth,
   formatDistanceKm,
-  formatLength,
+  formatElevation,
   formatVolume,
   resolveTraits,
   type Measured,
@@ -79,7 +79,7 @@ export function OverviewTab({ identity }: { identity: WaterbodyIdentity }) {
               {p.volumeMcm ? formatVolume(p.volumeMcm.value, units) : undefined}
             </Fact>
             <Fact label="Surface elevation" m={p.surfaceElevationM}>
-              {p.surfaceElevationM ? formatLength(p.surfaceElevationM.value, units) : undefined}
+              {p.surfaceElevationM ? formatElevation(p.surfaceElevationM.value, units) : undefined}
             </Fact>
             <Fact label="Perimeter" m={p.perimeterKm}>
               {formatDistanceKm(p.perimeterKm.value, units)}
