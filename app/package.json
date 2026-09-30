@@ -1,0 +1,38 @@
+{
+  "name": "@wi/app",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "VITE_DEMO=${VITE_DEMO:-1} vite",
+    "build": "tsc -p tsconfig.json && vite build",
+    "build:demo": "VITE_DEMO=1 VITE_OFFLINE_TILES=${VITE_OFFLINE_TILES:-1} vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@react-three/drei": "^10.7.0",
+    "@react-three/fiber": "^9.3.0",
+    "@react-three/postprocessing": "^3.0.4",
+    "@tanstack/react-query": "^5.90.0",
+    "@turf/turf": "^7.2.0",
+    "@wi/shared": "*",
+    "maplibre-gl": "^5.6.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-map-gl": "^8.0.4",
+    "three": "^0.180.0",
+    "zustand": "^5.0.8"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "@types/three": "^0.180.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "jsdom": "^26.0.0",
+    "tailwindcss": "^4.1.0",
+    "vite": "^7.1.0"
+  }
+}

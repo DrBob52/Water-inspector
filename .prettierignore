@@ -1,0 +1,11 @@
+node_modules
+dist
+coverage
+fixtures
+docs
+package-lock.json
+server/.cache
+test-results
+playwright-report
+shared/species-catalog.json
+SPEC.md
