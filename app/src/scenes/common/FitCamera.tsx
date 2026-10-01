@@ -31,17 +31,19 @@ export function FitCamera({
     const vFov = MathUtils.degToRad(camera.fov);
     const hFov = 2 * Math.atan(Math.tan(vFov / 2) * aspect);
     const fromEast = autoAzimuth && depth > width * 1.4;
+    // A long thin block seen from the side needs a steeper look-down to show the water.
+    const el = fromEast ? Math.max(elevation, 1.0) : elevation;
     const across = fromEast ? depth : width; // extent seen left to right
     const along = fromEast ? width : depth; // extent seen into the screen
-    const vExtent = along * Math.sin(elevation) + height * Math.cos(elevation);
+    const vExtent = along * Math.sin(el) + height * Math.cos(el);
     const dH = ((across / 2) * 1.12) / Math.tan(hFov / 2);
     const dV = ((vExtent / 2) * 1.25) / Math.tan(vFov / 2);
-    const d = Math.max(dH, dV, 10) + along * 0.5 * Math.cos(elevation);
+    const d = Math.max(dH, dV, 10) + along * 0.5 * Math.cos(el);
     const az = fromEast ? Math.PI / 2 : 0;
     camera.position.set(
-      target[0] + d * Math.cos(elevation) * Math.sin(az),
-      target[1] + d * Math.sin(elevation),
-      target[2] + d * Math.cos(elevation) * Math.cos(az),
+      target[0] + d * Math.cos(el) * Math.sin(az),
+      target[1] + d * Math.sin(el),
+      target[2] + d * Math.cos(el) * Math.cos(az),
     );
     camera.lookAt(target[0], target[1], target[2]);
     camera.updateProjectionMatrix();

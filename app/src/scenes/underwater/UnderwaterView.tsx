@@ -44,6 +44,7 @@ export function UnderwaterView({ model, reducedMotion }: SceneViewProps) {
         fov={70}
         far={400}
         background={background}
+        reducedMotion={reducedMotion}
         dataAttrs={{
           species: model.actors.length,
           animals: fishTotal,

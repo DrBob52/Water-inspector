@@ -92,6 +92,7 @@ export default function RaisedView({ model, reducedMotion, quality }: SceneViewP
         cameraPosition={[0, long * 0.72, long * 0.95]}
         fov={40}
         far={2000}
+        reducedMotion={reducedMotion}
         dataAttrs={{ exaggeration: exag.toFixed(1), water: showWater }}
       >
         <hemisphereLight args={['#c4dcff', '#3a2e22', 0.85]} />

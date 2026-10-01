@@ -100,3 +100,58 @@ export function blockBbox(
   const dLon = marginM / (M_PER_DEG_LON_EQ * Math.cos((midLat * Math.PI) / 180));
   return [w - dLon, s - dLat, e + dLon, n + dLat];
 }
+
+/**
+ * Offset a polyline (local metres) by `halfWidth` on both sides and return a closed polygon ring
+ * (open form, counter-clockwise). Uses mitred joins with a limit; ends are flat. Good enough for
+ * drawing a river reach as a thin polygon without a geometry library.
+ */
+export function bufferPolyline(line: Ring, halfWidth: number): Ring {
+  const pts = line.filter((p, i) => i === 0 || p[0] !== line[i - 1][0] || p[1] !== line[i - 1][1]);
+  if (pts.length < 2) return [];
+  const normals: Array<[number, number]> = [];
+  for (let i = 0; i < pts.length; i++) {
+    const a = pts[Math.max(0, i - 1)];
+    const b = pts[Math.min(pts.length - 1, i + 1)];
+    const dx = b[0] - a[0];
+    const dy = b[1] - a[1];
+    const len = Math.hypot(dx, dy) || 1;
+    let nx = -dy / len;
+    let ny = dx / len;
+    if (i > 0 && i < pts.length - 1) {
+      // Mitre: scale the averaged normal so the offset distance is preserved at the corner.
+      const p = pts[i - 1];
+      const q = pts[i + 1];
+      const d1x = pts[i][0] - p[0];
+      const d1y = pts[i][1] - p[1];
+      const d2x = q[0] - pts[i][0];
+      const d2y = q[1] - pts[i][1];
+      const l1 = Math.hypot(d1x, d1y) || 1;
+      const l2 = Math.hypot(d2x, d2y) || 1;
+      const n1: [number, number] = [-d1y / l1, d1x / l1];
+      const n2: [number, number] = [-d2y / l2, d2x / l2];
+      nx = n1[0] + n2[0];
+      ny = n1[1] + n2[1];
+      const nl = Math.hypot(nx, ny) || 1;
+      nx /= nl;
+      ny /= nl;
+      const cos = nx * n1[0] + ny * n1[1];
+      const scale = 1 / Math.max(0.5, cos);
+      nx *= scale;
+      ny *= scale;
+    }
+    normals.push([nx, ny]);
+  }
+  const left = pts.map(
+    (p, i) =>
+      [p[0] + normals[i][0] * halfWidth, p[1] + normals[i][1] * halfWidth] as [number, number],
+  );
+  const right = pts
+    .map(
+      (p, i) =>
+        [p[0] - normals[i][0] * halfWidth, p[1] - normals[i][1] * halfWidth] as [number, number],
+    )
+    .reverse();
+  const ring = [...left, ...right];
+  return ringArea(ring) < 0 ? ring.reverse() : ring;
+}

@@ -254,7 +254,7 @@ export async function attainsImpairments(
         license: ATTAINS_LICENSE,
         note: 'No ATTAINS assessment unit covers this waterbody (not assessed)',
       });
-    warnIfDemoKey(attains.apiKey);
+    if (!ctx.upstream.demo) warnIfDemoKey(attains.apiKey);
     url = assessmentsUrl(attains.apiBaseUrl, [...refs.keys()], attains.apiKey);
     const raw = await ctx.upstream.json<RawAssessmentsResponse>({
       source: ATTAINS_SOURCE,

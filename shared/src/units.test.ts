@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import { convertToCanonical, formatArea, formatDepth, formatElevation, mToFt, cToF } from './units';
+import {
+  convertToCanonical,
+  formatArea,
+  formatDepth,
+  formatElevation,
+  formatVolume,
+  mToFt,
+  cToF,
+} from './units';
 
 describe('convertToCanonical', () => {
   it('converts temperature from °F and K', () => {
@@ -46,6 +54,16 @@ describe('display helpers', () => {
   it('feet and Fahrenheit', () => {
     expect(mToFt(304.8)).toBeCloseTo(1000, 6);
     expect(cToF(100)).toBe(212);
+  });
+  it('formats volumes per system', () => {
+    expect(formatVolume(22336, 'metric')).toBe('22.3 km³');
+    expect(formatVolume(133, 'metric')).toBe('133 million m³');
+    expect(formatVolume(154305, 'imperial')).toBe('125.1 million acre-ft');
+    expect(formatVolume(1.2334, 'imperial')).toBe('1,000 acre-ft');
+  });
+  it('formats depths with thousands separators', () => {
+    expect(formatDepth(501, 'imperial')).toBe('1,644 ft');
+    expect(formatDepth(12.34, 'metric')).toBe('12.3 m');
   });
   it('formats elevations above sea level', () => {
     expect(formatElevation(1883, 'metric')).toBe('1,883 m');

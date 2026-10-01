@@ -57,6 +57,7 @@ export default function PollutantsView({ model, reducedMotion, quality }: SceneV
         cameraPosition={[0, long * 0.72, long * 0.95]}
         fov={40}
         far={2000}
+        reducedMotion={reducedMotion}
         dataAttrs={{ pollutants: total }}
       >
         <hemisphereLight args={['#9db8d8', '#2a2a24', 0.55]} />

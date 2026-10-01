@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { Vector3 } from 'three';
+import { DEMO } from '../../env';
 import type { World } from './world';
 
 interface Props {
@@ -30,6 +31,11 @@ export function CameraRig({ world, freeSwim, reducedMotion }: Props) {
     ly: 0,
     wasFree: false,
   });
+
+  useEffect(() => {
+    // Test/debug hook (demo builds only): lets scripts place the camera in free-swim mode.
+    if (DEMO) (window as unknown as { __wiRig?: unknown }).__wiRig = st.current;
+  }, []);
 
   useEffect(() => {
     const s = st.current;

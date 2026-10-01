@@ -35,6 +35,7 @@ interface Props {
   near?: number;
   far?: number;
   background?: string;
+  reducedMotion?: boolean;
   children: ReactNode;
   /** Extra data attributes for tests and debugging. */
   dataAttrs?: Record<string, string | number | boolean>;
@@ -51,6 +52,7 @@ export function SceneCanvas({
   near = 0.1,
   far = 1000,
   background = '#05121a',
+  reducedMotion = false,
   children,
   dataAttrs,
 }: Props) {
@@ -68,6 +70,7 @@ export function SceneCanvas({
       data-scene-ready={ready ? 'true' : 'false'}
       data-quality={quality.toFixed(1)}
       data-view={view}
+      data-reduced-motion={reducedMotion ? 'true' : 'false'}
       {...data}
     >
       <Canvas

@@ -6,6 +6,7 @@ import { useIdentity, useImpairments, useLife, usePhysical, useQuality } from '.
 import { displayName } from '../lib/summary';
 import { TABS, type TabKey } from '../lib/urlState';
 import { useUi } from '../store';
+import { hasWebGL } from '../lib/webgl';
 import { ViewSwitcher } from './ViewSwitcher';
 import { OverviewTab } from './tabs/OverviewTab';
 import { QualityTab } from './tabs/QualityTab';
@@ -121,7 +122,18 @@ export function Inspector() {
         </div>
         {open && (
           <div className="mt-2">
-            <ViewSwitcher />
+            {hasWebGL() ? (
+              <ViewSwitcher />
+            ) : (
+              <p
+                className="m-0 text-xs"
+                style={{ color: 'var(--muted)' }}
+                data-testid="no-webgl-note"
+              >
+                3D views are unavailable because WebGL is not supported in this browser. The data
+                tabs below still work.
+              </p>
+            )}
           </div>
         )}
       </div>

@@ -121,6 +121,8 @@ export function MapView() {
         terrain={{ source: 'terrain-dem', exaggeration: 1.4 }}
         onLoad={(e) => {
           mapApi.register(e.target);
+          // Test hook: lets the e2e suite read and drive the camera (demo builds only).
+          if (DEMO) (window as unknown as { __wiMap?: unknown }).__wiMap = e.target;
           setLoaded(true);
         }}
         onClick={onClick}

@@ -14,6 +14,7 @@ import {
 } from 'three';
 import type { SceneActor, SceneModel } from '@wi/shared';
 import { useRenderQuality } from '../common/SceneCanvas';
+import { DEMO } from '../../env';
 import { FishSim, mulberry32, type SpeciesSim } from '../fish/boids';
 import { buildCritterGeometry } from '../fish/critters';
 import { FISH_PARAMS, buildFishGeometry, isFishArchetype } from '../fish/fishGeometry';
@@ -190,8 +191,36 @@ export function Fish({ model, world, fogColor, reducedMotion, highlight, onHover
     slot.setMatrixAt(i, tmpM);
   };
 
+  const lastPublish = useRef(0);
   useFrame((state, dt) => {
     built.sim.update(reducedMotion ? dt * 0.5 : dt);
+    if (DEMO && state.clock.elapsedTime - lastPublish.current > 0.25) {
+      // Test hook (demo builds only): where each fish is on screen, so e2e tests can hover one.
+      lastPublish.current = state.clock.elapsedTime;
+      const rect = state.gl.domElement.getBoundingClientRect();
+      const out: Array<{ actor: number; instance: number; x: number; y: number; dist: number }> =
+        [];
+      for (const e of built.entries) {
+        for (let i = 0; i < e.actor.count; i++) {
+          const a = built.sim.agents[built.sim.speciesStart[e.simIndex] + i];
+          tmpP.set(a.x, a.y, a.z);
+          const dist = tmpP.distanceTo(state.camera.position);
+          tmpP.project(state.camera);
+          if (tmpP.z < -1 || tmpP.z > 1 || Math.abs(tmpP.x) > 0.95 || Math.abs(tmpP.y) > 0.95)
+            continue;
+          out.push({
+            actor: e.actorIndex,
+            instance: i,
+            x: rect.left + (tmpP.x * 0.5 + 0.5) * rect.width,
+            y: rect.top + (1 - (tmpP.y * 0.5 + 0.5)) * rect.height,
+            dist,
+          });
+        }
+      }
+      (window as unknown as { __wiFish?: unknown }).__wiFish = out
+        .sort((p, q) => p.dist - q.dist)
+        .slice(0, 20);
+    }
     const t = reducedMotion ? state.clock.elapsedTime * 0.4 : state.clock.elapsedTime;
     for (const e of built.entries) {
       e.material.uniforms.uTime.value = t;

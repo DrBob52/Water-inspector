@@ -1,15 +1,47 @@
 import { Suspense, lazy, useEffect } from 'react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { DEMO, DEMO_LABEL } from './env';
-import { queryClient, useHealth } from './lib/queries';
+import { queryClient, useDemoList, useHealth } from './lib/queries';
 import { hasWebGL } from './lib/webgl';
 import { startUrlSync, useUi } from './store';
 import { MapView } from './map/MapView';
 import { SearchBox } from './map/SearchBox';
-import { Inspector } from './inspector/Inspector';
 import { useViewHotkeys } from './inspector/ViewSwitcher';
 
 const SceneHost = lazy(() => import('./scenes/SceneHost'));
+const Inspector = lazy(() =>
+  import('./inspector/Inspector').then((m) => ({ default: m.Inspector })),
+);
+
+/** Shown instead of the map when WebGL is unavailable: the Inspector still works. */
+function NoWebGl({ demo }: { demo: boolean }) {
+  const list = useDemoList();
+  const select = useUi((s) => s.select);
+  return (
+    <div
+      role="alert"
+      className="panel"
+      style={{ left: 12, top: 12, padding: 16, maxWidth: 420 }}
+      data-testid="no-webgl"
+    >
+      <strong>WebGL is not available in this browser.</strong>
+      <p className="m-0 mt-1">
+        The 3D map and scenes cannot be shown, but the data panel still works.
+      </p>
+      {demo && list.data && (
+        <ul className="m-0 mt-2 list-none p-0">
+          {list.data.map((w) => (
+            <li key={w.id} className="mb-1">
+              <button type="button" className="btn" onClick={() => select(w.id)}>
+                Open {w.name}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
 
 function Shell() {
   const selectedId = useUi((s) => s.selectedId);
@@ -19,7 +51,7 @@ function Shell() {
   const health = useHealth();
   const demo = DEMO || health.data?.demo === true;
   const webgl = hasWebGL();
-  useViewHotkeys(!!selectedId);
+  useViewHotkeys(!!selectedId && webgl);
 
   useEffect(() => startUrlSync(), []);
 
@@ -28,21 +60,7 @@ function Shell() {
       <a className="skip-link" href="#main-panel">
         Skip to the inspector
       </a>
-      {webgl ? (
-        <MapView />
-      ) : (
-        <div
-          role="alert"
-          className="panel"
-          style={{ left: 12, top: 12, padding: 16, maxWidth: 420 }}
-        >
-          <strong>WebGL is not available in this browser.</strong>
-          <p className="m-0 mt-1">
-            The 3D map and scenes cannot be shown. Select a waterbody by name in the search box to
-            read its data in the panel.
-          </p>
-        </div>
-      )}
+      {webgl ? <MapView /> : <NoWebGl demo={demo} />}
       {selectedId && view !== 'map' && webgl && (
         <div
           className={`scene-layer ${panelOpen ? 'panel-open' : ''}`}
@@ -72,7 +90,11 @@ function Shell() {
         </div>
       )}
       <div id="main-panel" tabIndex={-1}>
-        {selectedId && <Inspector />}
+        {selectedId && (
+          <Suspense fallback={null}>
+            <Inspector />
+          </Suspense>
+        )}
       </div>
     </div>
   );

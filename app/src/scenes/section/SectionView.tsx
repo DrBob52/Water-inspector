@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import { Html, OrbitControls } from '@react-three/drei';
 import { BufferAttribute, BufferGeometry, Color, DoubleSide, Shape, ShapeGeometry } from 'three';
 import type { ThreeEvent } from '@react-three/fiber';
@@ -289,7 +289,17 @@ const tickStyle: React.CSSProperties = {
   pointerEvents: 'none',
 };
 
-function Rulers({ prof, sy, feet }: { prof: SectionProfile; sy: number; feet: boolean }) {
+function Rulers({
+  prof,
+  sy,
+  feet,
+  portal,
+}: {
+  prof: SectionProfile;
+  sy: number;
+  feet: boolean;
+  portal: RefObject<HTMLElement>;
+}) {
   const maxD = prof.maxDepthM;
   const depthStepM = feet ? niceStep(mToFt(maxD), 6) / 3.28084 : niceStep(maxD, 6);
   const depthTicks: number[] = [];
@@ -303,6 +313,7 @@ function Rulers({ prof, sy, feet }: { prof: SectionProfile; sy: number; feet: bo
     <group>
       {depthTicks.map((v) => (
         <Html
+          portal={portal}
           key={`d${v}`}
           position={[-PANEL_W / 2 - 1.5, -v * sy, Z]}
           center
@@ -316,6 +327,7 @@ function Rulers({ prof, sy, feet }: { prof: SectionProfile; sy: number; feet: bo
       ))}
       {distTicks.map((v) => (
         <Html
+          portal={portal}
           key={`x${v}`}
           position={[-PANEL_W / 2 + (v / Math.max(lenKm, 1e-9)) * PANEL_W, bottom, Z]}
           center
@@ -338,6 +350,10 @@ export default function SectionView({ model, reducedMotion }: SceneViewProps) {
   const geo = useMemo(() => build(model, prof), [model, prof]);
   const icons = useMemo(() => placeIcons(model, prof, geo.sy), [model, prof, geo.sy]);
   const [feet, setFeet] = useState(false);
+  // Tick labels are DOM elements portalled into a container we own, so they unmount cleanly.
+  const portalEl = useRef<HTMLDivElement>(null);
+  const [portalReady, setPortalReady] = useState(false);
+  useEffect(() => setPortalReady(true), []);
   const [hover, setHover] = useState<{ actor: number; x: number; y: number } | null>(null);
   useEffect(
     () => () => {
@@ -351,11 +367,18 @@ export default function SectionView({ model, reducedMotion }: SceneViewProps) {
 
   return (
     <>
+      <div
+        ref={portalEl}
+        className="absolute inset-0"
+        style={{ pointerEvents: 'none', zIndex: 7 }}
+        aria-hidden="true"
+      />
       <SceneCanvas
         view="section"
         cameraPosition={[0, -PANEL_H / 2 - 2, 105]}
         fov={34}
         far={600}
+        reducedMotion={reducedMotion}
         dataAttrs={{
           do: hasDo,
           lengthKm: (prof.lengthM / 1000).toFixed(1),
@@ -405,9 +428,12 @@ export default function SectionView({ model, reducedMotion }: SceneViewProps) {
           <meshBasicMaterial vertexColors side={DoubleSide} />
         </mesh>
         <Icons model={model} icons={icons} onHover={setHover} />
-        <Rulers prof={prof} sy={geo.sy} feet={feet} />
-        {model.thermoclineM !== undefined && (
+        {portalReady && (
+          <Rulers prof={prof} sy={geo.sy} feet={feet} portal={portalEl as RefObject<HTMLElement>} />
+        )}
+        {portalReady && model.thermoclineM !== undefined && (
           <Html
+            portal={portalEl as RefObject<HTMLElement>}
             position={[PANEL_W / 2 - 1, -model.thermoclineM * geo.sy, Z]}
             style={{ ...tickStyle, transform: 'translate(-100%, -120%)' }}
           >
@@ -417,7 +443,7 @@ export default function SectionView({ model, reducedMotion }: SceneViewProps) {
             </span>
           </Html>
         )}
-        <FitPanel width={PANEL_W + 44} height={PANEL_H + SOIL + 12} centreY={-PANEL_H / 2 - 2} />
+        <FitPanel width={PANEL_W + 34} height={PANEL_H + SOIL + 12} centreY={-PANEL_H / 2 - 2} />
         <OrbitControls
           enablePan={false}
           enableDamping
@@ -428,7 +454,7 @@ export default function SectionView({ model, reducedMotion }: SceneViewProps) {
           minPolarAngle={Math.PI / 2 - 0.45}
           maxPolarAngle={Math.PI / 2 + 0.35}
           minDistance={50}
-          maxDistance={170}
+          maxDistance={420}
           autoRotate={false}
         />
       </SceneCanvas>

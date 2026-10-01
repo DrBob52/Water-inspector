@@ -1,7 +1,6 @@
-import { buffer as turfBuffer, feature } from '@turf/turf';
-import type { Polygon, MultiPolygon, LineString, MultiLineString } from 'geojson';
+import type { Polygon, MultiPolygon } from 'geojson';
 import { SPECIES_CATALOG, resolveTraits } from './catalog';
-import { ringArea, makeProjection, type Ring } from './geo';
+import { bufferPolyline, makeProjection, ringArea, type Ring } from './geo';
 import { causeToParameter } from './impairments';
 import { PARAMETERS } from './parameters';
 import { thresholdRatio } from './thresholds';
@@ -166,22 +165,21 @@ function exteriorRing(g: Polygon | MultiPolygon): Array<[number, number]> {
 /** Local-metre outline (CCW, open ring, centred on the centroid, at most 400 vertices). */
 export function buildOutline(identity: WaterbodyIdentity, riverWidthM?: number): Ring {
   const g = identity.geometry;
-  let poly: Polygon | MultiPolygon;
-  if (g.type === 'Polygon' || g.type === 'MultiPolygon') poly = g;
-  else {
-    const half = Math.max(8, (riverWidthM ?? 60) / 2);
-    const buf = turfBuffer(feature(g as LineString | MultiLineString), half / 1000, {
-      units: 'kilometers',
-      steps: 3,
-    });
-    poly = buf!.geometry as Polygon | MultiPolygon;
-  }
   const proj = makeProjection(identity.centroid);
-  let ring: Ring = exteriorRing(poly).map(([lon, lat]) => proj.toLocal(lon, lat));
-  const first = ring[0];
-  const last = ring[ring.length - 1];
-  if (first[0] === last[0] && first[1] === last[1]) ring = ring.slice(0, -1);
-  if (ringArea(ring) < 0) ring = ring.slice().reverse();
+  let ring: Ring;
+  if (g.type === 'Polygon' || g.type === 'MultiPolygon') {
+    ring = exteriorRing(g).map(([lon, lat]) => proj.toLocal(lon, lat));
+    const first = ring[0];
+    const last = ring[ring.length - 1];
+    if (first[0] === last[0] && first[1] === last[1]) ring = ring.slice(0, -1);
+    if (ringArea(ring) < 0) ring = ring.slice().reverse();
+  } else {
+    // A river centre line: buffer it by half the reach width into a thin polygon.
+    const lines = g.type === 'LineString' ? [g.coordinates] : g.coordinates;
+    const longest = lines.reduce((a, b) => (b.length > a.length ? b : a), lines[0]);
+    const local: Ring = longest.map(([lon, lat]) => proj.toLocal(lon, lat));
+    ring = bufferPolyline(local, Math.max(8, (riverWidthM ?? 60) / 2));
+  }
   return simplifyRing(ring, MAX_OUTLINE_VERTICES);
 }
 

@@ -144,8 +144,8 @@ export function formatLength(m: number, sys: UnitSystem): string {
 }
 
 export function formatDepth(m: number, sys: UnitSystem): string {
-  if (sys === 'imperial') return `${mToFt(m).toFixed(m < 30 ? 1 : 0)} ft`;
-  return `${m.toFixed(m < 30 ? 1 : 0)} m`;
+  const v = sys === 'imperial' ? mToFt(m) : m;
+  return `${num(v, m < 30 ? 1 : 0)} ${sys === 'imperial' ? 'ft' : 'm'}`;
 }
 
 const num = (v: number, digits: number) =>
@@ -166,7 +166,7 @@ export function formatDistanceKm(km: number, sys: UnitSystem): string {
 
 export function formatVolume(mcm: number, sys: UnitSystem): string {
   if (sys === 'imperial') {
-    const acreFt = mcm / MCM_PER_ACRE_FT / 1e6;
+    const acreFt = mcm / MCM_PER_ACRE_FT;
     return acreFt >= 1e6
       ? `${(acreFt / 1e6).toFixed(1)} million acre-ft`
       : `${Math.round(acreFt).toLocaleString('en-US')} acre-ft`;

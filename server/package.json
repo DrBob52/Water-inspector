@@ -14,7 +14,8 @@
     "@turf/turf": "^7.2.0",
     "@wi/shared": "*",
     "hono": "^4.7.0",
-    "pngjs": "^7.0.0"
+    "pngjs": "^7.0.0",
+    "shapefile": "^0.6.6"
   },
   "devDependencies": {
     "@types/pngjs": "^6.0.5"
