@@ -22,7 +22,7 @@ for (const s of specs) {
     s.split('=', 2).length === 2
       ? [s.slice(0, s.indexOf('=')), s.slice(s.indexOf('=') + 1)]
       : [s, ''];
-  await p.goto(`http://localhost:5173/?${qs}`);
+  await p.goto(`${process.env.BASE ?? 'http://localhost:5173'}/?${qs}`);
   await p.waitForTimeout(+(process.env.WAIT ?? 6000));
   await p.screenshot({ path: `${out}/${name}.png` });
   console.log('shot', name);
