@@ -1,369 +1,188 @@
-import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
-import { Html, OrbitControls } from '@react-three/drei';
-import { BufferAttribute, BufferGeometry, Color, DoubleSide, Shape, ShapeGeometry } from 'three';
-import type { ThreeEvent } from '@react-three/fiber';
-import { formatDepth, formatDistanceKm, mToFt, type SceneActor, type SceneModel } from '@wi/shared';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type RefObject } from 'react';
+import { formatDistanceKm, type SceneModel } from '@wi/shared';
 import { SceneBadges } from '../common/Badges';
-import { FitPanel } from '../common/FitCamera';
 import { SceneCanvas } from '../common/SceneCanvas';
-import { FISH_PARAMS, isFishArchetype } from '../fish/fishGeometry';
-import { mulberry32 } from '../fish/boids';
 import type { SceneViewProps } from '../types';
-import {
-  doAtDepth,
-  doColor,
-  gridMesh,
-  niceStep,
-  sectionProfile,
-  type MeshData,
-  type SectionProfile,
-} from './section';
+import { DO_COLORS, lightModel, sectionProfile } from './section';
+import { SECTION_FOV, SectionScene, type Chrome, type Hover } from './SectionScene';
 
-const PANEL_W = 100;
-const PANEL_H = 26;
-const SOIL = 7;
-const Z = 1.5;
-
-function toGeometry(m: MeshData): BufferGeometry {
-  const g = new BufferGeometry();
-  g.setAttribute('position', new BufferAttribute(m.positions, 3));
-  g.setAttribute('color', new BufferAttribute(m.colors, 3));
-  g.setIndex(new BufferAttribute(m.indices, 1));
-  return g;
-}
-
-const rgb = (c: Color): [number, number, number] => [c.r, c.g, c.b];
-
-interface Geometries {
-  waterFront: BufferGeometry;
-  waterBack: BufferGeometry;
-  doOverlay: BufferGeometry | null;
-  thermo: BufferGeometry | null;
-  soilFront: BufferGeometry;
-  soilBack: BufferGeometry;
-  surfaceTop: BufferGeometry;
-  bedRibbon: BufferGeometry;
-  sy: number;
-  sx: number;
-}
-
-const BANDS = 24;
-
-function build(model: SceneModel, prof: SectionProfile): Geometries {
-  const N = prof.bins;
-  const sy = PANEL_H / prof.maxDepthM;
-  const sx = PANEL_W / prof.lengthM;
-  const X = (i: number) => -PANEL_W / 2 + (i / (N - 1)) * PANEL_W;
-  const tint = new Color(model.waterTint);
-  const light = tint.clone().lerp(new Color('#9fd6f0'), 0.55);
-  const dark = tint.clone().multiplyScalar(0.28);
-  const tmp = new Color();
-  const d = (i: number) => prof.depth[i];
-  const waterColor = (depthM: number) =>
-    rgb(tmp.copy(light).lerp(dark, 1 - Math.exp(-depthM / (prof.maxDepthM * 0.45))));
-  const water = (z: number, flip: boolean) =>
-    gridMesh(
-      N,
-      BANDS + 1,
-      (i, j) => [X(i), -(j / BANDS) * d(i) * sy, z],
-      (i, j) => waterColor((j / BANDS) * d(i)),
-      flip,
-    );
-  const soilTop = new Color('#7a5e3c');
-  const soilBottom = new Color('#2b2016');
-  const soilBase = -PANEL_H - SOIL;
-  const soil = (z: number, flip: boolean) =>
-    gridMesh(
-      N,
-      4,
-      (i, j) => {
-        const top = -d(i) * sy;
-        return [X(i), top + ((soilBase - top) * j) / 3, z];
-      },
-      (i, j) =>
-        rgb(
-          tmp
-            .copy(soilTop)
-            .lerp(soilBottom, j / 3)
-            .multiplyScalar(0.9 + 0.1 * Math.sin(i * 0.4 + j)),
-        ),
-      flip,
-    );
-
-  let doOverlay: BufferGeometry | null = null;
-  if (model.doProfile?.length) {
-    doOverlay = toGeometry(
-      gridMesh(
-        N,
-        BANDS + 1,
-        (i, j) => [X(i), -(j / BANDS) * d(i) * sy, Z + 0.02],
-        (i, j) => rgb(doColor(doAtDepth(model.doProfile!, (j / BANDS) * d(i)), tmp)),
-        false,
-      ),
-    );
-  }
-  let thermo: BufferGeometry | null = null;
-  if (model.thermoclineM !== undefined) {
-    const w = Math.max(1.2, prof.maxDepthM * 0.04);
-    const z0 = model.thermoclineM - w;
-    const z1 = model.thermoclineM + w;
-    thermo = toGeometry(
-      gridMesh(
-        N,
-        2,
-        (i, j) => [X(i), -Math.min(j === 0 ? z0 : z1, d(i)) * sy, Z + 0.04],
-        () => [1, 0.85, 0.5],
-        false,
-      ),
-    );
-  }
-  const surfaceTop = toGeometry(
-    gridMesh(
-      N,
-      2,
-      (i, j) => [X(i), 0, Z - j * 2 * Z],
-      () => [0.75, 0.9, 1],
-      false,
-    ),
-  );
-  const bedRibbon = toGeometry(
-    gridMesh(
-      N,
-      2,
-      (i, j) => [X(i), -d(i) * sy, Z - j * 2 * Z],
-      (i) => rgb(tmp.set('#8a7450').multiplyScalar(0.8 + 0.2 * Math.sin(i * 0.3))),
-      true,
-    ),
-  );
-  return {
-    waterFront: toGeometry(water(Z, false)),
-    waterBack: toGeometry(water(-Z, true)),
-    doOverlay,
-    thermo,
-    soilFront: toGeometry(soil(Z, false)),
-    soilBack: toGeometry(soil(-Z, true)),
-    surfaceTop,
-    bedRibbon,
-    sy,
-    sx,
-  };
-}
-
-interface Icon {
-  actor: number;
-  x: number;
-  y: number;
-  size: number;
-}
-
-function placeIcons(model: SceneModel, prof: SectionProfile, sy: number): Icon[] {
-  const out: Icon[] = [];
-  const N = prof.bins;
-  const maxRec = Math.max(1, ...model.actors.map((a) => a.recordCount));
-  model.actors.forEach((a, ai) => {
-    const rng = mulberry32(1000 + ai * 31);
-    const n = Math.max(1, Math.min(5, Math.round(1 + Math.log10(a.recordCount + 1))));
-    const size = 1.3 + 2.6 * (Math.log10(a.recordCount + 1) / Math.log10(maxRec + 1));
-    const candidates: number[] = [];
-    for (let i = 2; i < N - 2; i++) {
-      const dd = prof.depth[i];
-      if (dd <= 0.3) continue;
-      if (a.depthBand === 'littoral' && dd > prof.maxDepthM * 0.3) continue;
-      candidates.push(i);
-    }
-    if (!candidates.length) {
-      for (let i = 2; i < N - 2; i++) if (prof.depth[i] > 0.3) candidates.push(i);
-    }
-    for (let k = 0; k < n && candidates.length; k++) {
-      const i = candidates[Math.floor(rng() * candidates.length)];
-      const dd = prof.depth[i];
-      const frac =
-        a.depthBand === 'surface'
-          ? 0.04 + 0.05 * rng()
-          : a.depthBand === 'littoral'
-            ? 0.2 + 0.4 * rng()
-            : a.depthBand === 'midwater'
-              ? 0.3 + 0.3 * rng()
-              : 0.93;
-      out.push({ actor: ai, x: -PANEL_W / 2 + (i / (N - 1)) * PANEL_W, y: -dd * frac * sy, size });
-    }
-  });
-  return out;
-}
-
-function iconShape(actor: SceneActor): { body: Shape; fin: Shape } {
-  const arch = actor.archetype;
-  const body = new Shape();
-  const fin = new Shape();
-  if (isFishArchetype(arch)) {
-    const h = FISH_PARAMS[arch].halfHeight * 1.6;
-    body.moveTo(0.5, 0);
-    body.bezierCurveTo(0.3, h * 1.6, -0.25, h * 1.3, -0.4, 0);
-    body.bezierCurveTo(-0.25, -h * 1.3, 0.3, -h * 1.6, 0.5, 0);
-    fin.moveTo(-0.38, 0);
-    fin.lineTo(-0.62, h * 1.5);
-    fin.lineTo(-0.56, 0);
-    fin.lineTo(-0.62, -h * 1.5);
-    fin.closePath();
-  } else if (arch === 'turtle') {
-    body.absellipse(0, 0, 0.42, 0.26, 0, Math.PI * 2, false, 0);
-    fin.absellipse(0.5, 0.05, 0.12, 0.1, 0, Math.PI * 2, false, 0);
-  } else if (arch === 'plant') {
-    body.moveTo(-0.05, -0.5);
-    body.lineTo(0.05, -0.5);
-    body.lineTo(0.12, 0.5);
-    body.lineTo(-0.12, 0.5);
-    fin.moveTo(0, 0);
-    fin.lineTo(0.05, 0);
-  } else {
-    body.absellipse(0, 0, 0.4, 0.3, 0, Math.PI * 2, false, 0);
-    fin.moveTo(0.3, 0.2);
-    fin.lineTo(0.6, 0.35);
-    fin.lineTo(0.45, 0.05);
-    fin.closePath();
-  }
-  return { body, fin };
-}
-
-function Icons({
-  model,
-  icons,
-  onHover,
-}: {
-  model: SceneModel;
-  icons: Icon[];
-  onHover: (i: { actor: number; x: number; y: number } | null) => void;
-}) {
-  const shapes = useMemo(
-    () =>
-      model.actors.map((a) => {
-        const s = iconShape(a);
-        return {
-          body: new ShapeGeometry(s.body),
-          fin: new ShapeGeometry(s.fin),
-          colors: a.colors,
-          introduced: a.introduced,
-        };
-      }),
-    [model],
-  );
-  useEffect(() => () => shapes.forEach((s) => (s.body.dispose(), s.fin.dispose())), [shapes]);
-  return (
-    <group position={[0, 0, Z + 0.1]}>
-      {icons.map((ic, i) => {
-        const s = shapes[ic.actor];
-        return (
-          <group
-            key={i}
-            position={[ic.x, ic.y, 0.05 + (i % 7) * 0.002]}
-            scale={[ic.size, ic.size, 1]}
-            onPointerMove={(e: ThreeEvent<PointerEvent>) => {
-              e.stopPropagation();
-              onHover({ actor: ic.actor, x: e.nativeEvent.clientX, y: e.nativeEvent.clientY });
-            }}
-            onPointerOut={() => onHover(null)}
-          >
-            <mesh geometry={s.body}>
-              <meshBasicMaterial color={s.colors.side} side={DoubleSide} />
-            </mesh>
-            <mesh geometry={s.fin} position={[0, 0, 0.001]}>
-              <meshBasicMaterial color={s.colors.fin} side={DoubleSide} />
-            </mesh>
-            {s.introduced && (
-              <mesh position={[0, 0, -0.001]} scale={[1.18, 1.25, 1]} geometry={s.body}>
-                <meshBasicMaterial color="#ff8a00" side={DoubleSide} />
-              </mesh>
-            )}
-          </group>
-        );
-      })}
-    </group>
-  );
-}
-
-const tickStyle: React.CSSProperties = {
-  fontSize: 11,
-  color: '#e7f3f8',
-  whiteSpace: 'nowrap',
-  textShadow: '0 1px 2px #000',
-  pointerEvents: 'none',
+const fmtM = (m: number, feet: boolean) => {
+  const v = feet ? m * 3.28084 : m;
+  return `${v >= 10 ? Math.round(v) : Math.round(v * 10) / 10} ${feet ? 'ft' : 'm'}`;
 };
 
-function Rulers({
-  prof,
-  sy,
-  feet,
-  portal,
-}: {
-  prof: SectionProfile;
-  sy: number;
-  feet: boolean;
-  portal: RefObject<HTMLElement>;
-}) {
-  const maxD = prof.maxDepthM;
-  const depthStepM = feet ? niceStep(mToFt(maxD), 6) / 3.28084 : niceStep(maxD, 6);
-  const depthTicks: number[] = [];
-  for (let v = 0; v <= maxD * 1.001; v += depthStepM) depthTicks.push(v);
-  const lenKm = prof.lengthM / 1000;
-  const distStep = niceStep(lenKm, 6);
-  const distTicks: number[] = [];
-  for (let v = 0; v <= lenKm * 1.001; v += distStep) distTicks.push(v);
-  const bottom = -PANEL_H - SOIL - 1.5;
+const eyebrow = 'text-[10.5px] font-semibold uppercase tracking-[0.11em]';
+
+function KeyRow({ swatch, children }: { swatch: React.ReactNode; children: React.ReactNode }) {
   return (
-    <group>
-      {depthTicks.map((v) => (
-        <Html
-          portal={portal}
-          key={`d${v}`}
-          position={[-PANEL_W / 2 - 1.5, -v * sy, Z]}
-          center
-          style={tickStyle}
-          zIndexRange={[5, 0]}
-        >
-          <span data-testid="depth-tick">
-            {feet ? `${Math.round(mToFt(v))} ft` : `${Math.round(v * 10) / 10} m`}
-          </span>
-        </Html>
-      ))}
-      {distTicks.map((v) => (
-        <Html
-          portal={portal}
-          key={`x${v}`}
-          position={[-PANEL_W / 2 + (v / Math.max(lenKm, 1e-9)) * PANEL_W, bottom, Z]}
-          center
-          style={tickStyle}
-          zIndexRange={[5, 0]}
-        >
-          <span data-testid="distance-tick">
-            {feet
-              ? `${(v / 1.609344).toFixed(v < 10 ? 1 : 0)} mi`
-              : `${v.toFixed(v < 10 ? 1 : 0)} km`}
-          </span>
-        </Html>
-      ))}
-    </group>
+    <li className="flex items-start gap-2.5 py-[3px]">
+      <span className="mt-[3px] flex h-[10px] w-[22px] shrink-0 items-center justify-center">
+        {swatch}
+      </span>
+      <span className="min-w-0 leading-[1.35]">{children}</span>
+    </li>
   );
 }
 
-export default function SectionView({ model, reducedMotion }: SceneViewProps) {
+function Legend({
+  model,
+  lengthM,
+  feet,
+  legendRef,
+}: {
+  model: SceneModel;
+  lengthM: number;
+  feet: boolean;
+  legendRef: RefObject<HTMLDivElement>;
+}) {
+  const sys = feet ? 'imperial' : 'metric';
+  const light = lightModel(model.visibilityM);
+  const hasDo = !!model.doProfile?.length;
+  const lightToBed = light.photicM >= model.maxDepthM * 0.97;
+  return (
+    <div className="legend" data-testid="section-legend" ref={legendRef}>
+      <div className={eyebrow} style={{ color: 'var(--muted)' }}>
+        Cross-section · longest axis
+      </div>
+      <div className="tnum mt-1 text-[15px] font-semibold" style={{ color: 'var(--text)' }}>
+        {formatDistanceKm(lengthM / 1000, sys)} long
+        <span style={{ color: 'var(--muted)', fontWeight: 400 }}> · </span>
+        {fmtM(model.maxDepthM, feet)} deep
+      </div>
+      <p className="m-0 mt-0.5 leading-[1.4]" style={{ color: 'var(--muted)' }}>
+        Follows the deepest water. Bed shape modelled.
+      </p>
+      <ul
+        className="m-0 mt-2.5 list-none border-t p-0 pt-2"
+        style={{ borderColor: 'var(--line)', color: 'var(--text-2)' }}
+      >
+        <KeyRow
+          swatch={
+            <span
+              className="block h-[10px] w-full rounded-[2px]"
+              style={{ background: 'linear-gradient(180deg, #bfe9ef, #2a7b97 55%, #0b2a3a)' }}
+            />
+          }
+        >
+          {lightToBed ? (
+            <>Light reaches the bed (visibility ~{fmtM(model.visibilityM, feet)})</>
+          ) : (
+            <>
+              Photic zone, light to <span className="tnum">~{fmtM(light.photicM, feet)}</span>
+            </>
+          )}
+        </KeyRow>
+        {model.thermoclineM !== undefined && (
+          <KeyRow
+            swatch={
+              <span
+                className="block h-[2px] w-full"
+                style={{ background: '#dff3f6', boxShadow: '0 0 6px 2px rgba(150,230,240,.45)' }}
+              />
+            }
+          >
+            Thermocline <span className="tnum">~{fmtM(model.thermoclineM, feet)}</span>
+            <span style={{ color: 'var(--muted)' }}>
+              {model.thermoclineEstimated ? ' · estimated' : ' · measured profile'}
+            </span>
+          </KeyRow>
+        )}
+        {hasDo ? (
+          <li className="py-[3px]" data-testid="do-legend">
+            <div>
+              Dissolved oxygen
+              {model.surfaceDoMgL !== undefined && (
+                <span style={{ color: 'var(--muted)' }}>
+                  {' '}
+                  · surface <span className="tnum">{model.surfaceDoMgL.toFixed(1)}</span> mg/L
+                </span>
+              )}
+            </div>
+            <div className="tnum mt-1 flex items-center gap-3 text-[11px]">
+              {(
+                [
+                  [DO_COLORS.low, 'below 2'],
+                  [DO_COLORS.moderate, '2 to 5'],
+                  [DO_COLORS.good, 'above 5 mg/L'],
+                ] as const
+              ).map(([c, t]) => (
+                <span key={t} className="inline-flex items-center gap-1.5">
+                  <span
+                    className="inline-block h-[8px] w-[8px] rounded-full"
+                    style={{ background: c }}
+                  />
+                  {t}
+                </span>
+              ))}
+            </div>
+          </li>
+        ) : (
+          <li className="py-[3px]" data-testid="no-do-note">
+            <span style={{ color: 'var(--text)' }}>No depth profile measured.</span>{' '}
+            <span style={{ color: 'var(--muted)' }}>
+              {model.surfaceDoMgL !== undefined
+                ? `Surface dissolved oxygen: ${model.surfaceDoMgL.toFixed(1)} mg/L.`
+                : 'No dissolved oxygen data.'}
+            </span>
+          </li>
+        )}
+      </ul>
+    </div>
+  );
+}
+
+export default function SectionView({ model, reducedMotion, units }: SceneViewProps) {
   const prof = useMemo(() => sectionProfile(model), [model]);
-  const geo = useMemo(() => build(model, prof), [model, prof]);
-  const icons = useMemo(() => placeIcons(model, prof, geo.sy), [model, prof, geo.sy]);
-  const [feet, setFeet] = useState(false);
-  // Tick labels are DOM elements portalled into a container we own, so they unmount cleanly.
+  const [feet, setFeet] = useState(units === 'imperial');
+  // Labels are DOM elements portalled into a container we own, so they unmount cleanly.
   const portalEl = useRef<HTMLDivElement>(null);
+  const legendRef = useRef<HTMLDivElement>(null);
+  const controlsRef = useRef<HTMLDivElement>(null);
   const [portalReady, setPortalReady] = useState(false);
   useEffect(() => setPortalReady(true), []);
-  const [hover, setHover] = useState<{ actor: number; x: number; y: number } | null>(null);
-  useEffect(
-    () => () => {
-      Object.values(geo).forEach((g) => g instanceof BufferGeometry && g.dispose());
-    },
-    [geo],
-  );
+  const [hover, setHover] = useState<Hover | null>(null);
+
+  // The figure fills whatever the floating chrome leaves free: measure it.
+  const [chrome, setChrome] = useState<Chrome>({ top: 64, bottom: 10000 });
+  useLayoutEffect(() => {
+    const root = portalEl.current?.parentElement;
+    if (!root) return;
+    const measure = () => {
+      const box = root.getBoundingClientRect();
+      let top = 64;
+      let bottom = box.height;
+      const els = [
+        legendRef.current,
+        controlsRef.current,
+        root.querySelector<HTMLElement>('[data-testid="scene-badges"]'),
+        // On phones the inspector is a sheet over the lower part of the stage.
+        box.width <= 720 ? document.querySelector<HTMLElement>('.panel-dock') : null,
+      ];
+      for (const el of els) {
+        if (!el) continue;
+        const r = el.getBoundingClientRect();
+        if (!r.height) continue;
+        const t = r.top - box.top;
+        const b = r.bottom - box.top;
+        if (t + r.height / 2 < box.height / 2) top = Math.max(top, b);
+        else bottom = Math.min(bottom, t);
+      }
+      setChrome((c) =>
+        Math.abs(c.top - top) < 1 && Math.abs(c.bottom - bottom) < 1 ? c : { top, bottom },
+      );
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(root);
+    if (legendRef.current) ro.observe(legendRef.current);
+    if (controlsRef.current) ro.observe(controlsRef.current);
+    const panel = document.querySelector<HTMLElement>('.panel-dock');
+    if (panel) ro.observe(panel);
+    return () => ro.disconnect();
+  }, []);
+
   const actor = hover ? model.actors[hover.actor] : null;
   const hasDo = !!model.doProfile?.length;
-  const exag = geo.sy / geo.sx;
 
   return (
     <>
@@ -375,151 +194,38 @@ export default function SectionView({ model, reducedMotion }: SceneViewProps) {
       />
       <SceneCanvas
         view="section"
-        cameraPosition={[0, -PANEL_H / 2 - 2, 105]}
-        fov={34}
-        far={600}
+        cameraPosition={[0, 0, 2500]}
+        fov={SECTION_FOV}
+        near={10}
+        far={20000}
+        background="#040b10"
         reducedMotion={reducedMotion}
         dataAttrs={{
           do: hasDo,
-          lengthKm: (prof.lengthM / 1000).toFixed(1),
+          'length-km': (prof.lengthM / 1000).toFixed(1),
           thermocline: model.thermoclineM ?? 'none',
         }}
       >
-        <ambientLight intensity={1.2} />
-        <directionalLight position={[20, 30, 40]} intensity={1.2} />
-        <mesh geometry={geo.waterFront}>
-          <meshBasicMaterial vertexColors side={DoubleSide} />
-        </mesh>
-        <mesh geometry={geo.waterBack}>
-          <meshBasicMaterial vertexColors side={DoubleSide} />
-        </mesh>
-        <mesh geometry={geo.surfaceTop}>
-          <meshBasicMaterial vertexColors transparent opacity={0.8} side={DoubleSide} />
-        </mesh>
-        {geo.doOverlay && (
-          <mesh geometry={geo.doOverlay}>
-            <meshBasicMaterial
-              vertexColors
-              transparent
-              opacity={0.68}
-              side={DoubleSide}
-              depthWrite={false}
-            />
-          </mesh>
-        )}
-        {geo.thermo && (
-          <mesh geometry={geo.thermo}>
-            <meshBasicMaterial
-              vertexColors
-              transparent
-              opacity={0.4}
-              side={DoubleSide}
-              depthWrite={false}
-            />
-          </mesh>
-        )}
-        <mesh geometry={geo.soilFront}>
-          <meshBasicMaterial vertexColors side={DoubleSide} />
-        </mesh>
-        <mesh geometry={geo.soilBack}>
-          <meshBasicMaterial vertexColors side={DoubleSide} />
-        </mesh>
-        <mesh geometry={geo.bedRibbon}>
-          <meshBasicMaterial vertexColors side={DoubleSide} />
-        </mesh>
-        <Icons model={model} icons={icons} onHover={setHover} />
         {portalReady && (
-          <Rulers prof={prof} sy={geo.sy} feet={feet} portal={portalEl as RefObject<HTMLElement>} />
-        )}
-        {portalReady && model.thermoclineM !== undefined && (
-          <Html
+          <SectionScene
+            model={model}
+            prof={prof}
+            feet={feet}
+            chrome={chrome}
+            reducedMotion={reducedMotion}
             portal={portalEl as RefObject<HTMLElement>}
-            position={[PANEL_W / 2 - 1, -model.thermoclineM * geo.sy, Z]}
-            style={{ ...tickStyle, transform: 'translate(-100%, -120%)' }}
-          >
-            <span data-testid="thermocline-label">
-              Thermocline{model.thermoclineEstimated ? ' (estimated)' : ''} ~
-              {formatDepth(model.thermoclineM, feet ? 'imperial' : 'metric')}
-            </span>
-          </Html>
+            onHover={setHover}
+          />
         )}
-        <FitPanel width={PANEL_W + 34} height={PANEL_H + SOIL + 12} centreY={-PANEL_H / 2 - 2} />
-        <OrbitControls
-          enablePan={false}
-          enableDamping
-          dampingFactor={0.08}
-          target={[0, -PANEL_H / 2 - 2, 0]}
-          minAzimuthAngle={-0.7}
-          maxAzimuthAngle={0.7}
-          minPolarAngle={Math.PI / 2 - 0.45}
-          maxPolarAngle={Math.PI / 2 + 0.35}
-          minDistance={50}
-          maxDistance={420}
-          autoRotate={false}
-        />
       </SceneCanvas>
       <SceneBadges demo={model.demo} depthEstimated={model.depthEstimated} />
-      <div className="legend" data-testid="section-legend" style={{ top: 48 }}>
-        <strong>Vertical slice along the longest axis</strong>
-        <div style={{ color: 'var(--muted)' }}>
-          {formatDistanceKm(prof.lengthM / 1000, feet ? 'imperial' : 'metric')} long, deepest water
-          at each position, vertical scale exaggerated{' '}
-          {exag >= 10 ? Math.round(exag) : exag.toFixed(1)}x.
-        </div>
-        {hasDo ? (
-          <div className="mt-2" data-testid="do-legend">
-            <div>
-              Dissolved oxygen
-              {model.surfaceDoMgL !== undefined
-                ? ` (surface ${model.surfaceDoMgL.toFixed(1)} mg/L)`
-                : ''}
-            </div>
-            <div className="flex items-center gap-1 text-xs">
-              <span
-                style={{ background: '#d32f2f', width: 14, height: 10, display: 'inline-block' }}
-              />{' '}
-              below 2
-              <span
-                style={{
-                  background: '#f2a81d',
-                  width: 14,
-                  height: 10,
-                  display: 'inline-block',
-                  marginLeft: 6,
-                }}
-              />{' '}
-              2 to 5
-              <span
-                style={{
-                  background: '#2b7bd1',
-                  width: 14,
-                  height: 10,
-                  display: 'inline-block',
-                  marginLeft: 6,
-                }}
-              />{' '}
-              above 5 mg/L
-            </div>
-          </div>
-        ) : (
-          <div className="mt-2" data-testid="no-do-note">
-            <strong>No depth profile measured.</strong>{' '}
-            {model.surfaceDoMgL !== undefined
-              ? `Surface dissolved oxygen: ${model.surfaceDoMgL.toFixed(1)} mg/L.`
-              : 'No dissolved oxygen data.'}
-          </div>
-        )}
-        {model.thermoclineM !== undefined && (
-          <div className="mt-1 text-xs">
-            Thermocline band{' '}
-            {model.thermoclineEstimated
-              ? 'estimated from surface temperature and lake size'
-              : 'from the measured temperature profile'}
-            .
-          </div>
-        )}
-      </div>
-      <div className="scene-controls" data-testid="section-controls">
+      <Legend
+        model={model}
+        lengthM={prof.lengthM}
+        feet={feet}
+        legendRef={legendRef as RefObject<HTMLDivElement>}
+      />
+      <div className="scene-controls" data-testid="section-controls" ref={controlsRef}>
         <button
           type="button"
           className="btn"
@@ -528,9 +234,14 @@ export default function SectionView({ model, reducedMotion }: SceneViewProps) {
         >
           {feet ? 'Feet and miles' : 'Metres and kilometres'}
         </button>
-        <span className="text-xs">
-          Icons are sized by record count; orange rim marks introduced species. Drag to tilt
-          slightly.
+        <span className="flex items-center gap-1.5 text-[12px]">
+          <svg width="18" height="10" viewBox="0 0 18 10" aria-hidden="true">
+            <ellipse cx="9" cy="5" rx="8" ry="4.2" fill="none" stroke="#ff9a3c" strokeWidth="1.4" />
+          </svg>
+          Introduced
+        </span>
+        <span className="text-[12px]" style={{ color: 'var(--muted)' }}>
+          Icons sized by records · drag to tilt
         </span>
       </div>
       {actor && hover && (
