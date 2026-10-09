@@ -454,7 +454,7 @@ The map in demo mode shows markers for the six demo waterbodies; clicking anywhe
 - Colour is never the only signal: status chips carry text.
 - Each 3D view has a text alternative summary in the panel ("12 species shown; visibility about 4 m; max depth 122 m, modelled").
 - Respect `prefers-reduced-motion`: fish swim slower, camera paths stop, particle pulsing disabled.
-- Light and dark themes via CSS variables, following system preference.
+- One dark theme (changed from light/dark in v1.1): the map and 3D scenes are dark and full-bleed, so all chrome is dark glass. See docs/DESIGN.md. Text contrast meets WCAG AA on the glass surfaces.
 
 ## 14. Testing
 

@@ -28,7 +28,12 @@ function Fact({ label, m, children }: { label: string; m?: Measured; children?: 
       <dt>{label}</dt>
       <dd title={m?.estimated ? `Estimated. ${m.method ?? ''}` : undefined}>
         {num}
-        {unit && <small>{unit}</small>}
+        {unit && (
+          <>
+            {' '}
+            <small>{unit}</small>
+          </>
+        )}
         {m?.estimated && (
           <span className="est" aria-label="estimated">
             est.

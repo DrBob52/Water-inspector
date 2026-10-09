@@ -63,19 +63,28 @@ test.describe('accessibility and preferences', () => {
     await expect(page.getByTestId('scene-canvas')).toHaveAttribute('data-reduced-motion', 'false');
   });
 
-  test('light and dark themes follow the system preference', async ({ page }) => {
+  test('the dark theme holds under both system colour schemes', async ({ page }) => {
+    // The map and scenes are dark and full-bleed, so the chrome is dark-only by design
+    // (docs/DESIGN.md). The panel must stay a dark surface with light text either way.
+    const read = () =>
+      page.evaluate(() => {
+        const el = document.querySelector('[data-testid=inspector]')!;
+        const cs = getComputedStyle(el);
+        return { bg: cs.backgroundColor, fg: cs.color };
+      });
     await page.emulateMedia({ colorScheme: 'light' });
     await page.goto(`/?wb=${LAKES.crater}`);
     await waitForMap(page);
-    const light = await page.evaluate(
-      () => getComputedStyle(document.querySelector('[data-testid=inspector]')!).backgroundColor,
-    );
+    const light = await read();
     await page.emulateMedia({ colorScheme: 'dark' });
-    const dark = await page.evaluate(
-      () => getComputedStyle(document.querySelector('[data-testid=inspector]')!).backgroundColor,
-    );
-    expect(light).not.toBe(dark);
-    expect(light).toBe('rgb(255, 255, 255)');
+    const dark = await read();
+    expect(light).toEqual(dark);
+    const lum = (rgb: string) => {
+      const [r, g, b] = rgb.match(/[\d.]+/g)!.map(Number);
+      return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    };
+    expect(lum(dark.bg)).toBeLessThan(40);
+    expect(lum(dark.fg)).toBeGreaterThan(200);
   });
 
   test('units toggle persists and switches the panel to imperial', async ({ page }) => {
@@ -104,10 +113,8 @@ test.describe('accessibility and preferences', () => {
       () => document.documentElement.scrollWidth - window.innerWidth,
     );
     expect(overflow).toBeLessThanOrEqual(0);
-    await page
-      .getByRole('radiogroup', { name: 'View' })
-      .getByText('Terrain', { exact: true })
-      .click();
+    // Labels collapse to icons on phones; the control keeps its accessible name and title.
+    await page.getByRole('radiogroup', { name: 'View' }).locator('label[title^="Terrain"]').click();
     await waitForScene(page, 'raised');
   });
 });
