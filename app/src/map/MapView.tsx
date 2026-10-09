@@ -46,6 +46,25 @@ export function MapView() {
     }
   }, [identity.data, loaded]);
 
+  // In demo mode, open framed on the six demo waterbodies so every marker is on screen.
+  const framedDemo = useRef(false);
+  useEffect(() => {
+    const list = demoList.data;
+    const map = mapRef.current?.getMap();
+    if (!loaded || !list?.length || !map || framedDemo.current || selectedId) return;
+    framedDemo.current = true;
+    const lons = list.map((w) => w.centroid[0]);
+    const lats = list.map((w) => w.centroid[1]);
+    const narrow = window.innerWidth <= 720;
+    map.fitBounds([Math.min(...lons), Math.min(...lats), Math.max(...lons), Math.max(...lats)], {
+      padding: narrow
+        ? { top: 170, bottom: 120, left: 30, right: 110 }
+        : { top: 140, bottom: 140, left: 120, right: 260 },
+      maxZoom: 5,
+      duration: 0,
+    });
+  }, [loaded, demoList.data, selectedId]);
+
   const selectedFc: FeatureCollection = useMemo(() => {
     const g = identity.data?.identity.geometry;
     return g

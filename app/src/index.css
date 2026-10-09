@@ -1220,3 +1220,44 @@ h2[tabindex='-1']:focus {
 .panel-body input[type='checkbox'] {
   accent-color: var(--accent);
 }
+
+/* Small screens --------------------------------------------------------------------- */
+.panel-header,
+.tablist,
+.scene-summary {
+  flex: none;
+}
+@media (max-width: 720px) {
+  .view-dock {
+    top: 14px;
+    left: auto;
+    right: 14px;
+    transform: none;
+  }
+  .app-shell[data-panel='open'] .brand {
+    display: none;
+  }
+  .app-shell[data-panel='open'] .search-box {
+    top: 66px;
+  }
+  .fact-list {
+    grid-template-columns: 1fr;
+  }
+  .panel-title {
+    font-size: 28px;
+  }
+  .panel-header {
+    padding: 14px 16px 12px;
+  }
+  .panel-body {
+    padding: 14px 16px 18px;
+  }
+}
+@media (max-width: 720px) {
+  .marker-btn .marker-label {
+    display: none;
+  }
+  .marker-btn[data-selected='true'] .marker-label {
+    display: inline;
+  }
+}
