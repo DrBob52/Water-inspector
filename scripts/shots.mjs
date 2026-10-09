@@ -11,7 +11,9 @@ const b = await chromium.launch({
     '--no-sandbox',
   ],
 });
-const p = await b.newPage({ viewport: { width: +(process.env.VW ?? 1440), height: +(process.env.VH ?? 900) } });
+const p = await b.newPage({
+  viewport: { width: +(process.env.VW ?? 1440), height: +(process.env.VH ?? 900) },
+});
 const errs = [];
 p.on('pageerror', (e) => errs.push(String(e)));
 p.on('console', (m) => {
