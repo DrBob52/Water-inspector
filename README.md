@@ -117,7 +117,7 @@ map and Inspector, the four 3D views, and the polish pass (accessibility, reduce
 screenshots, 152-species catalog). What follows is what is incomplete or differs from the spec, and
 why.
 
-Verified here: lint, typecheck, 237 unit tests (shared 85, server 94, app 58) and 27 Playwright e2e
+Verified here: lint, typecheck, 287 unit tests (shared 85, server 94, app 108) and 27 Playwright e2e
 tests in demo mode, with software WebGL. Screenshots of every view are in `docs/screenshots/`.
 
 Not verified, because the data hosts and tile servers are unreachable from the build container:

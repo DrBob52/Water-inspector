@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { Bloom, EffectComposer, ToneMapping, Vignette } from '@react-three/postprocessing';
 import type { ToneMappingMode } from 'postprocessing';
@@ -61,10 +61,21 @@ function Effects({ clarity }: { clarity: number }) {
   );
 }
 
+const HOVER_LINGER_MS = 1500;
+
 export function UnderwaterView({ model, reducedMotion }: SceneViewProps) {
   const world = useMemo(() => buildWorld(model), [model]);
   const water = useMemo(() => createWaterUniforms(world), [world]);
-  const [hover, setHover] = useState<HoverInfo | null>(null);
+  const [hover, setHoverNow] = useState<HoverInfo | null>(null);
+  // Fish swim out from under a still pointer, so the card lingers briefly instead of flickering
+  // off the moment its fish moves on.
+  const leaveTimer = useRef<number | undefined>(undefined);
+  const setHover = useCallback((h: HoverInfo | null) => {
+    window.clearTimeout(leaveTimer.current);
+    if (h) setHoverNow(h);
+    else leaveTimer.current = window.setTimeout(() => setHoverNow(null), HOVER_LINGER_MS);
+  }, []);
+  useEffect(() => () => window.clearTimeout(leaveTimer.current), []);
   const [free, setFree] = useState(false);
   const highlight = useUi((s) => s.highlightSpecies);
   const highlightSpecies = useUi((s) => s.highlight);
