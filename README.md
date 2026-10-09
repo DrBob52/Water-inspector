@@ -128,8 +128,11 @@ Not verified, because the data hosts and tile servers are unreachable from the b
   (WQX 3.0) path and GBIF are my best reading of the docs and have not been checked against the
   live APIs. Field names, layer names and base URLs are in `server/src/config.ts` and the
   normalizers. Expect to adjust them on first contact.
-- **Basemap, terrain tiles and hover highlighting on the OpenFreeMap style.** The code path exists
-  (queries the style's `water` layers) but only the offline style and demo outlines were exercised.
+- **The live satellite basemap.** The default style (`app/src/map/style.ts`) layers dimmed USGS
+  orthoimagery, hillshade from the Terrarium tiles, and cyan-tinted water, boundaries and labels from
+  the OpenFreeMap vector tiles. It passes the MapLibre style-spec validator in the unit tests, but
+  the imagery and vector tile hosts are unreachable from the build container, so it has not been
+  seen rendering. Hover highlighting queries its `water` and `waterway` layers.
 - **Frame rate.** There is no GPU here, so the 60 fps target with 250 fish is untested. The scene is
   built for it (one `InstancedMesh` per species, animation in the vertex shader, CPU work limited to
   the boid update and 250 matrices) and drops pixel ratio, particles and fish counts through drei
@@ -138,8 +141,10 @@ Not verified, because the data hosts and tile servers are unreachable from the b
 
 Deviations from the spec
 
-- **Fixtures are illustrative.** Outlines are hand-drawn approximations scaled to roughly the real
-  surface areas. Depths are rounded published-magnitude values, water quality and species counts are
+- **Fixtures are illustrative.** Outlines and elevation grids are real: `scripts/fetch-geodata.ts`
+  traces each shoreline by flood-filling the hydro-flattened water surface in the AWS Terrarium tiles
+  and samples the surrounding terrain (rerun it with network access to change them). Depths are
+  rounded published-magnitude values, water quality and species counts are
   generated from seeded random series, station ids, GBIF keys and HydroLAKES ids are synthetic
   (`DEMO-...`, `nhd:demo-...`). Nothing here is a measurement.
 - **Elevation grid for the diorama comes from the server** (`/api/waterbody/:id/dem`): a fixture in
@@ -149,9 +154,11 @@ Deviations from the spec
   following the lake's depth profile, so the littoral shelf is always visible, rather than a patch
   at the deepest point. Fog is rendered with at least 2.2 m of visibility so very turbid water stays
   readable (the true value is in the text alternative). Fish are drawn at 2.2x their typical length.
-- **Cross-section** draws the deepest water across the width at each position along the longest
-  axis (a thalweg profile), which stays inside the water for curved lakes, instead of a literal
-  straight slice. The vertical exaggeration is printed in the legend.
+- **Cross-section** draws a smoothed thalweg profile (the deepest water across the width at each
+  position along the longest axis) rescaled so its deepest point equals the max depth, instead of a
+  literal straight slice. The vertical exaggeration is printed under the distance ruler.
+- **One dark theme** instead of light and dark (SPEC section 13 is updated). The map and scenes are
+  dark and full-bleed, so all chrome is dark glass. The visual direction is in `docs/DESIGN.md`.
 - **GBIF**: species details are fetched for the 60 most recorded species and "last observed" only
   for the top 12, to keep a cold request inside the 8 s budget. The plant group also queries
   Haloragaceae, Ceratophyllaceae and Lythraceae so common invasives (milfoil, water chestnut) appear.
