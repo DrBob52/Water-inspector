@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { Vector3 } from 'three';
 import { DEMO } from '../../env';
-import type { World } from './world';
+import { HALF, type World } from './world';
 
 interface Props {
   world: World;
@@ -11,8 +11,10 @@ interface Props {
 }
 
 /**
- * Camera: a slow spline path through the lake with free-look (drag or touch). "Free swim" adds
- * WASD + mouse movement (Q/E for up and down). The path stops under prefers-reduced-motion.
+ * Camera: a slow, gentle drift along a short spline (a dolly in and out with a little sway and
+ * bob) that keeps a composed view: plants or rocks in the foreground, fish in the middle and the
+ * slope fading into the haze behind. Free-look by drag or touch. "Free swim" adds WASD + mouse
+ * movement (Q/E for down and up). The drift stops under prefers-reduced-motion.
  */
 export function CameraRig({ world, freeSwim, reducedMotion }: Props) {
   const { camera, gl } = useThree();
@@ -24,7 +26,6 @@ export function CameraRig({ world, freeSwim, reducedMotion }: Props) {
     pitch: 0,
     pos: new Vector3(),
     tmp: new Vector3(),
-    tan: new Vector3(),
     keys: new Set<string>(),
     drag: false,
     lx: 0,
@@ -88,19 +89,21 @@ export function CameraRig({ world, freeSwim, reducedMotion }: Props) {
     };
   }, [gl, freeSwim]);
 
-  useFrame((_, dtRaw) => {
+  useFrame((state, dtRaw) => {
     const s = st.current;
     const dt = Math.min(dtRaw, 0.1);
     const { curve, curveLength } = world;
     camera.rotation.order = 'YXZ';
     if (!freeSwim) {
       s.wasFree = false;
-      if (!reducedMotion) s.t = (s.t + (dt * 1.3) / curveLength) % 1;
+      const time = reducedMotion ? 0 : state.clock.elapsedTime;
+      if (!reducedMotion) s.t = (s.t + (dt * 0.32) / curveLength) % 1;
       curve.getPointAt(s.t, s.pos);
-      curve.getTangentAt(s.t, s.tan);
-      const baseYaw = Math.atan2(-s.tan.x, -s.tan.z);
-      s.yaw = baseYaw + s.offYaw;
-      s.pitch = s.offPitch - 0.2;
+      // A slow breathing bob, as if hanging in the water.
+      s.pos.y = Math.min(-0.45, s.pos.y + Math.sin(time * 0.45) * 0.07);
+      const sway = Math.sin(s.t * Math.PI * 2) * 0.1 + Math.sin(time * 0.13) * 0.04;
+      s.yaw = world.heroYaw + sway + s.offYaw;
+      s.pitch = world.heroPitch + Math.sin(time * 0.31) * 0.015 + s.offPitch;
     } else {
       if (!s.wasFree) {
         s.wasFree = true;
@@ -115,14 +118,14 @@ export function CameraRig({ world, freeSwim, reducedMotion }: Props) {
       s.pos.x += (-Math.sin(s.yaw) * cp * fwd + Math.cos(s.yaw) * strafe) * speed * dt;
       s.pos.y += (Math.sin(s.pitch) * fwd + vert) * speed * dt;
       s.pos.z += (-Math.cos(s.yaw) * cp * fwd - Math.sin(s.yaw) * strafe) * speed * dt;
-      const b = world.bounds;
-      s.pos.x = Math.min(b.maxX, Math.max(b.minX, s.pos.x));
-      s.pos.z = Math.min(b.maxZ, Math.max(b.minZ, s.pos.z));
+      const lim = HALF - 4;
+      s.pos.x = Math.min(lim, Math.max(-lim + 6, s.pos.x));
+      s.pos.z = Math.min(lim, Math.max(-lim, s.pos.z));
       const bed = world.bedDepth(s.pos.x, s.pos.z);
       s.pos.y = Math.min(-0.4, Math.max(-bed + 0.5, s.pos.y));
     }
     camera.position.copy(s.pos);
-    camera.rotation.set(s.pitch, s.yaw, 0);
+    camera.rotation.set(s.pitch, s.yaw, freeSwim ? 0 : Math.sin(s.t * Math.PI * 4) * 0.012);
   });
   return null;
 }

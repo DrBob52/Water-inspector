@@ -1,11 +1,9 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { useFrame, type ThreeEvent } from '@react-three/fiber';
 import {
-  Color,
   InstancedBufferAttribute,
   InstancedMesh,
   Matrix4,
-  MeshStandardMaterial,
   Quaternion,
   Sphere,
   Vector3,
@@ -17,9 +15,10 @@ import { useRenderQuality } from '../common/SceneCanvas';
 import { DEMO } from '../../env';
 import { FishSim, mulberry32, type SpeciesSim } from '../fish/boids';
 import { buildCritterGeometry } from '../fish/critters';
-import { FISH_PARAMS, buildFishGeometry, isFishArchetype } from '../fish/fishGeometry';
+import { FISH_PARAMS, buildFishGeometry, eyeOf, isFishArchetype } from '../fish/fishGeometry';
 import { createFishMaterial } from '../fish/fishMaterial';
 import { FISH_VISUAL_SCALE, bedPositions, type World } from './world';
+import type { WaterUniforms } from './water';
 
 export interface HoverInfo {
   actor: number;
@@ -31,7 +30,7 @@ export interface HoverInfo {
 interface Props {
   model: SceneModel;
   world: World;
-  fogColor: string;
+  water: WaterUniforms;
   reducedMotion: boolean;
   highlight: string | null;
   onHover: (h: HoverInfo | null) => void;
@@ -69,13 +68,15 @@ interface FishEntry {
   outlineMesh: InstancedMesh;
   simIndex: number;
   length: number;
+  /** Per-instance size jitter. */
+  sizes: Float32Array;
 }
 
 /**
  * Fish: procedural meshes, one InstancedMesh per species, swimming animation in the vertex shader,
  * boids for schooling species and wander plus obstacle avoidance for solitary ones.
  */
-export function Fish({ model, world, fogColor, reducedMotion, highlight, onHover }: Props) {
+export function Fish({ model, world, water, reducedMotion, highlight, onHover }: Props) {
   const quality = useRenderQuality();
   const hoverRef = useRef<HoverInfo | null>(null);
 
@@ -90,19 +91,21 @@ export function Fish({ model, world, fogColor, reducedMotion, highlight, onHover
       const geometry = buildFishGeometry(actor.archetype).clone();
       const phase = new Float32Array(actor.count);
       const tint = new Float32Array(actor.count);
+      const sizes = new Float32Array(actor.count);
       for (let i = 0; i < actor.count; i++) {
         phase[i] = rng() * Math.PI * 2;
         tint[i] = 0.88 + rng() * 0.24;
+        sizes[i] = 0.86 + rng() * 0.28;
       }
       geometry.setAttribute('aPhase', new InstancedBufferAttribute(phase, 1));
       geometry.setAttribute('aTint', new InstancedBufferAttribute(tint, 1));
       const params = FISH_PARAMS[actor.archetype];
       const base = {
         colors: actor.colors,
-        fogColor,
-        fogDensity: world.fogDensity,
-        surfaceY: 0,
-        waveAmp: params.fullBody ? 0.1 : 0.07,
+        water,
+        eye: eyeOf(params),
+        sheen: actor.archetype === 'benthic' ? 0.5 : 1,
+        waveAmp: params.fullBody ? 0.09 : 0.065,
         waveFreq:
           Math.max(4, Math.min(16, 5 + (speed / Math.max(len, 0.1)) * 1.4)) *
           (reducedMotion ? 0.5 : 1),
@@ -138,26 +141,25 @@ export function Fish({ model, world, fogColor, reducedMotion, highlight, onHover
         outlineMesh,
         simIndex: specs.length - 1,
         length: len,
+        sizes,
       });
     });
-    // The pinned species and the most recorded ones start near the camera so something is in view.
-    const pinned = model.actors.findIndex((a) => a.pinned);
-    const nearSpecies = entries
-      .filter((e) => e.actorIndex === pinned || e.actorIndex < 3)
-      .map((e) => e.simIndex);
-    const ahead = world.curve.getPointAt(0.05);
+    // Every species starts around the focus point in front of the camera so the shot is populated.
+    const nearSpecies = entries.map((e) => e.simIndex);
     const sim = new FishSim(
       specs,
-      { bounds: world.bounds, bedDepth: world.bedDepth },
+      { bounds: world.bounds, bedDepth: world.bedDepth, littoralX: world.littoralX },
       {
         seed: 11,
-        spawnCentre: [ahead.x, ahead.z],
+        spawnCentre: [world.focus.x, world.focus.z],
         nearSpecies,
         speedScale: reducedMotion ? 0.4 : 1,
       },
     );
+    // Let the schools form before the first frame.
+    for (let k = 0; k < 90; k++) sim.update(1 / 15);
     return { entries, sim };
-  }, [model, world, fogColor, reducedMotion]);
+  }, [model, world, water, reducedMotion]);
 
   useEffect(
     () => () => {
@@ -180,12 +182,15 @@ export function Fish({ model, world, fogColor, reducedMotion, highlight, onHover
 
   const writeMatrix = (e: FishEntry, i: number, slot: InstancedMesh) => {
     const a = built.sim.agents[built.sim.speciesStart[e.simIndex] + i];
-    const { yaw, pitch } = built.sim.heading(a);
+    const { yaw, pitch, roll } = built.sim.heading(a);
     tmpQ.setFromAxisAngle(AXIS_Y, yaw);
-    tmpQ2.setFromAxisAngle(AXIS_Z, pitch);
+    // Fish rarely swim steeply up or down; keep the body near level.
+    tmpQ2.setFromAxisAngle(AXIS_Z, Math.max(-0.35, Math.min(0.35, pitch)));
+    tmpQ.multiply(tmpQ2);
+    tmpQ2.setFromAxisAngle(AXIS_X, roll);
     tmpQ.multiply(tmpQ2);
     tmpP.set(a.x, a.y, a.z);
-    const s = e.length;
+    const s = e.length * e.sizes[i];
     tmpS.set(s, s, s);
     tmpM.compose(tmpP, tmpQ, tmpS);
     slot.setMatrixAt(i, tmpM);
@@ -193,6 +198,13 @@ export function Fish({ model, world, fogColor, reducedMotion, highlight, onHover
 
   const lastPublish = useRef(0);
   useFrame((state, dt) => {
+    const cam = state.camera.position;
+    built.sim.avoid = {
+      x: cam.x,
+      y: cam.y,
+      z: cam.z,
+      r: Math.max(1.7, Math.min(5, world.renderVisibility * 0.6)),
+    };
     built.sim.update(reducedMotion ? dt * 0.5 : dt);
     if (DEMO && state.clock.elapsedTime - lastPublish.current > 0.25) {
       // Test hook (demo builds only): where each fish is on screen, so e2e tests can hover one.
@@ -304,42 +316,47 @@ interface CritterEntry {
   mesh: InstancedMesh;
   outlineMesh: InstancedMesh;
   geometry: BufferGeometry;
-  material: MeshStandardMaterial;
-  outlineMaterial: MeshStandardMaterial;
+  material: ShaderMaterial;
+  outlineMaterial: ShaderMaterial;
   critters: Critter[];
 }
 
-export function Critters({
-  model,
-  world,
-  reducedMotion,
-  highlight,
-  onHover,
-}: Omit<Props, 'fogColor'>) {
+export function Critters({ model, world, water, reducedMotion, highlight, onHover }: Props) {
   const hoverRef = useRef<HoverInfo | null>(null);
   const built = useMemo<CritterEntry[]>(() => {
     const rng = mulberry32(42);
     const out: CritterEntry[] = [];
+    const b = world.bounds;
+    const mx = (b.maxX - b.minX) * 0.5;
+    const mz = (b.maxZ - b.minZ) * 0.5;
+    const cx = (b.minX + b.maxX) / 2;
+    const cz = (b.minZ + b.maxZ) / 2;
     model.actors.forEach((actor, actorIndex) => {
       if (isFishArchetype(actor.archetype)) return;
       const geometry = buildCritterGeometry(actor.archetype);
-      const material = new MeshStandardMaterial({
-        color: new Color(actor.colors.side),
-        roughness: 0.75,
-        metalness: 0.05,
-      });
-      const outlineMaterial = new MeshStandardMaterial({
-        color: new Color(orangeOrPale(actor)),
-        emissive: new Color(orangeOrPale(actor)),
-        side: 1,
+      const base = {
+        colors: actor.colors,
+        water,
+        waveAmp: 0,
+        waveFreq: 0,
+        fullBody: false,
+        sheen: actor.archetype === 'mussel' || actor.archetype === 'turtle' ? 0.6 : 0.35,
+      };
+      const material = createFishMaterial(base);
+      const outlineMaterial = createFishMaterial({
+        ...base,
+        outline: true,
+        outlineColor: orangeOrPale(actor),
       });
       const size = Math.max(0.14, (actor.lengthCm / 100) * FISH_VISUAL_SCALE);
       const a = actor.archetype;
       const n = Math.min(actor.count, a === 'mussel' ? 24 : 12);
       const critters: Critter[] = [];
-      const placed =
-        a === 'crayfish' || a === 'crab' || a === 'mussel'
-          ? bedPositions(world, n, 0.8, 14, 300 + actorIndex)
+      const onBed = a === 'crayfish' || a === 'crab' || a === 'mussel';
+      const placed = onBed
+        ? bedPositions(world, n, 0.8, 30, 300 + actorIndex)
+        : a === 'frog'
+          ? bedPositions(world, n, 0.4, 5, 400 + actorIndex)
           : [];
       for (let i = 0; i < n; i++) {
         const p = placed[i];
@@ -351,12 +368,12 @@ export function Critters({
           z = p.z;
           y = p.y;
         } else if (a === 'frog') {
-          x = -HALFX + 6 + rng() * 24;
-          z = (rng() - 0.5) * 120;
+          x = b.minX + rng() * mx;
+          z = cz + (rng() - 0.5) * mz;
           y = -0.22;
         } else {
-          x = (rng() - 0.5) * 120;
-          z = (rng() - 0.5) * 120;
+          x = cx + (rng() - 0.5) * mx;
+          z = cz + (rng() - 0.5) * mz;
           y = a === 'turtle' ? -(0.8 + rng() * 1.2) : -0.55;
         }
         critters.push({
@@ -379,7 +396,16 @@ export function Critters({
           homeZ: z,
         });
       }
-      const mesh = new InstancedMesh(geometry, material, Math.max(1, critters.length));
+      const count = Math.max(1, critters.length);
+      const phase = new Float32Array(count);
+      const tint = new Float32Array(count);
+      for (let i = 0; i < count; i++) {
+        phase[i] = rng() * 6.28;
+        tint[i] = 0.85 + rng() * 0.3;
+      }
+      geometry.setAttribute('aPhase', new InstancedBufferAttribute(phase, 1));
+      geometry.setAttribute('aTint', new InstancedBufferAttribute(tint, 1));
+      const mesh = new InstancedMesh(geometry, material, count);
       const outlineMesh = new InstancedMesh(geometry, outlineMaterial, 1);
       mesh.frustumCulled = false;
       mesh.boundingSphere = HUGE;
@@ -397,7 +423,7 @@ export function Critters({
       });
     });
     return out;
-  }, [model, world]);
+  }, [model, world, water]);
 
   useEffect(
     () => () => {
@@ -412,17 +438,15 @@ export function Critters({
     [built],
   );
   useEffect(() => {
-    for (const e of built) {
-      const hl = highlight && e.actor.scientificName === highlight;
-      e.material.emissive.set(hl ? '#2a9dc4' : '#000000');
-      e.material.emissiveIntensity = hl ? 0.6 : 0;
-    }
+    for (const e of built)
+      e.material.uniforms.uGlow.value = highlight && e.actor.scientificName === highlight ? 1 : 0;
   }, [built, highlight]);
 
   useFrame((state, dt) => {
     const step = Math.min(dt, 0.05) * (reducedMotion ? 0.4 : 1);
     const t = state.clock.elapsedTime * (reducedMotion ? 0.4 : 1);
     for (const e of built) {
+      e.material.uniforms.uTime.value = t;
       const a = e.actor.archetype;
       e.critters.forEach((c, i) => {
         let roll = 0;
@@ -432,11 +456,12 @@ export function Critters({
           c.heading += Math.sin(c.wa) * step * 0.8;
           c.x += Math.cos(c.heading) * c.speed * step;
           c.z -= Math.sin(c.heading) * c.speed * step;
-          // stay near the patch
-          if (c.x < -HALFX + 10 || c.x > HALFX - 10) c.heading = Math.PI - c.heading;
-          if (Math.abs(c.z) > HALFX - 10) c.heading = -c.heading;
-          c.x = Math.max(-HALFX + 6, Math.min(HALFX - 6, c.x));
-          c.z = Math.max(-HALFX + 6, Math.min(HALFX - 6, c.z));
+          // stay in the arena
+          const b = world.bounds;
+          if (c.x < b.minX + 2 || c.x > b.maxX - 2) c.heading = Math.PI - c.heading;
+          if (c.z < b.minZ + 2 || c.z > b.maxZ - 2) c.heading = -c.heading;
+          c.x = Math.max(b.minX, Math.min(b.maxX, c.x));
+          c.z = Math.max(b.minZ, Math.min(b.maxZ, c.z));
         }
         let y = c.y;
         if (a === 'crayfish' || a === 'crab') {
@@ -450,7 +475,7 @@ export function Critters({
           roll = Math.sin(t * 1.1 + c.phase) * 0.1;
           y = c.y + Math.sin(t * 0.5 + c.phase) * 0.1;
         } else if (a === 'frog') {
-          y = c.y + Math.sin(t * 1.4 + c.phase) * 0.02;
+          y = c.y + (c.y > -0.3 ? Math.sin(t * 1.4 + c.phase) * 0.02 : 0);
         } else {
           y = c.y + Math.sin(t * 0.8 + c.phase) * 0.05;
         }
@@ -508,5 +533,3 @@ export function Critters({
     </>
   );
 }
-
-const HALFX = 100;

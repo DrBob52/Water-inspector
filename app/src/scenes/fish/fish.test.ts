@@ -3,7 +3,9 @@ import type { FishArchetype } from '@wi/shared';
 import {
   FISH_PARAMS,
   bodyProfile,
+  bodySection,
   buildFishGeometry,
+  eyeOf,
   fishGeometryData,
   isFishArchetype,
 } from './fishGeometry';
@@ -50,11 +52,57 @@ describe('procedural fish geometry', () => {
     expect(bodyProfile(0.36, p)).toBeGreaterThan(0.9);
     expect(bodyProfile(0.9, p)).toBeLessThan(0.3);
   });
-  it('gives fins (aPart = 1) per archetype: eels have none besides the tiny tail', () => {
-    const fins = (a: FishArchetype) => fishGeometryData(a).aPart.filter((v) => v === 1).length;
-    expect(fins('fusiform')).toBeGreaterThan(fins('anguilliform'));
+  it('gives fins (aPart = 1) per archetype: paired fins on most, median fringes only on eels', () => {
+    // Paired (pectoral, pelvic) fins stand off the median plane; eel fins all lie in it.
+    const paired = (a: FishArchetype) => {
+      const d = fishGeometryData(a);
+      let n = 0;
+      for (let i = 0; i < d.aPart.length; i++)
+        if (d.aPart[i] === 1 && Math.abs(d.positions[i * 3 + 2]) > 1e-6) n++;
+      return n;
+    };
+    expect(paired('fusiform')).toBeGreaterThan(10);
+    expect(paired('anguilliform')).toBe(0);
     expect(FISH_PARAMS.anguilliform.fullBody).toBe(true);
     expect(FISH_PARAMS.fusiform.fullBody).toBe(false);
+    for (const a of ARCHETYPES) {
+      const d = fishGeometryData(a);
+      expect(d.aFin).toHaveLength((d.positions.length / 3) * 2);
+      // fin coordinates run 0 (base) to 1 (edge)
+      expect(Math.max(...d.aFin)).toBeLessThanOrEqual(1);
+      expect(Math.min(...d.aFin)).toBeGreaterThanOrEqual(0);
+    }
+  });
+  it('shapes the tail by archetype: forked tails have a notch, the eel tail does not', () => {
+    const tail = (a: FishArchetype) => {
+      const d = fishGeometryData(a);
+      let onAxis = Infinity; // where the caudal fin's edge crosses the body axis
+      let tip = Infinity;
+      for (let i = 0; i < d.aPart.length; i++) {
+        if (d.aPart[i] !== 1 || d.aT[i] < 0.86) continue;
+        const x = d.positions[i * 3];
+        tip = Math.min(tip, x);
+        if (Math.abs(d.positions[i * 3 + 1]) < 1e-6 && d.aFin[i * 2] === 1)
+          onAxis = Math.min(onAxis, x);
+      }
+      return { tip, onAxis };
+    };
+    const forked = tail('fusiform');
+    const eel = tail('anguilliform');
+    expect(forked.onAxis - forked.tip).toBeGreaterThan(0.05); // the notch sits inside the lobes
+    expect(eel.onAxis - eel.tip).toBeLessThan(0.01);
+  });
+  it('places the eye on the head, inside the body outline', () => {
+    for (const a of ARCHETYPES) {
+      const p = FISH_PARAMS[a];
+      const e = eyeOf(p);
+      expect(e.x).toBeGreaterThan(0.3);
+      expect(e.x).toBeLessThan(0.5);
+      const s = bodySection(0.5 - e.x, p);
+      expect(e.y).toBeLessThan(s.top);
+      expect(e.y).toBeGreaterThan(-s.bottom);
+      expect(e.r).toBeLessThan(s.top + s.bottom);
+    }
   });
   it('caches geometry per archetype and recognises archetype names', () => {
     expect(buildFishGeometry('small')).toBe(buildFishGeometry('small'));
@@ -182,6 +230,50 @@ describe('fish movement', () => {
     Object.assign(a, { vx: 0, vz: -1, vy: 1 });
     expect(sim.heading(a).yaw).toBeCloseTo(Math.PI / 2, 6);
     expect(sim.heading(a).pitch).toBeGreaterThan(0.5);
+  });
+  it('keeps fish clear of the camera', () => {
+    const sim = new FishSim([sp({ schooling: true, count: 20 }), sp({ count: 10 })], flatBed(12), {
+      seed: 4,
+      spawnCentre: [0, 0],
+      nearSpecies: [0, 1],
+    });
+    sim.avoid = { x: 0, y: -5, z: 0, r: 3 };
+    run(sim, 20);
+    for (let k = 0; k < 30; k++) {
+      sim.update(1 / 30);
+      for (const a of sim.agents)
+        if (Math.abs(a.y + 5) < 1.8)
+          expect(Math.hypot(a.x, a.z)).toBeGreaterThanOrEqual(1.8 - 1e-6);
+    }
+  });
+  it('banks into turns, and schools turn together', () => {
+    const sim = new FishSim([sp({ count: 1, speed: 1 })], flatBed(10), { seed: 3 });
+    const a = sim.agents[0];
+    // Turning left (yaw increasing) rolls the back toward the inside of the turn (negative roll).
+    Object.assign(a, { x: 0, z: 0, vx: 1, vz: 0, prevYaw: 0, roll: 0 });
+    for (let k = 0; k < 10; k++) {
+      const yaw = (k + 1) * 0.05;
+      a.vx = Math.cos(yaw);
+      a.vz = -Math.sin(yaw);
+      a.prevYaw = k * 0.05;
+      sim.update(1 / 30);
+    }
+    expect(sim.heading(a).roll).toBeLessThan(0);
+    const school = new FishSim(
+      [sp({ schooling: true, count: 16, length: 0.25, speed: 0.6 })],
+      flatBed(15),
+      { seed: 6 },
+    );
+    run(school, 20);
+    // Polarisation: the mean of the unit headings is near 1 when everyone swims the same way.
+    let hx = 0;
+    let hz = 0;
+    for (const f of school.agents) {
+      const l = Math.hypot(f.vx, f.vz) || 1;
+      hx += f.vx / l;
+      hz += f.vz / l;
+    }
+    expect(Math.hypot(hx, hz) / 16).toBeGreaterThan(0.8);
   });
   it('defines depth bands', () => {
     expect(bandRange('benthic', 10)).toEqual({ lo: -9.85, hi: -9 });
