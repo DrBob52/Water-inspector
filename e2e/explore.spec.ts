@@ -70,7 +70,7 @@ test.describe('explore and inspect', () => {
     await shot(page, '04-tab-life');
 
     await page.getByRole('tab', { name: 'Sources' }).click();
-    const rows = page.getByTestId('sources-table').locator('tbody tr');
+    const rows = page.getByTestId('source-row');
     expect(await rows.count()).toBeGreaterThanOrEqual(7);
     await expect(page.getByTestId('sources-table')).toContainText('Water Quality Portal');
     await expect(

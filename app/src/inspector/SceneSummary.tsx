@@ -1,3 +1,4 @@
+import { Eye } from 'lucide-react';
 import { describeScene } from '@wi/shared';
 import { useSceneModel } from '../lib/useSceneModel';
 import { useUi } from '../store';
@@ -9,13 +10,9 @@ export function SceneSummary() {
   const { model } = useSceneModel(view !== 'map');
   if (view === 'map') return null;
   return (
-    <p
-      className="m-0 px-3.5 py-2 text-xs"
-      style={{ background: 'var(--accent-soft)', borderBottom: '1px solid var(--border)' }}
-      aria-live="polite"
-      data-testid="scene-summary"
-    >
-      {model ? describeScene(model, view, units) : 'Preparing the 3D scene…'}
+    <p className="scene-summary" aria-live="polite" data-testid="scene-summary">
+      <Eye aria-hidden="true" size={14} strokeWidth={1.9} />
+      <span>{model ? describeScene(model, view, units) : 'Preparing the 3D scene…'}</span>
     </p>
   );
 }

@@ -38,67 +38,37 @@ export function SourcesTab({ id }: { id: string }) {
   return (
     <div>
       {loading && <Skeleton h={80} />}
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse text-left text-xs" data-testid="sources-table">
-          <caption className="sr-only">Data sources for this waterbody</caption>
-          <thead>
-            <tr style={{ color: 'var(--muted)' }}>
-              <th scope="col" className="py-1 pr-2">
-                Source
-              </th>
-              <th scope="col" className="py-1 pr-2">
-                Retrieved
-              </th>
-              <th scope="col" className="py-1 pr-2">
-                Status
-              </th>
-              <th scope="col" className="py-1">
-                Link
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((r) => (
-              <tr key={r.key} style={{ borderTop: '1px solid var(--border)' }}>
-                <td className="py-1.5 pr-2 align-top">
-                  <strong>{r.label}</strong>
-                  <div>{r.provenance.source}</div>
-                  {r.provenance.license && (
-                    <div style={{ color: 'var(--muted)' }}>License: {r.provenance.license}</div>
-                  )}
-                  {r.provenance.note && (
-                    <div style={{ color: 'var(--muted)' }}>{r.provenance.note}</div>
-                  )}
-                  {r.error && <div style={{ color: 'var(--bad)' }}>{r.error}</div>}
-                </td>
-                <td className="py-1.5 pr-2 align-top whitespace-nowrap">
-                  {formatDateTime(r.provenance.retrievedAt)}
-                </td>
-                <td className="py-1.5 pr-2 align-top">
-                  <span className={`chip ${STATUS_CLS[r.status]}`}>{STATUS_TEXT[r.status]}</span>
-                </td>
-                <td className="py-1.5 align-top">
-                  {/^https?:/.test(r.provenance.url) ? (
-                    <a
-                      href={r.provenance.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ color: 'var(--accent)' }}
-                    >
-                      Request
-                    </a>
-                  ) : (
-                    <span style={{ color: 'var(--muted)' }}>
-                      {r.provenance.url ? 'Bundled sample' : 'n/a'}
-                    </span>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <p className="mt-3 text-xs" style={{ color: 'var(--muted)' }}>
+      <ul className="source-list m-0 list-none p-0" data-testid="sources-table">
+        {rows.map((r) => (
+          <li key={r.key} className="source-item" data-testid="source-row">
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0">
+                <div className="source-label">{r.label}</div>
+                <div className="source-name">{r.provenance.source}</div>
+              </div>
+              <span className={`chip ${STATUS_CLS[r.status]}`}>{STATUS_TEXT[r.status]}</span>
+            </div>
+            {r.provenance.note && <p className="source-note">{r.provenance.note}</p>}
+            {r.error && (
+              <p className="source-note" style={{ color: 'var(--bad)' }}>
+                {r.error}
+              </p>
+            )}
+            <div className="source-meta">
+              <span className="tnum">Retrieved {formatDateTime(r.provenance.retrievedAt)}</span>
+              {r.provenance.license && <span>{r.provenance.license}</span>}
+              {/^https?:/.test(r.provenance.url) ? (
+                <a href={r.provenance.url} target="_blank" rel="noopener noreferrer">
+                  Open request
+                </a>
+              ) : (
+                <span>{r.provenance.url ? 'Bundled sample' : 'No request'}</span>
+              )}
+            </div>
+          </li>
+        ))}
+      </ul>
+      <p className="footnote mt-4">
         Data comes from third-party monitoring programmes and databases. It may be sparse, old or
         missing for this waterbody. Screening thresholds are shown for context only and are not
         health or safety advice. Depth and bathymetry marked as modelled or estimated are not survey

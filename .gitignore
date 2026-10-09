@@ -10,3 +10,4 @@ playwright-report/
 *.tsbuildinfo
 .env
 .env.local
+.claude/

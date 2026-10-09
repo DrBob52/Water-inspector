@@ -139,7 +139,7 @@ export function MapView() {
           tiles={demTiles}
           tileSize={256}
           encoding="terrarium"
-          maxzoom={OFFLINE_TILES ? 4 : 12}
+          maxzoom={OFFLINE_TILES ? 14 : 12}
         />
         {!OFFLINE_TILES && (
           <Source

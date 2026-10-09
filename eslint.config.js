@@ -7,6 +7,7 @@ import prettier from 'eslint-config-prettier';
 export default tseslint.config(
   {
     ignores: [
+      '.claude/**',
       '**/node_modules/**',
       '**/dist/**',
       '**/coverage/**',
