@@ -64,7 +64,7 @@ container, see Status below.
 | `FIXTURES_DIR`       | server | Override the fixtures folder                                                    |
 | `VITE_DEMO`          | app    | `1` shows the demo banner and enables the demo outlines and markers             |
 | `VITE_OFFLINE_TILES` | app    | `1` swaps the basemap and DEM for a minimal local style (no tile requests)      |
-| `VITE_MAP_STYLE_URL` | app    | Override the basemap style URL (default OpenFreeMap liberty)                    |
+| `VITE_MAP_STYLE_URL` | app    | Override the basemap style URL (default: built-in USGS satellite style)         |
 | `VITE_DEM_URL`       | app    | Override the Terrarium DEM tile URL template for map terrain                    |
 
 All upstream base URLs, layer names, TTLs, concurrency limits and timeouts live in

@@ -11,11 +11,11 @@ test.describe('accessibility and preferences', () => {
     await expect(page.getByRole('tablist')).toBeVisible();
     await page.getByRole('tab', { name: 'Overview' }).focus();
     await page.keyboard.press('ArrowRight');
-    await expect(page.getByRole('tab', { name: 'Water Quality' })).toHaveAttribute(
+    await expect(page.getByRole('tab', { name: 'Quality' })).toHaveAttribute(
       'aria-selected',
       'true',
     );
-    await expect(page.getByRole('tab', { name: 'Water Quality' })).toBeFocused();
+    await expect(page.getByRole('tab', { name: 'Quality' })).toBeFocused();
     await page.keyboard.press('End');
     await expect(page.getByRole('tab', { name: 'Sources' })).toHaveAttribute(
       'aria-selected',
@@ -106,7 +106,7 @@ test.describe('accessibility and preferences', () => {
     expect(overflow).toBeLessThanOrEqual(0);
     await page
       .getByRole('radiogroup', { name: 'View' })
-      .getByText('Raised Terrain', { exact: true })
+      .getByText('Terrain', { exact: true })
       .click();
     await waitForScene(page, 'raised');
   });

@@ -15,7 +15,7 @@ export const mapApi = {
     const narrow = window.innerWidth <= 720;
     map.fitBounds(bbox, {
       padding: {
-        top: 70,
+        top: 100,
         left: 40,
         bottom: narrow ? 340 : 60,
         right: narrow ? 40 : (opts.rightPadding ?? 480),

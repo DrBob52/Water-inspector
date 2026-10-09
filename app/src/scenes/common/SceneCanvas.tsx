@@ -7,9 +7,11 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { PerformanceMonitor } from '@react-three/drei';
-import { useDocumentVisible } from '../../lib/hooks';
+import type * as THREE from 'three';
+import { useDocumentVisible, useStageInset } from '../../lib/hooks';
+import { useUi } from '../../store';
 
 /** 0.4 to 1: multiplier for pixel ratio, particle counts and fish counts. */
 export const QualityContext = createContext(1);
@@ -25,6 +27,24 @@ function ReadySignal({ onReady }: { onReady: () => void }) {
       onReady();
     }
   });
+  return null;
+}
+
+/**
+ * The canvas is full-bleed under the glass inspector. Shift the projection centre left by half the
+ * hidden width so the subject sits in the middle of the visible stage.
+ */
+function StageOffset({ inset }: { inset: number }) {
+  const camera = useThree((s) => s.camera);
+  const size = useThree((s) => s.size);
+  useEffect(() => {
+    const cam = camera as THREE.PerspectiveCamera;
+    if (!('setViewOffset' in cam)) return;
+    if (inset > 0)
+      cam.setViewOffset(size.width, size.height, inset / 2, 0, size.width, size.height);
+    else cam.clearViewOffset();
+    cam.updateProjectionMatrix();
+  }, [camera, size.width, size.height, inset]);
   return null;
 }
 
@@ -57,6 +77,8 @@ export function SceneCanvas({
   dataAttrs,
 }: Props) {
   const visible = useDocumentVisible();
+  const panelOpen = useUi((s) => s.panelOpen);
+  const inset = useStageInset(panelOpen);
   const [quality, setQuality] = useState(1);
   const [ready, setReady] = useState(false);
   useEffect(() => setReady(false), [view]);
@@ -80,6 +102,7 @@ export function SceneCanvas({
         gl={{ antialias: true, powerPreference: 'high-performance', preserveDrawingBuffer: true }}
       >
         <color attach="background" args={[background]} />
+        <StageOffset inset={inset} />
         <PerformanceMonitor
           bounds={() => [45, 200]}
           flipflops={3}

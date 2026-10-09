@@ -9,3 +9,4 @@ test-results
 playwright-report
 shared/species-catalog.json
 SPEC.md
+app/public/offline

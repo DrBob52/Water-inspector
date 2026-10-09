@@ -10,9 +10,9 @@ import {
 } from './helpers';
 
 const VIEWS = [
-  { key: 'raised', label: 'Raised Terrain' },
+  { key: 'raised', label: 'Terrain' },
   { key: 'underwater', label: 'Underwater' },
-  { key: 'section', label: 'Cross-Section' },
+  { key: 'section', label: 'Section' },
   { key: 'pollutants', label: 'Pollutants' },
 ] as const;
 

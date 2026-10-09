@@ -195,7 +195,7 @@ describe('ViewSwitcher', () => {
       'section',
       'pollutants',
     ]);
-    fireEvent.click(screen.getByLabelText('Cross-Section'));
+    fireEvent.click(screen.getByLabelText('Section'));
     await waitFor(() => expect(useUi.getState().view).toBe('section'));
   });
 });

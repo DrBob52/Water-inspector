@@ -3,16 +3,16 @@ export type TabKey = 'overview' | 'quality' | 'impairments' | 'life' | 'sources'
 
 export const VIEWS: Array<{ key: View; label: string; hotkey: string }> = [
   { key: 'map', label: 'Map', hotkey: '1' },
-  { key: 'raised', label: 'Raised Terrain', hotkey: '2' },
+  { key: 'raised', label: 'Terrain', hotkey: '2' },
   { key: 'underwater', label: 'Underwater', hotkey: '3' },
-  { key: 'section', label: 'Cross-Section', hotkey: '4' },
+  { key: 'section', label: 'Section', hotkey: '4' },
   { key: 'pollutants', label: 'Pollutants', hotkey: '5' },
 ];
 
 export const TABS: Array<{ key: TabKey; label: string }> = [
   { key: 'overview', label: 'Overview' },
-  { key: 'quality', label: 'Water Quality' },
-  { key: 'impairments', label: 'Pollutants and Impairments' },
+  { key: 'quality', label: 'Quality' },
+  { key: 'impairments', label: 'Pollution' },
   { key: 'life', label: 'Life' },
   { key: 'sources', label: 'Sources' },
 ];

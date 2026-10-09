@@ -31,13 +31,7 @@ test.describe('explore and inspect', () => {
     await expect(page.getByTestId('wb-name')).toHaveText('Lake Champlain');
     const tabs = page.getByRole('tab');
     await expect(tabs).toHaveCount(5);
-    await expect(tabs).toHaveText([
-      'Overview',
-      'Water Quality',
-      'Pollutants and Impairments',
-      'Life',
-      'Sources',
-    ]);
+    await expect(tabs).toHaveText(['Overview', 'Quality', 'Pollution', 'Life', 'Sources']);
     await expect(page.getByTestId('inspector').getByText('Demo data').first()).toBeVisible();
     await expect(page.getByTestId('demo-note')).toHaveText(
       'Illustrative sample data, not live measurements.',
@@ -57,13 +51,13 @@ test.describe('explore and inspect', () => {
     await page.goto('/?wb=nhd:demo-lake-champlain');
     await expect(page.getByTestId('wb-name')).toHaveText('Lake Champlain');
 
-    await page.getByRole('tab', { name: 'Water Quality' }).click();
+    await page.getByRole('tab', { name: 'Quality' }).click();
     await expect(page.getByTestId('param-water_temp')).toContainText('Water temperature');
     await expect(page.getByTestId('param-ph')).toContainText('Within screening reference');
     await expect(page.getByText(/Not measured here/)).toBeVisible();
     await shot(page, '03-tab-water-quality');
 
-    await page.getByRole('tab', { name: 'Pollutants and Impairments' }).click();
+    await page.getByRole('tab', { name: 'Pollution' }).click();
     await expect(page.getByTestId('uses-list')).toContainText('Fish consumption');
     await expect(page.getByTestId('uses-list')).toContainText('Not supporting');
     await expect(page.getByText('TMDL').first()).toBeVisible();
@@ -140,7 +134,7 @@ test.describe('explore and inspect', () => {
     );
     await page.goto('/?wb=nhd:demo-lake-tahoe&tab=life');
     await expect(page.getByRole('alert')).toContainText(/could not be loaded|unavailable/);
-    await page.getByRole('tab', { name: 'Water Quality' }).click();
+    await page.getByRole('tab', { name: 'Quality' }).click();
     await expect(page.getByTestId('param-water_temp')).toBeVisible();
     await page.getByRole('tab', { name: 'Overview' }).click();
     await expect(page.getByTestId('key-facts')).toContainText('501 m');

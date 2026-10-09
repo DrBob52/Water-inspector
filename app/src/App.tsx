@@ -6,7 +6,8 @@ import { hasWebGL } from './lib/webgl';
 import { startUrlSync, useUi } from './store';
 import { MapView } from './map/MapView';
 import { SearchBox } from './map/SearchBox';
-import { useViewHotkeys } from './inspector/ViewSwitcher';
+import { ViewDock, useViewHotkeys } from './inspector/ViewSwitcher';
+import { Waves } from 'lucide-react';
 
 const SceneHost = lazy(() => import('./scenes/SceneHost'));
 const Inspector = lazy(() =>
@@ -56,17 +57,13 @@ function Shell() {
   useEffect(() => startUrlSync(), []);
 
   return (
-    <div className="app-shell">
+    <div className="app-shell" data-panel={selectedId && panelOpen ? 'open' : 'closed'}>
       <a className="skip-link" href="#main-panel">
         Skip to the inspector
       </a>
       {webgl ? <MapView /> : <NoWebGl demo={demo} />}
       {selectedId && view !== 'map' && webgl && (
-        <div
-          className={`scene-layer ${panelOpen ? 'panel-open' : ''}`}
-          data-testid="scene-layer"
-          data-view={view}
-        >
+        <div className="scene-layer" data-testid="scene-layer" data-view={view}>
           <Suspense
             fallback={
               <div role="status" className="grid h-full place-items-center text-white">
@@ -78,10 +75,22 @@ function Shell() {
           </Suspense>
         </div>
       )}
-      {view === 'map' && <SearchBox />}
+      {view === 'map' && (
+        <>
+          <div className="brand glass" aria-hidden="true">
+            <span className="brand-mark">
+              <Waves size={15} strokeWidth={2.4} />
+            </span>
+            <span className="brand-name">Water Inspector</span>
+          </div>
+          <SearchBox />
+        </>
+      )}
+      {selectedId && webgl && <ViewDock />}
       {demo && !selectedId && (
         <div className="banner" data-testid="demo-banner" role="note">
-          Demo mode: {DEMO_LABEL}. Click one of the six marked waterbodies.
+          <strong>Demo mode.</strong> {DEMO_LABEL}. Pick one of the six marked waterbodies to
+          inspect it.
         </div>
       )}
       {toast && (

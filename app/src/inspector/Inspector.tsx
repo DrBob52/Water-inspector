@@ -1,4 +1,15 @@
 import { useEffect, useRef } from 'react';
+import {
+  ChevronDown,
+  ChevronUp,
+  Compass,
+  Database,
+  Droplet,
+  Leaf,
+  TriangleAlert,
+  X,
+  type LucideIcon,
+} from 'lucide-react';
 import { formatArea } from '@wi/shared';
 import { DEMO } from '../env';
 import { DemoBadge, ErrorBox, Skeleton } from '../components/ui';
@@ -7,13 +18,20 @@ import { displayName } from '../lib/summary';
 import { TABS, type TabKey } from '../lib/urlState';
 import { useUi } from '../store';
 import { hasWebGL } from '../lib/webgl';
-import { ViewSwitcher } from './ViewSwitcher';
 import { OverviewTab } from './tabs/OverviewTab';
 import { QualityTab } from './tabs/QualityTab';
 import { ImpairmentsTab } from './tabs/ImpairmentsTab';
 import { LifeTab } from './tabs/LifeTab';
 import { SourcesTab } from './tabs/SourcesTab';
 import { SceneSummary } from './SceneSummary';
+
+const TAB_ICONS: Record<TabKey, LucideIcon> = {
+  overview: Compass,
+  quality: Droplet,
+  impairments: TriangleAlert,
+  life: Leaf,
+  sources: Database,
+};
 
 const TYPE_LABEL: Record<string, string> = {
   lake: 'Lake',
@@ -74,28 +92,30 @@ export function Inspector() {
       <div className="panel-header">
         <div className="flex items-start gap-2">
           <div className="min-w-0 flex-1">
-            {identity.isLoading ? (
-              <Skeleton h={22} w="70%" />
-            ) : identity.error ? (
-              <strong>Waterbody</strong>
+            {ident ? (
+              <div className="panel-eyebrow">
+                {TYPE_LABEL[ident.type] ?? 'Waterbody'}
+                {ident.state ? ` · ${ident.state}` : ''}
+              </div>
             ) : (
-              <h2
-                ref={headingRef}
-                tabIndex={-1}
-                className="m-0 text-lg font-bold leading-tight"
-                data-testid="wb-name"
-              >
+              <Skeleton h={10} w="30%" />
+            )}
+            {identity.isLoading ? (
+              <div className="mt-2">
+                <Skeleton h={30} w="75%" />
+              </div>
+            ) : identity.error ? (
+              <h2 className="panel-title">Waterbody</h2>
+            ) : (
+              <h2 ref={headingRef} tabIndex={-1} className="panel-title" data-testid="wb-name">
                 {ident ? displayName(ident) : ''}
               </h2>
             )}
             {ident && (
-              <div
-                className="mt-1 flex flex-wrap items-center gap-1.5 text-xs"
-                style={{ color: 'var(--muted)' }}
-              >
-                <span className="chip chip-accent">{TYPE_LABEL[ident.type] ?? 'Waterbody'}</span>
-                <span>{[ident.state, ident.country].filter(Boolean).join(', ')}</span>
-                {area !== undefined && <span>· {formatArea(area, units)}</span>}
+              <div className="panel-meta">
+                {area !== undefined && <span className="tnum">{formatArea(area, units)}</span>}
+                {area !== undefined && <span className="dot" aria-hidden="true" />}
+                <span>{ident.country === 'US' ? 'United States' : ident.country}</span>
                 {isDemo && <DemoBadge />}
               </div>
             )}
@@ -108,7 +128,7 @@ export function Inspector() {
             aria-label={open ? 'Collapse panel' : 'Expand panel'}
             title={open ? 'Collapse' : 'Expand'}
           >
-            {open ? '▾' : '▴'}
+            {open ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
           </button>
           <button
             type="button"
@@ -117,24 +137,18 @@ export function Inspector() {
             aria-label="Close inspector"
             title="Close"
           >
-            ×
+            <X size={16} />
           </button>
         </div>
-        {open && (
-          <div className="mt-2">
-            {hasWebGL() ? (
-              <ViewSwitcher />
-            ) : (
-              <p
-                className="m-0 text-xs"
-                style={{ color: 'var(--muted)' }}
-                data-testid="no-webgl-note"
-              >
-                3D views are unavailable because WebGL is not supported in this browser. The data
-                tabs below still work.
-              </p>
-            )}
-          </div>
+        {open && !hasWebGL() && (
+          <p
+            className="m-0 mt-3 text-xs"
+            style={{ color: 'var(--muted)' }}
+            data-testid="no-webgl-note"
+          >
+            3D views are unavailable because WebGL is not supported in this browser. The data tabs
+            below still work.
+          </p>
         )}
       </div>
       {open && (
@@ -154,6 +168,10 @@ export function Inspector() {
                 onClick={() => setTab(t.key as TabKey)}
                 onKeyDown={(e) => onTabKey(e, i)}
               >
+                {(() => {
+                  const Icon = TAB_ICONS[t.key];
+                  return <Icon aria-hidden="true" strokeWidth={1.9} />;
+                })()}
                 {t.label}
               </button>
             ))}
@@ -167,10 +185,15 @@ export function Inspector() {
           >
             {isDemo && (
               <p
-                className="m-0 mb-2 text-xs font-semibold"
-                style={{ color: 'var(--watch)' }}
+                className="m-0 mb-4 flex items-center gap-2 text-xs"
+                style={{ color: 'var(--demo)' }}
                 data-testid="demo-note"
               >
+                <span
+                  aria-hidden="true"
+                  className="inline-block h-1.5 w-1.5 rounded-full"
+                  style={{ background: 'var(--demo)' }}
+                />
                 Illustrative sample data, not live measurements.
               </p>
             )}

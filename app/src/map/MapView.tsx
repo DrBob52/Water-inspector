@@ -8,7 +8,7 @@ import { queryClient, useDemoList, useHealth, useIdentity } from '../lib/queries
 import { useUi } from '../store';
 import { DEMO, OFFLINE_TILES } from '../env';
 import { registerFlatDemProtocol } from './flatDem';
-import { BASEMAP_WATER_LAYERS, DEMO_WATER_LAYER, demTiles, mapStyle } from './style';
+import { BASEMAP_WATER_LAYERS, DEMO_WATER_LAYER, MAP_COLORS, demTiles, mapStyle } from './style';
 import { mapApi } from './mapApi';
 
 const EMPTY: FeatureCollection = { type: 'FeatureCollection', features: [] };
@@ -141,17 +141,39 @@ export function MapView() {
           encoding="terrarium"
           maxzoom={OFFLINE_TILES ? 4 : 12}
         />
+        {!OFFLINE_TILES && (
+          <Source
+            id="hillshade-dem"
+            type="raster-dem"
+            tiles={demTiles}
+            tileSize={256}
+            encoding="terrarium"
+            maxzoom={12}
+          >
+            <Layer
+              id="hillshade"
+              type="hillshade"
+              beforeId={typeof mapStyle === 'string' ? undefined : 'water'}
+              paint={{
+                'hillshade-exaggeration': 0.45,
+                'hillshade-shadow-color': 'rgba(0, 0, 0, 0.55)',
+                'hillshade-highlight-color': 'rgba(210, 240, 250, 0.12)',
+                'hillshade-accent-color': 'rgba(0, 0, 0, 0.2)',
+              }}
+            />
+          </Source>
+        )}
         {demoMode && (
           <Source id="demo-waterbodies" type="geojson" data="/api/demo/waterbodies.geojson">
             <Layer
               id={DEMO_WATER_LAYER}
               type="fill"
-              paint={{ 'fill-color': '#2f8fb3', 'fill-opacity': 0.55 }}
+              paint={{ 'fill-color': MAP_COLORS.accent, 'fill-opacity': 0.2 }}
             />
             <Layer
               id="demo-water-line"
               type="line"
-              paint={{ 'line-color': '#0b5d78', 'line-width': 1.4 }}
+              paint={{ 'line-color': MAP_COLORS.accent, 'line-width': 1.2, 'line-opacity': 0.75 }}
             />
           </Source>
         )}
@@ -159,25 +181,47 @@ export function MapView() {
           <Layer
             id="hover-fill"
             type="fill"
-            paint={{ 'fill-color': '#ffb703', 'fill-opacity': 0.4 }}
+            paint={{ 'fill-color': MAP_COLORS.accent, 'fill-opacity': 0.3 }}
           />
-          <Layer id="hover-line" type="line" paint={{ 'line-color': '#ffb703', 'line-width': 2 }} />
+          <Layer
+            id="hover-line"
+            type="line"
+            paint={{ 'line-color': '#c9f5ff', 'line-width': 1.6 }}
+          />
         </Source>
         <Source id="selected" type="geojson" data={selectedFc}>
           <Layer
             id="selected-fill"
             type="fill"
-            paint={{ 'fill-color': '#e8590c', 'fill-opacity': 0.12 }}
+            paint={{ 'fill-color': MAP_COLORS.accent, 'fill-opacity': 0.16 }}
+          />
+          <Layer
+            id="selected-glow"
+            type="line"
+            layout={{ 'line-join': 'round' }}
+            paint={{
+              'line-color': MAP_COLORS.accent,
+              'line-width': 12,
+              'line-blur': 10,
+              'line-opacity': 0.55,
+            }}
           />
           <Layer
             id="selected-line"
             type="line"
-            paint={{ 'line-color': '#e8590c', 'line-width': 3 }}
+            layout={{ 'line-join': 'round' }}
+            paint={{ 'line-color': '#dff9ff', 'line-width': 1.8 }}
           />
         </Source>
         {demoMode &&
           demoList.data?.map((w) => (
-            <Marker key={w.id} longitude={w.centroid[0]} latitude={w.centroid[1]} anchor="center">
+            <Marker
+              key={w.id}
+              longitude={w.centroid[0]}
+              latitude={w.centroid[1]}
+              anchor="left"
+              offset={[-7, 0]}
+            >
               <button
                 type="button"
                 className="marker-btn"
@@ -191,7 +235,8 @@ export function MapView() {
                   fitted.current = null;
                 }}
               >
-                ≈
+                <span className="marker-dot" aria-hidden="true" />
+                <span className="marker-label">{w.name}</span>
               </button>
             </Marker>
           ))}
