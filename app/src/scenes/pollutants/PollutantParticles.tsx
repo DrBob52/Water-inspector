@@ -1,114 +1,102 @@
 import { useEffect, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { AdditiveBlending, BufferAttribute, BufferGeometry, Color, ShaderMaterial } from 'three';
-import type { SceneModel } from '@wi/shared';
-import { mulberry32 } from '../fish/boids';
+import {
+  AdditiveBlending,
+  BufferAttribute,
+  BufferGeometry,
+  Color,
+  ShaderMaterial,
+  type PerspectiveCamera,
+} from 'three';
 import { useRenderQuality } from '../common/SceneCanvas';
 import type { Diorama } from '../raised/diorama';
-import { POLLUTANT_COLORS, particleCount } from './density';
+import type { PollutantLayer } from './density';
+import { layoutPlumes } from './plumes';
 
 const VERT = /* glsl */ `
+attribute float aSize;
 attribute float aPhase;
+attribute float aIntensity;
+attribute float aOver;
 uniform float uEx;
 uniform float uTime;
-uniform float uSize;
-uniform float uPulse;
-varying float vA;
+uniform float uPx;
+uniform float uDrift;
+uniform float uMotion;
+varying float vI;
 void main() {
   vec3 p = position;
+  float depth = -p.y * uEx;
   p.y *= uEx;
-  float pulse = 1.0 + uPulse * 0.35 * sin(uTime * 1.2 + aPhase);
+  float t = uTime;
+  p.x += (sin(t * 0.13 + aPhase) + 0.6 * sin(t * 0.071 + aPhase * 2.1)) * uDrift;
+  p.z += (cos(t * 0.11 + aPhase * 1.7) + 0.5 * sin(t * 0.083 + aPhase * 0.6)) * uDrift;
+  p.y += sin(t * 0.17 + aPhase * 0.9) * min(uDrift * 0.3, depth * 0.08);
+  p.y = min(p.y, -0.04);
+  // Over-threshold plumes breathe together, slowly (about a 4 s cycle).
+  float pulse = 1.0 + aOver * uMotion * 0.42 * sin(t * 1.55 + aPhase * 0.15);
   vec4 mv = modelViewMatrix * vec4(p, 1.0);
-  gl_PointSize = uSize * pulse * (320.0 / -mv.z);
-  vA = 0.75 + uPulse * 0.25 * sin(uTime * 1.2 + aPhase);
+  gl_PointSize = clamp(aSize * (0.9 + 0.1 * pulse) * uPx / -mv.z, 1.0, 256.0);
+  vI = aIntensity * pulse * (0.85 + 0.35 * aOver);
   gl_Position = projectionMatrix * mv;
 }
 `;
 const FRAG = /* glsl */ `
 uniform vec3 uColor;
-uniform float uBoost;
-varying float vA;
+varying float vI;
 void main() {
-  float d = length(gl_PointCoord - 0.5);
-  float a = smoothstep(0.5, 0.05, d);
-  gl_FragColor = vec4(uColor * uBoost, a * vA * 0.85);
+  vec2 c = gl_PointCoord - 0.5;
+  float r2 = dot(c, c) * 4.0;
+  if (r2 > 1.0) discard;
+  float a = exp(-r2 * 3.2) * (1.0 - r2);
+  gl_FragColor = vec4(uColor * (1.0 + 0.25 * exp(-r2 * 18.0)), a * vI * 0.62);
   #include <colorspace_fragment>
 }
 `;
 
-export interface PollutantLayer {
-  key: string;
-  color: string;
-  count: number;
-  over: boolean;
-}
-
-export function layersFor(model: SceneModel): PollutantLayer[] {
-  return model.pollutants.map((p, i) => ({
-    key: p.key,
-    color: POLLUTANT_COLORS[i % POLLUTANT_COLORS.length],
-    count: particleCount(p.ratio),
-    over: p.ratio > 1,
-  }));
-}
-
 interface Props {
-  model: SceneModel;
+  layers: PollutantLayer[];
   dio: Diorama;
   exaggeration: number;
   reducedMotion: boolean;
 }
 
 /**
- * One particle system per pollutant inside the water volume: colour-coded, density proportional to
- * value / threshold on a log scale, capped. Over-threshold pollutants pulse slowly (not under
- * prefers-reduced-motion). Missing data produces no particles.
+ * One soft glowing cloud per pollutant, gathered around the monitoring sites that measured it,
+ * drifting slowly inside the water. Density follows value / threshold on a log scale (capped);
+ * plumes above the threshold glow brighter and pulse (no motion under prefers-reduced-motion).
  */
-export function PollutantParticles({ model, dio, exaggeration, reducedMotion }: Props) {
+export function PollutantParticles({ layers, dio, exaggeration, reducedMotion }: Props) {
   const quality = useRenderQuality();
-  const layers = useMemo(() => layersFor(model), [model]);
-  const systems = useMemo(() => {
-    const { grid, nx } = dio;
-    const cells: number[] = [];
-    for (let n = 0; n < grid.inside.length; n++) if (grid.inside[n]) cells.push(n);
-    return layers.map((layer, li) => {
-      const rng = mulberry32(700 + li * 97);
-      const pos = new Float32Array(layer.count * 3);
-      const phase = new Float32Array(layer.count);
-      for (let k = 0; k < layer.count; k++) {
-        const n = cells[Math.floor(rng() * cells.length)] ?? 0;
-        const i = n % nx;
-        const j = Math.floor(n / nx);
-        const xm = grid.bounds.minX + (i + rng() - 0.5) * grid.cellX;
-        const ym = grid.bounds.minY + (j + rng() - 0.5) * grid.cellY;
-        const [X, Z] = dio.toScene(xm, ym);
-        const depthU = grid.depth[n] * dio.S;
-        pos[k * 3] = X;
-        pos[k * 3 + 1] = -(0.04 + 0.92 * rng()) * depthU;
-        pos[k * 3 + 2] = Z;
-        phase[k] = rng() * Math.PI * 2;
-      }
-      const g = new BufferGeometry();
-      g.setAttribute('position', new BufferAttribute(pos, 3));
-      g.setAttribute('aPhase', new BufferAttribute(phase, 1));
-      const m = new ShaderMaterial({
-        vertexShader: VERT,
-        fragmentShader: FRAG,
-        transparent: true,
-        depthWrite: false,
-        blending: AdditiveBlending,
-        uniforms: {
-          uEx: { value: 1 },
-          uTime: { value: 0 },
-          uSize: { value: 2.6 },
-          uPulse: { value: layer.over ? 1 : 0 },
-          uColor: { value: new Color(layer.color) },
-          uBoost: { value: layer.over ? 1.5 : 1 },
-        },
-      });
-      return { layer, g, m };
-    });
-  }, [layers, dio]);
+  const systems = useMemo(
+    () =>
+      layers.map((layer) => {
+        const b = layoutPlumes(dio, layer);
+        const g = new BufferGeometry();
+        g.setAttribute('position', new BufferAttribute(b.positions, 3));
+        g.setAttribute('aSize', new BufferAttribute(b.sizes, 1));
+        g.setAttribute('aPhase', new BufferAttribute(b.phases, 1));
+        g.setAttribute('aIntensity', new BufferAttribute(b.intensity, 1));
+        g.setAttribute('aOver', new BufferAttribute(b.over, 1));
+        const m = new ShaderMaterial({
+          vertexShader: VERT,
+          fragmentShader: FRAG,
+          transparent: true,
+          depthWrite: false,
+          blending: AdditiveBlending,
+          uniforms: {
+            uEx: { value: 1 },
+            uTime: { value: 0 },
+            uPx: { value: 800 },
+            uDrift: { value: 0.3 },
+            uMotion: { value: 1 },
+            uColor: { value: new Color(layer.color) },
+          },
+        });
+        return { layer, g, m, count: b.count };
+      }),
+    [layers, dio],
+  );
   useEffect(
     () => () => {
       systems.forEach((s) => {
@@ -119,11 +107,14 @@ export function PollutantParticles({ model, dio, exaggeration, reducedMotion }: 
     [systems],
   );
   useFrame((st) => {
+    const cam = st.camera as PerspectiveCamera;
+    const px = (st.size.height * st.viewport.dpr) / (2 * Math.tan((cam.fov * Math.PI) / 360));
     for (const s of systems) {
       s.m.uniforms.uEx.value = exaggeration;
       s.m.uniforms.uTime.value = reducedMotion ? 0 : st.clock.elapsedTime;
-      s.m.uniforms.uPulse.value = s.layer.over && !reducedMotion ? 1 : 0;
-      s.g.setDrawRange(0, Math.ceil(s.layer.count * quality));
+      s.m.uniforms.uMotion.value = reducedMotion ? 0 : 1;
+      s.m.uniforms.uPx.value = px;
+      s.g.setDrawRange(0, Math.ceil(s.count * quality));
     }
   });
   return (
