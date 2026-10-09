@@ -4,7 +4,7 @@
  *
  * Run with: npm run fixtures
  */
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
@@ -71,10 +71,26 @@ interface Geo {
   areaKm2: number;
 }
 
+interface GeoData {
+  surfaceElevationM: number;
+  ring: Ring;
+  dem: { bbox: number[]; width: number; height: number; elevations: number[] };
+}
+
+/** Real outline and elevation grid traced by scripts/fetch-geodata.ts, when present. */
+function loadGeoData(slug: string): GeoData | null {
+  const path = `scripts/fixtures/geodata/${slug}.json`;
+  return existsSync(path) ? (JSON.parse(readFileSync(path, 'utf8')) as GeoData) : null;
+}
+
 function buildGeo(wb: WbSpec): Geo {
   let polygon: Polygon;
   let line: LineString | undefined;
-  if (wb.kind === 'lake' && wb.ring) {
+  const real = loadGeoData(wb.slug);
+  if (real) {
+    polygon = { type: 'Polygon', coordinates: [ccwRing(real.ring)] };
+    if (wb.kind === 'river') line = { type: 'LineString', coordinates: wb.centerline! };
+  } else if (wb.kind === 'lake' && wb.ring) {
     let pts = wb.ring;
     if (wb.scale) {
       const cx = pts.reduce((a, p) => a + p[0], 0) / pts.length;
@@ -668,6 +684,8 @@ function buildAttains(wb: WbSpec) {
 // ---------------------------------------------------------------------------------------------
 
 function buildDem(wb: WbSpec, geo: Geo) {
+  const real = loadGeoData(wb.slug);
+  if (real) return real.dem;
   const bb = blockBbox(geo.bbox, 2000);
   const proj = makeProjection(geo.centroid);
   const [x0, y0] = proj.toLocal(bb[0], bb[1]);
@@ -715,6 +733,8 @@ const demoList: unknown[] = [];
 const nominatim: unknown[] = [];
 
 WATERBODIES.forEach((wb, wbIdx) => {
+  const real = loadGeoData(wb.slug);
+  if (real) wb.elevationM = Math.round(real.surfaceElevationM * 10) / 10;
   const rng = mulberry32(wb.seed * 7919 + hashString(wb.slug));
   const geo = buildGeo(wb);
   const id = `demo-${wb.slug}`;

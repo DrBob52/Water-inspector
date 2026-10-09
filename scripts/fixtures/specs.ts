@@ -148,7 +148,7 @@ const onondaga: Array<[number, number]> = [
 
 // --- Potomac River, Washington DC reach ---------------------------------------------
 const potomacLine: Array<[number, number]> = [
-  [-77.118, 38.93], [-77.1, 38.918], [-77.085, 38.91], [-77.07, 38.903], [-77.063, 38.893], [-77.052, 38.878],
+  [-77.07, 38.903], [-77.063, 38.893], [-77.052, 38.878],
   [-77.04, 38.866], [-77.03, 38.85], [-77.035, 38.83], [-77.04, 38.805], [-77.038, 38.79],
 ];
 
@@ -609,7 +609,7 @@ export const WATERBODIES: WbSpec[] = [
     maxDepthM: 7.5,
     meanDepthM: 4.2,
     stations: [
-      { name: 'Chain Bridge reach (sample site)', hint: [-77.114, 38.927] },
+      { name: 'Roosevelt Island (sample site)', hint: [-77.066, 38.896] },
       { name: 'Key Bridge, Georgetown (sample site)', hint: [-77.07, 38.903] },
       { name: 'Memorial Bridge (sample site)', hint: [-77.063, 38.893] },
       { name: 'Hains Point (sample site)', hint: [-77.032, 38.855] },

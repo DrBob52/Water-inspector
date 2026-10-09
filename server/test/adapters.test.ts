@@ -80,13 +80,13 @@ describe('NHD adapter', () => {
     expect(hit?.identity.geometry.type).toBe('Polygon');
     expect(hit?.identity.bbox[0]).toBeLessThan(hit!.identity.bbox[2]);
     const tahoe = await nhdIdentityAt(demoCtx(), -120.02, 39.1);
-    expect(tahoe?.elevationM).toBe(1897);
+    expect(tahoe?.elevationM).toBeCloseTo(1897.6, 1);
   });
   it('returns null away from any demo waterbody', async () => {
     expect(await nhdIdentityAt(demoCtx(), -100, 40)).toBeNull();
   });
   it('finds the wide river through the Area layer', async () => {
-    const hit = await nhdIdentityAt(demoCtx(), -77.0655, 38.894);
+    const hit = await nhdIdentityAt(demoCtx(), -77.061, 38.894);
     expect(hit?.kind).toBe('area');
     expect(hit?.identity.type).toBe('river');
     expect(hit?.identity.id).toBe('nhd:demo-potomac-river-dc');
@@ -512,7 +512,7 @@ describe('depth and physical profile', () => {
   it('matches the depth index by centroid-in-polygon and area within 30%', async () => {
     const id = await identityOf('lake-champlain');
     const index = (await loadDepthIndex(demoCtx()))!;
-    const area = 1145.43;
+    const area = 1001.9;
     expect(matchDepthIndex(id, area, index)?.depth_max_m).toBe(122);
     expect(matchDepthIndex(id, area * 2, index)).toBeNull();
     expect(matchDepthIndex(id, area * 1.25, index)?.depth_max_m).toBe(122);
@@ -574,7 +574,7 @@ describe('depth and physical profile', () => {
   });
   it('gives the river a length and an estimated depth', async () => {
     const id = await identityOf('potomac-river-dc');
-    const flow = (await nhdIdentityAt(demoCtx(), -77.05, 38.878))!;
+    const flow = (await nhdIdentityAt(demoCtx(), -77.04, 38.878))!;
     expect(flow.identity.type).toBe('river');
     const p = buildPhysical({
       identity: {
